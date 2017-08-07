@@ -34,13 +34,17 @@ const StyledContainer = styled.div`
 class Container extends React.Component {
   constructor(props) {
     super(props);
+
     this.state = {
       chatStarted: false,
     };
+    this.switchState = this.switchState.bind(this);
   }
+
   switchState() {
-    this.setState({ chatStarted: !this.state.chatStarted });
+    this.setState(oldState => ({ chatStarted: !oldState.chatStarted }));
   }
+
   render() {
     return (
       <StyledContainer>
@@ -49,12 +53,12 @@ class Container extends React.Component {
           height={this.props.height}
           appEndPoint={this.props.appEndPoint}
           isVisible={this.state.chatStarted}
-          switchMode={() => this.switchState()}
+          switchMode={this.switchState}
         />
         <StartButton
           isVisible={!this.state.chatStarted}
           size={this.props.startButtonSize}
-          switchMode={() => this.switchState()}
+          switchMode={this.switchState}
         />
       </StyledContainer>
     );

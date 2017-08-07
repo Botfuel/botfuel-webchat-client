@@ -20,9 +20,7 @@ const Button = styled.div`
 const Logo = styled.img`
   height: 90%;
   width: 90%;
-}
-
-`;
+}`;
 
 export default function StartButton(props) {
   return (

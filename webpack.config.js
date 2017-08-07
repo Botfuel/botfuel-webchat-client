@@ -40,6 +40,7 @@ module.exports = {
   },
   resolve: {
     alias: {
+      '~': path.join(process.cwd(), 'src'),
       ROOT: path.join(process.cwd()),
       react: path.join(process.cwd(), 'node_modules', 'react'),
     },

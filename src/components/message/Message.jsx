@@ -13,31 +13,26 @@ const StyledMessageContainer = styled.div`
   float: ${props => props.side};
 `;
 
-function Message({ type, ...props }) {
-  switch (type) {
-    case 'text':
-      return <Text {...props} />;
-    case 'table':
-      return <Table {...props} />;
-    case 'choices':
-      return <ButtonList {...props} />;
-    default:
-      return <Text {...props} />;
-  }
-}
-
-export default function MessageListContainer({ side, ...props }) {
+export default function MessageContainer({ side, type, ...props }) {
   return (
     <StyledMessageContainer side={side}>
-      <Message side={side} {...props} />
+      {(() => {
+        switch (type) {
+          case 'text':
+            return <Text {...props} />;
+          case 'table':
+            return <Table {...props} />;
+          case 'choices':
+            return <ButtonList {...props} />;
+          default:
+            return <Text {...props} />;
+        }
+      })()}
     </StyledMessageContainer>
   );
 }
 
-MessageListContainer.propTypes = {
+MessageContainer.propTypes = {
   side: PropTypes.string.isRequired,
-};
-
-Message.propTypes = {
   type: PropTypes.string.isRequired,
 };

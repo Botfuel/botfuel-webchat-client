@@ -46,4 +46,6 @@ module.exports = {
     modules: ['node_modules'],
     extensions: ['.js', '.jsx'],
   },
+
+  devtool: 'eval-cheap-module-source-map',
 };

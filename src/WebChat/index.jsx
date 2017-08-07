@@ -22,7 +22,46 @@ export default class WebChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
+      messages: [
+        {
+          id: '1',
+          user: '1',
+          bot: '1',
+          type: 'text',
+          value: 'hello!',
+          text: 'hello!',
+          sender: 'me',
+        },
+        {
+          id: '3',
+          user: '1',
+          bot: '1',
+          type: 'table',
+          value: 'hello!',
+          text: 'hello!',
+          sender: 'me',
+        },
+        {
+          id: '2',
+          user: '1',
+          bot: '1',
+          type: 'choices',
+          value: [
+            {
+              id: '001',
+              text: 'Apple please',
+            },
+            {
+              id: '002',
+              text: 'Melon please',
+            },
+            {
+              id: '003',
+              text: 'Banana please',
+            },
+          ],
+        },
+      ],
     };
     this.onSendMessage = this.onSendMessage.bind(this);
   }
@@ -43,6 +82,8 @@ export default class WebChat extends React.Component {
     });
   }
   render() {
+    console.log(this.state.messages);
+
     return (
       <Container
         width={this.props.width}

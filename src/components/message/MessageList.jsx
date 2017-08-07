@@ -24,9 +24,9 @@ export default class MessageList extends React.Component {
   }
 
   render() {
-    const list = this.props.messages.map((message, i) => {
+    const list = this.props.messages.map((message) => {
       const side = message.sender === 'me' ? 'right' : 'left';
-      return <Message.Text side={side} text={message.text} key={i} />;
+      return <Message type={message.type} side={side} text={message.text} key={message.id} />;
     });
     return (
       <Messages

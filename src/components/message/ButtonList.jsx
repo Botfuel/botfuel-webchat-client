@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Button from './Button';
 
-export default ({ choices }) =>
+export default ({ value }) =>
   (<div>
-    {choices.map(choice => <Button text={choice.text} />)}
+    {value && value.map(choice => <Button text={choice.text} />)}
   </div>);

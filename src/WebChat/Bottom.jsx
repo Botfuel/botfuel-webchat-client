@@ -1,0 +1,61 @@
+import React from 'react';
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
+const SendButton = styled.div`
+  width: 30%;
+  height: 100%;
+  display: inline-block;
+  color: #b2b2b2;
+  cursor: pointer;
+  text-align: center;
+  float: right;
+  font-size: 13px;
+  line-height: 40px;
+  font-weight: 600;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const InputWrapper = styled.div`
+  display: inline-block;
+  height: 100%;
+  border-radius: 25px;
+  width: 70%;
+  position: relative;
+  padding: 0 20px;
+  input {
+    border: none;
+    height: 100%;
+    box-sizing: border-box;
+    width: 100%;
+    position: absolute;
+    outline-width: 0;
+    color: gray;
+    font-size: 12px;
+    padding-bottom: 6px;
+  }
+`;
+
+const BottomWrapper = styled.div`
+  width: 100%;
+  background-color: #fff;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, .1);
+  height: 45px;
+`;
+
+export default function Bottom(props) {
+  return (
+    <BottomWrapper>
+      <InputWrapper>
+        <input tabIndex={-1} placeholder="Type a message..." onKeyPress={props.onSendMessage} />
+      </InputWrapper>
+      <SendButton onClick={props.onSendMessage}>Send</SendButton>
+    </BottomWrapper>
+  );
+}
+
+Bottom.propTypes = {
+  onSendMessage: PropTypes.func.isRequired,
+};

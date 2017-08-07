@@ -63,27 +63,24 @@ export default class WebChat extends React.Component {
         },
       ],
     };
+
     this.onSendMessage = this.onSendMessage.bind(this);
   }
-  onReciveMessage(text) {
-    if (text === '') return;
-    this.setState({
-      messages: this.state.messages.concat([{ text, sender: 'bot' }]),
-    });
-  }
-  onSendMessage(e) {
-    if (e !== undefined && e.nativeEvent.keyCode !== 13) return;
-    const input = e.target;
-    const text = input.value;
-    if (text === '') return;
-    input.value = '';
-    this.setState({
-      messages: this.state.messages.concat([{ text, sender: 'me' }]),
-    });
-  }
-  render() {
-    console.log(this.state.messages);
 
+  onSendMessage(e) {
+    if (e && e.nativeEvent.keyCode === 13) {
+      const text = e.target.value;
+
+      if (text) {
+        e.target.value = '';
+        this.setState({
+          messages: this.state.messages.concat([{ type: 'text', value: text, sender: 'me' }]),
+        });
+      }
+    }
+  }
+
+  render() {
     return (
       <Container
         width={this.props.width}

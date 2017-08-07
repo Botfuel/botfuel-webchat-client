@@ -39,5 +39,5 @@ export default function TextMessage(props) {
 }
 
 TextMessage.propTypes = {
-  text: PropTypes.func.isRequired,
+  value: PropTypes.func.isRequired,
 };

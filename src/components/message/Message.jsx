@@ -1,13 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import Text from './Text';
 import Table from './Table';
 import ButtonList from './ButtonList';
 
-export default ({ type, ...props }) => {
-  console.log(props);
-
+export default function Message({ type, ...props }) {
   switch (type) {
     case 'text':
       return <Text {...props} />;
@@ -18,4 +16,8 @@ export default ({ type, ...props }) => {
     default:
       return <Text {...props} />;
   }
+}
+
+Message.propTypes = {
+  type: PropTypes.string.isRequired,
 };

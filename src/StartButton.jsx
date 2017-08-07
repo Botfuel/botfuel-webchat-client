@@ -15,7 +15,6 @@ const Button = styled.div`
   align-items: center;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
   cursor: pointer;
-  margin-bottom: 20px;
 `;
 
 const Logo = styled.img`

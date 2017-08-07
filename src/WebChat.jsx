@@ -7,13 +7,13 @@ import MessageList from './MessageList';
 const BottomWrapper = styled.div`
   width: 100%;
   background-color: #fff;
-  position: absolute;
-  bottom: 0;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, .1);
+  height: 40px;
   .message_input_wrapper {
     display: inline-block;
-    height: 40px;
+    height: 100%;
     border-radius: 25px;
-    width: calc(100% - 160px);
+    width: 70%;
     position: relative;
     padding: 0 20px;
   }
@@ -21,53 +21,43 @@ const BottomWrapper = styled.div`
     border: none;
     height: 100%;
     box-sizing: border-box;
-    width: calc(100% - 40px);
+    width: 100%;
     position: absolute;
     outline-width: 0;
     color: gray;
     font-size: 14px;
   }
   #send_message {
-    width: 110px;
-    height: 40px;
+    width: 30%;
+    height: 100%;
     display: inline-block;
-    background-color: #a3d063;
-    border: 2px solid #a3d063;
-    color: #fff;
+    color: #b2b2b2;
     cursor: pointer;
-    transition: all 0.2s linear;
     text-align: center;
     float: right;
-    .text {
-      font-size: 18px;
-      font-weight: 300;
-      display: inline-block;
-      line-height: 38px;
-    }
+    font-size: 13px;
+    line-height: 40px;
   }
 `;
 
 const Cross = styled.div`
   cursor: pointer;
   position: absolute;
-  right: 17px;
-  top: 14px;
+  right: 15px;
+  top: 10px;
   color: #ddd;
+  font-size: 10px;
 `;
 
-const Logo = styled.img`
-  height: 38px;
-  position: absolute;
-  left: 10px;
-  top: 10px;
-`;
 const TopMenu = styled.div`
-  background-color: #fff;
+  font-weight: 200;
+  color: #fff;
+  background-color: rgb(101, 117, 142);
+  height: 40px;
   width: 100%;
-  padding: 13px 0;
-  box-shadow: 0 1px 30px rgba(0, 0, 0, .1);
+  padding: 12px 0;
   text-align: center;
-  font-size: 20px;
+  font-size: 16px;
 `;
 
 const Container = styled.div`
@@ -76,11 +66,9 @@ const Container = styled.div`
   color: #000;
   width: 300px;
   height: 400px;
-  border-radius: 2px;
   box-shadow: 0 0 24px rgba(0, 0, 0, .15);
   border: 1px solid #e3e3e3;
   border-radius: 10px;
-  background-color: #f8f8f8;
   overflow: hidden;
 `;
 
@@ -111,23 +99,20 @@ export default class WebChat extends React.Component {
     return (
       <Container isVisible={this.props.isVisible}>
         <TopMenu>
-          <Logo src="icon.png" />
           <Cross onClick={this.props.switchMode}>╳</Cross>
-          WebChat FDJ
+          How can we help?
         </TopMenu>
         <MessageList messages={this.state.messages} />
         <BottomWrapper>
           <div className="message_input_wrapper">
             <input
               className="message_input"
-              placeholder="Message..."
+              placeholder="Type a message..."
               onKeyPress={this.onSendMessage.bind(this)}
             />
           </div>
-          <div id="send_message">
-            <div className="text" onClick={this.onSendMessage.bind(this)}>
-              Envoyer
-            </div>
+          <div id="send_message" onClick={this.onSendMessage.bind(this)}>
+            Send
           </div>
         </BottomWrapper>
       </Container>

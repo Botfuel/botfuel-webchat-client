@@ -16,7 +16,7 @@ const Message = styled.div`
   .text_wrapper {
     display: inline-block;
     padding: 8px 10px;
-    border-radius: 18px;
+    border-radius: 14px;
     position: relative;
     .text {
       font-size: 15px;

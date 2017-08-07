@@ -17,10 +17,13 @@ export default class BotfuelWebChat {
 
 const StyledContainer = styled.div`
   position: fixed;
-  bottom: 0px;
+  bottom: 20px;
   right: 20px;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
     Arial, sans-serif;
+  * {
+    box-sizing: border-box;
+  }
 `;
 
 class Container extends React.Component {

@@ -7,17 +7,15 @@ const Messages = styled.div`
   list-style: none;
   padding: 20px 10px 0;
   margin: 0;
-  height: 290px;
+  height: 320px;
   overflow: scroll;
 `;
 
 export default class MessageList extends React.Component {
   componentDidUpdate() {
-    console.log('scrollToBottom');
     this.scrollToBottom();
   }
   scrollToBottom() {
-    console.log(this.messageList);
     const scrollHeight = this.messageList.scrollHeight;
     const height = this.messageList.clientHeight;
     const maxScrollTop = scrollHeight - height;

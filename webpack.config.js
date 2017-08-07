@@ -8,7 +8,7 @@ module.exports = {
       BotfuelWeb: true,
     },
   ],
-  plugins: [new BabiliPlugin()],
+  // plugins: [new BabiliPlugin()],
   output: {
     path: path.join(__dirname, './build'),
     filename: 'script.js',
@@ -37,5 +37,13 @@ module.exports = {
         },
       },
     ],
+  },
+  resolve: {
+    alias: {
+      ROOT: path.join(process.cwd()),
+      react: path.join(process.cwd(), 'node_modules', 'react'),
+    },
+    modules: ['node_modules'],
+    extensions: ['.js', '.jsx'],
   },
 };

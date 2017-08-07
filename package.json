@@ -2,9 +2,11 @@
   "name": "botfuel-webchat-client",
   "private": true,
   "scripts": {
-    "start": "node server.js",
+    "start": "npm run serve:production",
     "heroku-postbuild": "npm run build:production",
     "build:production": "NODE_ENV=production webpack",
+    "serve:production": "node server.js",
+    "serve:dev": "node server.js & webpack --watch",
     "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\""
   },
   "devDependencies": {
@@ -25,8 +27,10 @@
   "dependencies": {
     "express": "^4.15.4",
     "heroku-ssl-redirect": "0.0.4",
+    "prop-types": "^15.5.10",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "styled-components": "^2.1.2"
   },
   "engines": {
     "node": "8.x"

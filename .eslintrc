@@ -1,9 +1,18 @@
 {
-    "extends": ["airbnb"],
-    "rules": {
-      "import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.js", "**/*.babel.js", "/webpack.config.js"]}]
-    },
-    "env": {
-        "browser": true,
-    }
+  "extends": ["airbnb"],
+  "rules": {
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/*.test.js",
+          "**/*.babel.js",
+          "/webpack.config.js"
+        ]
+      }
+    ]
+  },
+  "env": {
+    "browser": true
+  }
 }

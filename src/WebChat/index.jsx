@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import MessageList from '../MessageList';
+import MessageList from '../components/message/MessageList';
 import Bottom from './Bottom';
 import Top from './Top';
 

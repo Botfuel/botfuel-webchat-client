@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import Message from '~/components/message';
+import Message from './Message';
 
 const Messages = styled.div`
   list-style: none;

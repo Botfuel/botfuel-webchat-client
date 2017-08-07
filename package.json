@@ -28,7 +28,6 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
-    "eslint-import-resolver-webpack": "^0.8.3",
     "express": "^4.15.4",
     "heroku-ssl-redirect": "0.0.4",
     "prop-types": "^15.5.10",

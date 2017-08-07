@@ -6,6 +6,8 @@ import Table from './Table';
 import ButtonList from './ButtonList';
 
 export default ({ type, ...props }) => {
+  console.log(props);
+
   switch (type) {
     case 'text':
       return <Text {...props} />;

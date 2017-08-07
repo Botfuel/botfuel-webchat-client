@@ -31,7 +31,7 @@ export default function TextMessage(props) {
     <Message side="right">
       <TextWrapper>
         <Text>
-          {props.text}
+          {props.value}
         </Text>
       </TextWrapper>
     </Message>

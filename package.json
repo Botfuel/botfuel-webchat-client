@@ -7,7 +7,9 @@
     "build:production": "NODE_ENV=production webpack",
     "serve:production": "node server.js",
     "serve:dev": "node server.js & webpack --watch",
-    "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\""
+    "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\"",
+    "test": "echo 'No tests'",
+    "precommit": "npm test && npm run style"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",

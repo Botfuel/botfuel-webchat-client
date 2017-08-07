@@ -32,20 +32,12 @@ export default class WebChat extends React.Component {
           text: 'hello!',
           sender: 'me',
         },
-        // {
-        //   id: '3',
-        //   user: '1',
-        //   bot: '1',
-        //   type: 'table',
-        //   value: 'hello!',
-        //   text: 'hello!',
-        //   sender: 'me',
-        // },
         {
           id: '2',
           user: '1',
           bot: '1',
           type: 'choices',
+          sender: 'me',
           value: [
             {
               id: '001',

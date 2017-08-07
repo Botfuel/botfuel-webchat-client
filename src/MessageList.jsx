@@ -5,9 +5,9 @@ import Message from './Message';
 
 const Messages = styled.div`
   list-style: none;
-  padding: 20px 10px 0;
+  padding: 10px;
   margin: 0;
-  height: 320px;
+  height: 315px;
   overflow: scroll;
 `;
 
@@ -24,7 +24,7 @@ export default class MessageList extends React.Component {
 
   render() {
     const list = this.props.messages.map((message, i) => {
-      const side = message.sender == 'me' ? 'right' : 'left';
+      const side = message.sender === 'me' ? 'right' : 'left';
       return <Message.Text side={side} text={message.text} key={i} />;
     });
     return (

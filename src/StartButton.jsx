@@ -20,10 +20,6 @@ const Button = styled.div`
 const Logo = styled.img`
   height: 90%;
   width: 90%;
-  transition: transform .8s cubic-bezier(.68, -.55, .27, 1.55);
-  &:hover {
-    transform: rotate(-360deg);
-  }
 }
 
 `;

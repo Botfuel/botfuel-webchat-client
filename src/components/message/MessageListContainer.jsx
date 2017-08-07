@@ -11,7 +11,6 @@ export default class MessageListContainer extends React.Component {
     const scrollHeight = this.innerRef.scrollHeight;
     const height = this.innerRef.clientHeight;
     const maxScrollTop = scrollHeight - height;
-    console.log(this.innerRef);
 
     this.innerRef.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }

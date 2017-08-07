@@ -1,13 +1,16 @@
 import React from 'react';
-import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import Button from './Button';
 
-export default ({ value }) => {
-  console.log(value);
+export default function ButtonList({ value }) {
   return (
     <div>
       {value && value.map(choice => <Button text={choice.text} />)}
     </div>
   );
+}
+
+ButtonList.propTypes = {
+  value: PropTypes.arrayOf(PropTypes.object).isRequired,
 };

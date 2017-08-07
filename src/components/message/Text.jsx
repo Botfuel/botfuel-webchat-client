@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const Message = styled.div`
   clear: both;
@@ -7,32 +8,36 @@ const Message = styled.div`
   margin-bottom: 10px;
   transition: all .5s linear;
   float: ${props => props.side};
-  .text_wrapper {
+  color: ${props => (props.side === 'left' ? '#000' : '#fff')};
+  > div {
     background-color: ${props => (props.side === 'left' ? '#f1f0f0' : '#0084f4')};
-  }
-  .text {
-    color: ${props => (props.side === 'left' ? '#000' : '#fff')};
-  }
-  .text_wrapper {
-    display: inline-block;
-    padding: 8px 10px;
-    border-radius: 14px;
-    position: relative;
-    .text {
-      font-size: 15px;
-      font-weight: 300;
-    }
   }
 `;
 
-export default function (props) {
+const Text = styled.div`
+  font-size: 15px;
+  font-weight: 300;
+`;
+
+const TextWrapper = styled.div`
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 14px;
+  position: relative;
+`;
+
+export default function TextMessage(props) {
   return (
     <Message side="right">
-      <div className="text_wrapper">
-        <div className="text">
+      <TextWrapper>
+        <Text>
           {props.text}
-        </div>
-      </div>
+        </Text>
+      </TextWrapper>
     </Message>
   );
 }
+
+TextMessage.propTypes = {
+  text: PropTypes.func.isRequired,
+};

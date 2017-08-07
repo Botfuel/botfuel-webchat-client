@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const SendButton = styled.div`
-  width: 30%;
+  width: 70px;
   height: 100%;
   display: inline-block;
   color: #b2b2b2;
@@ -22,7 +22,7 @@ const InputWrapper = styled.div`
   display: inline-block;
   height: 100%;
   border-radius: 25px;
-  width: 70%;
+  width: ${props => props.width}px;
   position: relative;
   padding: 0 20px;
   input {
@@ -48,7 +48,7 @@ const BottomWrapper = styled.div`
 export default function Bottom(props) {
   return (
     <BottomWrapper>
-      <InputWrapper>
+      <InputWrapper width={props.width - 75}>
         <input tabIndex={-1} placeholder="Type a message..." onKeyPress={props.onSendMessage} />
       </InputWrapper>
       <SendButton onClick={props.onSendMessage}>Send</SendButton>
@@ -58,4 +58,5 @@ export default function Bottom(props) {
 
 Bottom.propTypes = {
   onSendMessage: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
 };

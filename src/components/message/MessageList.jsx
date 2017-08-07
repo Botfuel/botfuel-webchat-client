@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import Message from './Message';
 
@@ -7,7 +8,7 @@ const Messages = styled.div`
   list-style: none;
   padding: 10px;
   margin: 0;
-  height: 315px;
+  height: ${props => props.height}px;
   overflow: scroll;
 `;
 
@@ -29,6 +30,7 @@ export default class MessageList extends React.Component {
     });
     return (
       <Messages
+        height={this.props.height}
         innerRef={(div) => {
           this.messageList = div;
         }}
@@ -38,3 +40,8 @@ export default class MessageList extends React.Component {
     );
   }
 }
+
+MessageList.propTypes = {
+  messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  height: PropTypes.number.isRequired,
+};

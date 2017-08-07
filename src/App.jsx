@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 import StartButton from './StartButton';
 import WebChat from './WebChat';
@@ -9,7 +10,11 @@ export default class BotfuelWebChat {
   static init(param) {
     document.body.innerHTML += '<div id="botfuel"></div>';
     ReactDOM.render(
-      <Container startButtonSize={param.startButtonSize || 90} />,
+      <Container
+        startButtonSize={param.startButtonSize || 90}
+        width={param.width || 400}
+        height={param.height || 500}
+      />,
       document.getElementById('botfuel'),
     );
   }
@@ -40,6 +45,8 @@ class Container extends React.Component {
     return (
       <StyledContainer>
         <WebChat
+          width={this.props.width}
+          height={this.props.height}
           appEndPoint={this.props.appEndPoint}
           isVisible={this.state.chatStarted}
           switchMode={() => this.switchState()}
@@ -53,5 +60,12 @@ class Container extends React.Component {
     );
   }
 }
+
+Container.propTypes = {
+  appEndPoint: PropTypes.string.isRequired,
+  startButtonSize: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
+};
 
 self.BotfuelWebChat = BotfuelWebChat;

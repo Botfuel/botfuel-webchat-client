@@ -10,8 +10,8 @@ const Container = styled.div`
   transition: opacity 0.5s ease-in-out;
   display: ${props => (props.isVisible ? 'block' : 'none')};
   color: #000;
-  width: 300px;
-  height: 400px;
+  width: ${props => props.width}px;
+  height: ${props => props.height}px;
   box-shadow: 0 0 24px rgba(0, 0, 0, .15);
   border: 1px solid #e3e3e3;
   border-radius: 10px;
@@ -44,10 +44,14 @@ export default class WebChat extends React.Component {
   }
   render() {
     return (
-      <Container isVisible={this.props.isVisible}>
+      <Container
+        width={this.props.width}
+        height={this.props.height}
+        isVisible={this.props.isVisible}
+      >
         <Top switchMode={this.props.switchMode} />
-        <MessageList messages={this.state.messages} />
-        <Bottom onSendMessage={this.onSendMessage} />
+        <MessageList height={this.props.height - 85} messages={this.state.messages} />
+        <Bottom width={this.props.width} onSendMessage={this.onSendMessage} />
       </Container>
     );
   }
@@ -56,4 +60,6 @@ export default class WebChat extends React.Component {
 WebChat.propTypes = {
   switchMode: PropTypes.func.isRequired,
   isVisible: PropTypes.bool.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
 };

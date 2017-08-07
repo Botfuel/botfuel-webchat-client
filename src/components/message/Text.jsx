@@ -39,5 +39,5 @@ export default function TextMessage(props) {
 }
 
 TextMessage.propTypes = {
-  value: PropTypes.func.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };

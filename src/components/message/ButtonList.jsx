@@ -6,7 +6,7 @@ import Button from './Button';
 export default function ButtonList({ value }) {
   return (
     <div>
-      {value && value.map(choice => <Button text={choice.text} />)}
+      {value && value.map(choice => <Button key={choice.id} text={choice.text} />)}
     </div>
   );
 }

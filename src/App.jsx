@@ -51,7 +51,6 @@ class Container extends React.Component {
         <WebChat
           width={this.props.width}
           height={this.props.height}
-          appEndPoint={this.props.appEndPoint}
           isVisible={this.state.chatStarted}
           switchMode={this.switchState}
         />
@@ -66,7 +65,6 @@ class Container extends React.Component {
 }
 
 Container.propTypes = {
-  appEndPoint: PropTypes.string.isRequired,
   startButtonSize: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import MessageList from '../components/message/MessageList';
 import Bottom from './Bottom';
 import Top from './Top';
+import MessageListContainer from '../components/message/MessageListContainer';
 
 const Container = styled.div`
   transition: opacity 0.5s ease-in-out;
@@ -88,7 +88,7 @@ export default class WebChat extends React.Component {
         isVisible={this.props.isVisible}
       >
         <Top switchMode={this.props.switchMode} />
-        <MessageList height={this.props.height - 85} messages={this.state.messages} />
+        <MessageListContainer height={this.props.height - 85} messages={this.state.messages} />
         <Bottom width={this.props.width} onSendMessage={this.onSendMessage} />
       </Container>
     );

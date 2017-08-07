@@ -13,7 +13,7 @@ const Messages = styled.div`
 `;
 
 const MessageList = ({ messages, height, setRef }) =>
-  (<Messages height={height} ref={setRef}>
+  (<Messages height={height} innerRef={setRef}>
     {messages.map(message =>
       <Message {...message} side={message.sender === 'me' ? 'right' : 'left'} key={message.id} />,
     )}

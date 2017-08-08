@@ -17,6 +17,8 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
+const SERVER_URL = process.env.SERVER_URL || 'https://botfuel-webchat-server.herokuapp.com';
+
 export default class WebChat extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +29,10 @@ export default class WebChat extends React.Component {
           user: '1',
           bot: '1',
           type: 'block',
-          value: { title: 'La Poste', text: 'Assistant Courier.' },
+          value: {
+            title: 'La Poste',
+            text: 'Assistant Courier. Commandes : table, text, choices.',
+          },
           sender: 'bot',
         },
         {
@@ -76,7 +81,7 @@ export default class WebChat extends React.Component {
 
       // MOCKING
       if (['text', 'table', 'choices'].includes(text)) {
-        const response = await fetch(`http://localhost:7001/${text}`);
+        const response = await fetch(`${SERVER_URL}/${text}`);
         const answer = text === 'text' ? await response.text() : await response.json();
 
         setTimeout(() => {

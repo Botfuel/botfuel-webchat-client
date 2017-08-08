@@ -55,5 +55,8 @@ export default function MessageTable({ value }) {
 }
 
 MessageTable.propTypes = {
-  value: PropTypes.arrayOf(PropTypes.object).isRequired,
+  value: PropTypes.shape({
+    schema: PropTypes.array.isRequired,
+    rows: PropTypes.array.isRequired,
+  }),
 };

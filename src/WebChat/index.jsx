@@ -17,7 +17,7 @@ const Container = styled.div`
   overflow: hidden;
 `;
 
-const SERVER_URL = process.env.SERVER_URL || 'https://botfuel-webchat-server.herokuapp.com';
+const SERVER_URL = 'https://botfuel-webchat-server.herokuapp.com';
 
 export default class WebChat extends React.Component {
   constructor(props) {

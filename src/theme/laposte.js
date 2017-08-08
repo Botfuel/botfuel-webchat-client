@@ -5,7 +5,7 @@ export default {
     primary: '#ebebeb',
     primaryLight: '#f7f7f7',
     secondary: '#f4b600',
-    primaryText: 'darkblue',
+    primaryText: '#000',
     secondaryText: 'white',
   },
 };

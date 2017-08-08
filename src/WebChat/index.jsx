@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-
-import Bottom from './Bottom';
-import Top from './Top';
 import MessageListContainer from '../components/message/MessageListContainer';
+import Top from './Top';
+import Bottom from './Bottom';
 
 const Container = styled.div`
   transition: opacity 0.5s ease-in-out;

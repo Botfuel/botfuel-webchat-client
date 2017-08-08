@@ -26,7 +26,7 @@ export default function Top(props) {
   return (
     <TopMenu>
       <Cross onClick={props.switchMode}>╳</Cross>
-      How can we help?
+      Comment puis-je vous aider ?
     </TopMenu>
   );
 }

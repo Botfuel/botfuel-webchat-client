@@ -48,16 +48,16 @@ const BottomWrapper = styled.div`
 export default function Bottom(props) {
   return (
     <BottomWrapper>
-      <InputWrapper width={props.width - 75}>
+      <InputWrapper width={props.width - 85}>
         <input
           tabIndex={-1}
           value={props.input}
-          placeholder="Type a message..."
+          placeholder="Écrivez un message..."
           onChange={props.onInputChange}
           onKeyPress={props.onKeyPress}
         />
       </InputWrapper>
-      <SendButton onClick={props.sendMessage}>Send</SendButton>
+      <SendButton onClick={props.sendMessage}>Envoyer</SendButton>
     </BottomWrapper>
   );
 }

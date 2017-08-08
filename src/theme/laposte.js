@@ -1,8 +1,9 @@
 export default {
   colors: {
-    main: 'yellow',
-    primary: 'yellow',
-    secondary: 'darkblue',
+    main: '#3d3d3d',
+    mainText: '#fff',
+    primary: '#ebebeb',
+    secondary: '#f4b600',
     primaryText: 'darkblue',
     secondaryText: 'white',
   },

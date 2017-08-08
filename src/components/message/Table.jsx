@@ -15,7 +15,9 @@ const Table = styled.table`
   empty-cells: show;
   max-width: 100%;
   display: block;
-  overflow: scroll;
+  overflow-x: auto;
+  overflow-y: hidden;
+
   td,
   th {
     padding: 5px 5px;

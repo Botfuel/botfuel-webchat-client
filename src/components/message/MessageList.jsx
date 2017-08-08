@@ -8,7 +8,8 @@ const Messages = styled.div`
   padding: 10px;
   margin: 0;
   height: ${props => props.height}px;
-  overflow: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
 `;
 
 const MessageList = ({ messages, height, width, setRef }) =>

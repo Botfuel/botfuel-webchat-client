@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const Thead = styled.thead`
   tr {
-    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid;
   }
 `;
 

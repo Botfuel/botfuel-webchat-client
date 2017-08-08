@@ -9,6 +9,13 @@ const Button = styled.button`
   margin: 5px;
   padding: 10px;
   border-radius: 7px;
+  cursor: pointer;
+  &:hover {
+    background-color: ${props => props.theme.colors.primaryLight};
+  }
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default function ButtonMessage({ text }) {

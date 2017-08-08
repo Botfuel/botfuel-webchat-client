@@ -22,43 +22,13 @@ export default class WebChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [
-        {
-          id: '1',
-          user: '1',
-          bot: '1',
-          type: 'text',
-          value: 'hello!',
-          sender: 'bot',
-        },
-        {
-          id: '2',
-          user: '1',
-          bot: '1',
-          type: 'choices',
-          sender: 'bot',
-          value: [
-            {
-              id: '001',
-              text: 'Apple please',
-            },
-            {
-              id: '002',
-              text: 'Melon please',
-            },
-            {
-              id: '003',
-              text: 'Banana please',
-            },
-          ],
-        },
-      ],
+      messages: [],
     };
 
     this.onSendMessage = this.onSendMessage.bind(this);
   }
 
-  onSendMessage(e) {
+  async onSendMessage(e) {
     if (e && e.nativeEvent.keyCode === 13) {
       const text = e.target.value;
 
@@ -67,6 +37,18 @@ export default class WebChat extends React.Component {
         this.setState(oldState => ({
           messages: [...oldState.messages, { type: 'text', value: text, sender: 'me' }],
         }));
+
+        // MOCKING
+        if (['text', 'table', 'choices'].includes(text)) {
+          const response = await fetch(`http://localhost:7001/${text}`);
+          const answer = text === 'text' ? await response.text() : await response.json();
+
+          setTimeout(() => {
+            this.setState(oldState => ({
+              messages: [...oldState.messages, { type: text, value: answer, sender: 'bot' }],
+            }));
+          }, 1000);
+        }
       }
     }
   }

@@ -1,10 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 
 import StartButton from './StartButton';
 import WebChat from './WebChat';
+// import baseTheme from './theme/base';
+import laposteTheme from './theme/laposte';
 
 export default class BotfuelWebChat {
   static init(param) {
@@ -47,19 +49,21 @@ class Container extends React.Component {
 
   render() {
     return (
-      <StyledContainer>
-        <WebChat
-          width={this.props.width}
-          height={this.props.height}
-          isVisible={this.state.chatStarted}
-          switchMode={this.switchState}
-        />
-        <StartButton
-          isVisible={!this.state.chatStarted}
-          size={this.props.startButtonSize}
-          switchMode={this.switchState}
-        />
-      </StyledContainer>
+      <ThemeProvider theme={laposteTheme}>
+        <StyledContainer>
+          <WebChat
+            width={this.props.width}
+            height={this.props.height}
+            isVisible={this.state.chatStarted}
+            switchMode={this.switchState}
+          />
+          <StartButton
+            isVisible={!this.state.chatStarted}
+            size={this.props.startButtonSize}
+            switchMode={this.switchState}
+          />
+        </StyledContainer>
+      </ThemeProvider>
     );
   }
 }

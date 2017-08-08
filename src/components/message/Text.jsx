@@ -12,8 +12,10 @@ const TextWrapper = styled.div`
   padding: 8px 10px;
   border-radius: 14px;
   position: relative;
-  color: ${props => (props.side === 'left' ? '#000' : '#fff')};
-  background-color: ${props => (props.side === 'left' ? '#f1f0f0' : '#0084f4')};
+  color: ${props =>
+    (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
+  background-color: ${props =>
+    (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
 `;
 
 export default function TextMessage({ side, value }) {

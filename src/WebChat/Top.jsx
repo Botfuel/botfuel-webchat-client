@@ -13,8 +13,8 @@ const Cross = styled.div`
 
 const TopMenu = styled.div`
   font-weight: 200;
-  color: #fff;
-  background-color: rgb(101, 117, 142);
+  color: ${props => props.theme.colors.primaryText};
+  background-color: ${props => props.theme.colors.main};
   height: 40px;
   width: 100%;
   padding: 12px 0;

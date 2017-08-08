@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import uuidv4 from 'uuid/v4';
 
 const Thead = styled.thead`
   tr {
@@ -26,14 +27,14 @@ const Table = styled.table`
 `;
 function generateTable(value) {
   const header = value.schema.map(h =>
-    (<th>
+    (<th key={h.key}>
       {h.label}
     </th>),
   );
   const rows = value.rows.map(row =>
-    (<tr>
+    (<tr key={uuidv4()}>
       {value.schema.map(h =>
-        (<td>
+        (<td key={h.key}>
           {row[h.key]}
         </td>),
       )}

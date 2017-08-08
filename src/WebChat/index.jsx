@@ -29,7 +29,6 @@ export default class WebChat extends React.Component {
           bot: '1',
           type: 'text',
           value: 'hello!',
-          text: 'hello!',
           sender: 'bot',
         },
         {
@@ -65,9 +64,9 @@ export default class WebChat extends React.Component {
 
       if (text) {
         e.target.value = '';
-        this.setState({
-          messages: this.state.messages.concat([{ type: 'text', value: text, sender: 'me' }]),
-        });
+        this.setState(oldState => ({
+          messages: [...oldState.messages, { type: 'text', value: text, sender: 'me' }],
+        }));
       }
     }
   }

@@ -17,7 +17,11 @@ const Table = styled.table`
   overflow: scroll;
   td,
   th {
-    padding: 0.5em 1em; /* cell padding */
+    padding: 5px 5px;
+    border-right: 1px solid;
+    &:last-of-type {
+      border-right: 0;
+    }
   }
 `;
 function generateTable(value) {

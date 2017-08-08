@@ -7,6 +7,8 @@ import Table from './Table';
 import ButtonList from './ButtonList';
 
 const StyledMessageContainer = styled.div`
+  font-size: 15px;
+  font-weight: 300;
   clear: both;
   overflow: hidden;
   margin-bottom: 10px;

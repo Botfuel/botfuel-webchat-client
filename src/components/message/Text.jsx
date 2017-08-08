@@ -1,17 +1,11 @@
 import React from 'react';
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-
-const Text = styled.div`
-  font-size: 15px;
-  font-weight: 300;
-`;
 
 export default function TextMessage({ value }) {
   return (
-    <Text>
+    <div>
       {value}
-    </Text>
+    </div>
   );
 }
 

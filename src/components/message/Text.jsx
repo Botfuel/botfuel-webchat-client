@@ -7,28 +7,14 @@ const Text = styled.div`
   font-weight: 300;
 `;
 
-const TextWrapper = styled.div`
-  display: inline-block;
-  padding: 8px 10px;
-  border-radius: 14px;
-  position: relative;
-  color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
-  background-color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
-`;
-
-export default function TextMessage({ side, value }) {
+export default function TextMessage({ value }) {
   return (
-    <TextWrapper side={side}>
-      <Text>
-        {value}
-      </Text>
-    </TextWrapper>
+    <Text>
+      {value}
+    </Text>
   );
 }
 
 TextMessage.propTypes = {
-  side: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };

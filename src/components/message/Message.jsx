@@ -11,6 +11,14 @@ const StyledMessageContainer = styled.div`
   overflow: hidden;
   margin-bottom: 10px;
   float: ${props => props.side};
+  display: inline-block;
+  padding: 8px 10px;
+  border-radius: 14px;
+  position: relative;
+  color: ${props =>
+    (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
+  background-color: ${props =>
+    (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
 `;
 
 export default function MessageContainer({ side, type, ...props }) {

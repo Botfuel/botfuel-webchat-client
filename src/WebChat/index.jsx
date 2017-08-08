@@ -101,7 +101,11 @@ export default class WebChat extends React.Component {
         isVisible={this.props.isVisible}
       >
         <Top switchMode={this.props.switchMode} />
-        <MessageListContainer height={this.props.height - 85} messages={this.state.messages} />
+        <MessageListContainer
+          width={this.props.width}
+          height={this.props.height - 85}
+          messages={this.state.messages}
+        />
         <Bottom
           width={this.props.width}
           sendMessage={this.sendMessage}

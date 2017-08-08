@@ -11,16 +11,22 @@ const Messages = styled.div`
   overflow: scroll;
 `;
 
-const MessageList = ({ messages, height, setRef }) =>
+const MessageList = ({ messages, height, width, setRef }) =>
   (<Messages height={height} innerRef={setRef}>
     {messages.map(message =>
-      <Message {...message} side={message.sender === 'me' ? 'right' : 'left'} key={message.id} />,
+      (<Message
+        {...message}
+        width={width}
+        side={message.sender === 'me' ? 'right' : 'left'}
+        key={message.id}
+      />),
     )}
   </Messages>);
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   height: PropTypes.number.isRequired,
+  width: PropTypes.number.isRequired,
   setRef: PropTypes.func.isRequired,
 };
 

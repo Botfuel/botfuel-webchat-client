@@ -6,10 +6,11 @@ import Text from './Text';
 import ButtonList from './ButtonList';
 import Block from './Block';
 
+const ClearDiv = styled.div`clear: both;`;
+
 const StyledMessageContainer = styled.div`
   font-size: 15px;
   font-weight: 300;
-  clear: both;
   overflow: hidden;
   margin-bottom: 10px;
   float: ${props => props.side};
@@ -17,33 +18,47 @@ const StyledMessageContainer = styled.div`
   padding: 8px 10px;
   border-radius: 14px;
   position: relative;
-  max-width: 100%;
+  max-width: ${props => props.width - 60}px;
   color: ${props =>
     (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
   background-color: ${props =>
     (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
 `;
 
-export default function MessageContainer({ side, type, ...props }) {
+const Avatar = styled.img`
+  padding: 3px 0px;
+  width: 28px;
+  height: auto;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 9px;
+  float: left;
+`;
+
+export default function MessageContainer({ side, type, width, ...props }) {
   return type === 'block'
     ? <Block {...props} />
-    : <StyledMessageContainer side={side}>
-      {(() => {
-        switch (type) {
-          case 'text':
-            return <Text {...props} side={side} />;
-          case 'table':
-            return <Table {...props} />;
-          case 'choices':
-            return <ButtonList {...props} />;
-          default:
-            return <Text {...props} side={side} />;
-        }
-      })()}
-    </StyledMessageContainer>;
+    : <ClearDiv>
+      {side === 'left' && <Avatar src="/avatar-bot.png" />}
+      <StyledMessageContainer width={width} side={side}>
+        {(() => {
+          switch (type) {
+            case 'text':
+              return <Text {...props} side={side} />;
+            case 'table':
+              return <Table {...props} />;
+            case 'choices':
+              return <ButtonList {...props} />;
+            default:
+              return <Text {...props} side={side} />;
+          }
+        })()}
+      </StyledMessageContainer>
+    </ClearDiv>;
 }
 
 MessageContainer.propTypes = {
   side: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
+  width: PropTypes.number.isRequired,
 };

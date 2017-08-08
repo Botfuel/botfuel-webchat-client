@@ -23,32 +23,51 @@ export default class WebChat extends React.Component {
     super(props);
     this.state = {
       messages: [],
+      input: '',
     };
 
-    this.onSendMessage = this.onSendMessage.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this);
+    this.resetInput = this.resetInput.bind(this);
+    this.handleKeyPress = this.handleKeyPress.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
-  async onSendMessage(e) {
+  handleInputChange(e) {
+    this.setState({
+      input: e.target.value,
+    });
+  }
+
+  resetInput() {
+    this.setState({
+      input: '',
+    });
+  }
+
+  handleKeyPress(e) {
     if (e && e.nativeEvent.keyCode === 13) {
-      const text = e.target.value;
+      this.sendMessage(this.state.input);
+    }
+  }
 
-      if (text) {
-        e.target.value = '';
-        this.setState(oldState => ({
-          messages: [...oldState.messages, { type: 'text', value: text, sender: 'me' }],
-        }));
+  async sendMessage() {
+    const text = this.state.input;
+    if (text) {
+      this.setState(oldState => ({
+        messages: [...oldState.messages, { type: 'text', value: text, sender: 'me' }],
+      }));
+      this.resetInput();
 
-        // MOCKING
-        if (['text', 'table', 'choices'].includes(text)) {
-          const response = await fetch(`http://localhost:7001/${text}`);
-          const answer = text === 'text' ? await response.text() : await response.json();
+      // MOCKING
+      if (['text', 'table', 'choices'].includes(text)) {
+        const response = await fetch(`http://localhost:7001/${text}`);
+        const answer = text === 'text' ? await response.text() : await response.json();
 
-          setTimeout(() => {
-            this.setState(oldState => ({
-              messages: [...oldState.messages, { type: text, value: answer, sender: 'bot' }],
-            }));
-          }, 1000);
-        }
+        setTimeout(() => {
+          this.setState(oldState => ({
+            messages: [...oldState.messages, { type: text, value: answer, sender: 'bot' }],
+          }));
+        }, 1000);
       }
     }
   }
@@ -62,7 +81,13 @@ export default class WebChat extends React.Component {
       >
         <Top switchMode={this.props.switchMode} />
         <MessageListContainer height={this.props.height - 85} messages={this.state.messages} />
-        <Bottom width={this.props.width} onSendMessage={this.onSendMessage} />
+        <Bottom
+          width={this.props.width}
+          sendMessage={this.sendMessage}
+          onKeyPress={this.handleKeyPress}
+          onInputChange={this.handleInputChange}
+          input={this.state.input}
+        />
       </Container>
     );
   }

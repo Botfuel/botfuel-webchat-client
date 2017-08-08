@@ -49,14 +49,23 @@ export default function Bottom(props) {
   return (
     <BottomWrapper>
       <InputWrapper width={props.width - 75}>
-        <input tabIndex={-1} placeholder="Type a message..." onKeyPress={props.onSendMessage} />
+        <input
+          tabIndex={-1}
+          value={props.input}
+          placeholder="Type a message..."
+          onChange={props.onInputChange}
+          onKeyPress={props.onKeyPress}
+        />
       </InputWrapper>
-      <SendButton onClick={props.onSendMessage}>Send</SendButton>
+      <SendButton onClick={props.sendMessage}>Send</SendButton>
     </BottomWrapper>
   );
 }
 
 Bottom.propTypes = {
-  onSendMessage: PropTypes.func.isRequired,
+  sendMessage: PropTypes.func.isRequired,
+  onKeyPress: PropTypes.func.isRequired,
+  onInputChange: PropTypes.func.isRequired,
   width: PropTypes.number.isRequired,
+  input: PropTypes.string.isRequired,
 };

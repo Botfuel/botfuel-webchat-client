@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import Table from './Table';
 import Text from './Text';
 import ButtonList from './ButtonList';
+import Block from './Block';
 
 const StyledMessageContainer = styled.div`
   font-size: 15px;
@@ -24,8 +25,9 @@ const StyledMessageContainer = styled.div`
 `;
 
 export default function MessageContainer({ side, type, ...props }) {
-  return (
-    <StyledMessageContainer side={side}>
+  return type === 'block'
+    ? <Block {...props} />
+    : <StyledMessageContainer side={side}>
       {(() => {
         switch (type) {
           case 'text':
@@ -38,8 +40,7 @@ export default function MessageContainer({ side, type, ...props }) {
             return <Text {...props} side={side} />;
         }
       })()}
-    </StyledMessageContainer>
-  );
+    </StyledMessageContainer>;
 }
 
 MessageContainer.propTypes = {

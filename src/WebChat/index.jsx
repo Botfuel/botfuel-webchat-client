@@ -21,7 +21,24 @@ export default class WebChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [],
+      messages: [
+        {
+          id: '1',
+          user: '1',
+          bot: '1',
+          type: 'block',
+          value: { title: 'La Poste', text: 'Assistant Courier.' },
+          sender: 'bot',
+        },
+        {
+          id: '2',
+          user: '1',
+          bot: '1',
+          type: 'text',
+          value: 'Bonjour !',
+          sender: 'bot',
+        },
+      ],
       input: '',
     };
 

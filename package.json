@@ -35,12 +35,14 @@
     "babel-preset-stage-0": "^6.24.1",
     "express": "^4.15.4",
     "heroku-ssl-redirect": "0.0.4",
+    "node-uuid": "^1.4.8",
     "prop-types": "^15.5.10",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-table": "^6.5.3",
-    "styled-components": "^2.1.2"
+    "styled-components": "^2.1.2",
+    "uuid": "^3.1.0"
   },
   "engines": {
     "node": "8.x"

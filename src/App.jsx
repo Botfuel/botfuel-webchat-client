@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
+import uuidv4 from 'uuid/v4';
 
 import StartButton from './StartButton';
 import WebChat from './WebChat';
@@ -10,6 +11,10 @@ import laposteTheme from './theme/laposte';
 
 export default class BotfuelWebChat {
   static init(param) {
+    if (!localStorage.getItem('userId')) {
+      localStorage.setItem('userId', uuidv4());
+    }
+
     document.body.innerHTML += '<div id="botfuel"></div>';
     ReactDOM.render(
       <Container

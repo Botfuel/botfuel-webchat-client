@@ -12,6 +12,9 @@ const Table = styled.table`
   border-collapse: collapse;
   border-spacing: 0;
   empty-cells: show;
+  max-width: 100%;
+  display: block;
+  overflow: scroll;
   td,
   th {
     padding: 0.5em 1em; /* cell padding */

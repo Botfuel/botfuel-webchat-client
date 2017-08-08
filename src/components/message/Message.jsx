@@ -15,6 +15,7 @@ const StyledMessageContainer = styled.div`
   padding: 8px 10px;
   border-radius: 14px;
   position: relative;
+  max-width: 100%;
   color: ${props =>
     (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
   background-color: ${props =>

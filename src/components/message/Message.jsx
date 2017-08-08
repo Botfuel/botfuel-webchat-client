@@ -19,13 +19,13 @@ export default function MessageContainer({ side, type, ...props }) {
       {(() => {
         switch (type) {
           case 'text':
-            return <Text {...props} />;
+            return <Text {...props} side={side} />;
           case 'table':
             return <Table {...props} />;
           case 'choices':
             return <ButtonList {...props} />;
           default:
-            return <Text {...props} />;
+            return <Text {...props} side={side} />;
         }
       })()}
     </StyledMessageContainer>

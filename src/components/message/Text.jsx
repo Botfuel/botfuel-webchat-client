@@ -16,16 +16,17 @@ const TextWrapper = styled.div`
   background-color: ${props => (props.side === 'left' ? '#f1f0f0' : '#0084f4')};
 `;
 
-export default function TextMessage(props) {
+export default function TextMessage({ side, value }) {
   return (
-    <TextWrapper side="right">
+    <TextWrapper side={side}>
       <Text>
-        {props.value}
+        {value}
       </Text>
     </TextWrapper>
   );
 }
 
 TextMessage.propTypes = {
+  side: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
 };

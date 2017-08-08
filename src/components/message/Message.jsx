@@ -6,7 +6,13 @@ import Text from './Text';
 import ButtonList from './ButtonList';
 import Block from './Block';
 
-const ClearDiv = styled.div`clear: both;`;
+const ClearDiv = styled.div`
+  &::after {
+    clear: both;
+    content: "";
+    display: block;
+  }
+`;
 
 const StyledMessageContainer = styled.div`
   font-size: 15px;

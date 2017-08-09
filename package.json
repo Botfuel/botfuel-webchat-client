@@ -4,9 +4,8 @@
   "private": true,
   "scripts": {
     "start": "npm run serve:production",
-    "heroku-postbuild": "npm run build:production",
     "build:production": "NODE_ENV=production webpack",
-    "serve:production": "node server.js",
+    "serve:production": "npm run build:production & node server.js",
     "serve:dev": "node server.js & webpack --watch",
     "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\"",
     "test": "echo 'No tests'",

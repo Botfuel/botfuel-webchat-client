@@ -15,7 +15,7 @@ const Messages = styled.div`
 const MessageList = ({ messages, setRef }) =>
   (<Messages innerRef={setRef}>
     {messages.map(message =>
-      <Message {...message} side={message.sender === 'me' ? 'right' : 'left'} key={message.id} />,
+      <Message {...message} side={message.sender === 'user' ? 'right' : 'left'} key={message.id} />,
     )}
   </Messages>);
 

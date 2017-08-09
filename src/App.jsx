@@ -5,11 +5,30 @@ import ReactDOM from 'react-dom';
 import styled, { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
+import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
+import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
+
 import StartButton from './StartButton';
 import WebChat from './WebChat';
 // import baseTheme from './theme/base';
 import laposteTheme from './theme/laposte';
 
+const GRAPHQL_ENDPOINT = 'ws://localhost:7002/graphql';
+
+const wsClient = new SubscriptionClient(GRAPHQL_ENDPOINT, {
+  reconnect: true,
+});
+
+// Create a normal network interface:
+const networkInterface = createNetworkInterface({
+  uri: 'http://localhost:7001/graphql',
+});
+// Extend the network interface with the WebSocket
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient);
+// Finally, create your ApolloClient instance with the modified network interface
+const client = new ApolloClient({
+  networkInterface: networkInterfaceWithSubscriptions,
+});
 export default class BotfuelWebChat {
   static init(param) {
     if (!localStorage.getItem('userId')) {
@@ -18,11 +37,13 @@ export default class BotfuelWebChat {
 
     document.body.innerHTML += '<div id="botfuel"></div>';
     ReactDOM.render(
-      <Container
-        startButtonSize={param.startButtonSize || 90}
-        width={param.width || 400}
-        height={param.height || 500}
-      />,
+      <ApolloProvider client={client}>
+        <Container
+          startButtonSize={param.startButtonSize || 90}
+          width={param.width || 400}
+          height={param.height || 500}
+        />
+      </ApolloProvider>,
       document.getElementById('botfuel'),
     );
   }

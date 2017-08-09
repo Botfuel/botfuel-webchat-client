@@ -17,7 +17,8 @@ const Container = styled.div`
   border-radius: 10px;
   overflow: hidden;
   @media (max-height: ${props => props.height + 20}px),
-    (max-width: ${props => props.width + 20}px) {
+    (max-width: ${props => props.width + 20}px),
+    ${props => props.fullScreen && 'all'} {
     width: 100vw;
     height: 100vh;
     border-radius: 0;
@@ -208,11 +209,12 @@ class WebChat extends React.Component {
   render() {
     return (
       <Container
-        width={this.props.width}
-        height={this.props.height}
+        width={this.state.width || this.props.width}
+        height={this.state.height || this.props.height}
         isVisible={this.props.isVisible}
+        fullScreen={this.props.fullScreen}
       >
-        <Top switchMode={this.props.switchMode} />
+        <Top switchMode={this.props.switchMode} switchSize={this.props.toggleFullScreen} />
         <MessageListContainer messages={this.props.messages} />
         <Bottom
           sendMessage={this.sendMessage}
@@ -227,9 +229,11 @@ class WebChat extends React.Component {
 
 WebChat.propTypes = {
   switchMode: PropTypes.func.isRequired,
+  toggleFullScreen: PropTypes.func.isRequired,
   isVisible: PropTypes.bool.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  fullScreen: PropTypes.bool.isRequired,
   messages: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,

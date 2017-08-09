@@ -79,7 +79,8 @@ const StyledContainer = styled.div`
     box-sizing: border-box;
   }
   @media (max-height: ${props => props.height + 20}px),
-    (max-width: ${props => props.width + 20}px) {
+    (max-width: ${props => props.width + 20}px),
+    ${props => props.fullScreen && 'all'} {
     bottom: 0;
     right: 0;
   }
@@ -91,23 +92,35 @@ class Container extends React.Component {
 
     this.state = {
       chatStarted: false,
+      fullScreen: false,
     };
     this.switchState = this.switchState.bind(this);
+    this.toggleFullScreen = this.toggleFullScreen.bind(this);
   }
 
   switchState() {
     this.setState(oldState => ({ chatStarted: !oldState.chatStarted }));
   }
 
+  toggleFullScreen() {
+    this.setState(oldState => ({ fullScreen: !oldState.fullScreen }));
+  }
+
   render() {
     return (
       <ThemeProvider theme={laposteTheme}>
-        <StyledContainer width={this.props.width} height={this.props.height}>
+        <StyledContainer
+          fullScreen={this.state.fullScreen}
+          width={this.props.width}
+          height={this.props.height}
+        >
           <WebChat
+            fullScreen={this.state.fullScreen}
             width={this.props.width}
             height={this.props.height}
             isVisible={this.state.chatStarted}
             switchMode={this.switchState}
+            toggleFullScreen={this.toggleFullScreen}
           />
           <StartButton
             isVisible={!this.state.chatStarted}

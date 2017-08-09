@@ -41,12 +41,12 @@ const Avatar = styled.img`
   float: left;
 `;
 
-export default function MessageContainer({ value, side, type, width, sender, ...props }) {
+export default function MessageContainer({ value, side, type, sender, ...props }) {
   return type === 'block'
     ? <Block {...props} />
     : <ClearDiv>
       {side === 'left' && <Avatar src={`/avatar-${sender}.png`} />}
-      <StyledMessageContainer width={width} side={side}>
+      <StyledMessageContainer side={side}>
         {(() => {
           switch (type) {
             case 'text':
@@ -67,7 +67,6 @@ MessageContainer.propTypes = {
   side: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   sender: PropTypes.string.isRequired,
-  width: PropTypes.number.isRequired,
   value: PropTypes.oneOfType([
     PropTypes.shape({
       text: PropTypes.string,

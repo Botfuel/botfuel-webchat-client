@@ -22,7 +22,7 @@ const InputWrapper = styled.div`
   display: inline-block;
   height: 100%;
   border-radius: 25px;
-  width: ${props => props.width}px;
+  width: calc(100% - 85px);
   position: relative;
   padding: 0 20px;
   input {
@@ -48,7 +48,7 @@ const BottomWrapper = styled.div`
 export default function Bottom(props) {
   return (
     <BottomWrapper>
-      <InputWrapper width={props.width - 85}>
+      <InputWrapper>
         <input
           tabIndex={-1}
           value={props.input}
@@ -66,6 +66,5 @@ Bottom.propTypes = {
   sendMessage: PropTypes.func.isRequired,
   onKeyPress: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  width: PropTypes.number.isRequired,
   input: PropTypes.string.isRequired,
 };

@@ -15,6 +15,13 @@ const Container = styled.div`
   border: 1px solid #e3e3e3;
   border-radius: 10px;
   overflow: hidden;
+  @media (max-height: ${props => props.height + 20}px),
+    (max-width: ${props => props.width + 20}px) {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    border: 0;
+  }
 `;
 
 const SERVER_URL = 'https://botfuel-webchat-server.herokuapp.com';
@@ -102,13 +109,8 @@ export default class WebChat extends React.Component {
         isVisible={this.props.isVisible}
       >
         <Top switchMode={this.props.switchMode} />
-        <MessageListContainer
-          width={this.props.width}
-          height={this.props.height - 85}
-          messages={this.state.messages}
-        />
+        <MessageListContainer messages={this.state.messages} />
         <Bottom
-          width={this.props.width}
           sendMessage={this.sendMessage}
           onKeyPress={this.handleKeyPress}
           onInputChange={this.handleInputChange}

@@ -37,6 +37,11 @@ const StyledContainer = styled.div`
   * {
     box-sizing: border-box;
   }
+  @media (max-height: ${props => props.height + 20}px),
+    (max-width: ${props => props.width + 20}px) {
+    bottom: 0;
+    right: 0;
+  }
 `;
 
 class Container extends React.Component {
@@ -56,7 +61,7 @@ class Container extends React.Component {
   render() {
     return (
       <ThemeProvider theme={laposteTheme}>
-        <StyledContainer>
+        <StyledContainer width={this.props.width} height={this.props.height}>
           <WebChat
             width={this.props.width}
             height={this.props.height}

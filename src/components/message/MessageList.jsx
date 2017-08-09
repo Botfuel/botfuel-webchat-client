@@ -7,27 +7,20 @@ const Messages = styled.div`
   list-style: none;
   padding: 10px;
   margin: 0;
-  height: ${props => props.height}px;
+  height: calc(100% - 85px);
   overflow-x: hidden;
   overflow-y: auto;
 `;
 
-const MessageList = ({ messages, height, width, setRef }) =>
-  (<Messages height={height} innerRef={setRef}>
+const MessageList = ({ messages, setRef }) =>
+  (<Messages innerRef={setRef}>
     {messages.map(message =>
-      (<Message
-        {...message}
-        width={width}
-        side={message.sender === 'me' ? 'right' : 'left'}
-        key={message.id}
-      />),
+      <Message {...message} side={message.sender === 'me' ? 'right' : 'left'} key={message.id} />,
     )}
   </Messages>);
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  height: PropTypes.number.isRequired,
-  width: PropTypes.number.isRequired,
   setRef: PropTypes.func.isRequired,
 };
 

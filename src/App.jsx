@@ -17,15 +17,16 @@ import WebChat from './WebChat';
 // import baseTheme from './theme/base';
 import laposteTheme from './theme/laposte';
 
-const GRAPHQL_ENDPOINT = 'ws://localhost:7002/graphql';
+const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT;
+const SERVER_ENDPOINT_WEBSOCKET = process.env.SERVER_ENDPOINT_WEBSOCKET;
 
-const wsClient = new SubscriptionClient(GRAPHQL_ENDPOINT, {
+const wsClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
   reconnect: true,
 });
 
 // Create a normal network interface:
 const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:7001/graphql',
+  uri: SERVER_ENDPOINT,
 });
 // Extend the network interface with the WebSocket
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient);

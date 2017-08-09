@@ -1,5 +1,6 @@
-const BabiliPlugin = require('babili-webpack-plugin');
 const path = require('path');
+// const BabiliPlugin = require('babili-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   entry: './src/App.jsx',
@@ -54,4 +55,16 @@ module.exports = {
   },
 
   devtool: 'eval-cheap-module-source-map',
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        SERVER_ENDPOINT: JSON.stringify(
+          process.env.SERVER_ENDPOINT || 'http://localhost:7001/graphql',
+        ),
+        SERVER_ENDPOINT_WEBSOCKET: JSON.stringify(
+          process.env.SERVER_ENDPOINT_WEBSOCKET || 'ws://localhost:7002/graphql',
+        ),
+      },
+    }),
+  ],
 };

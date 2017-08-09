@@ -41,7 +41,7 @@ const Avatar = styled.img`
   float: left;
 `;
 
-export default function MessageContainer({ side, type, width, sender, ...props }) {
+export default function MessageContainer({ value, side, type, width, sender, ...props }) {
   return type === 'block'
     ? <Block {...props} />
     : <ClearDiv>
@@ -50,13 +50,13 @@ export default function MessageContainer({ side, type, width, sender, ...props }
         {(() => {
           switch (type) {
             case 'text':
-              return <Text {...props} side={side} />;
+              return <Text {...props} value={value.text} side={side} />;
             case 'table':
-              return <Table {...props} />;
+              return <Table {...props} value={value} />;
             case 'choices':
-              return <ButtonList {...props} />;
+              return <ButtonList {...props} value={value.choices} />;
             default:
-              return <Text {...props} side={side} />;
+              return <Text {...props} value={value.text} side={side} />;
           }
         })()}
       </StyledMessageContainer>
@@ -68,4 +68,14 @@ MessageContainer.propTypes = {
   type: PropTypes.string.isRequired,
   sender: PropTypes.string.isRequired,
   width: PropTypes.number.isRequired,
+  value: PropTypes.oneOfType([
+    PropTypes.shape({
+      text: PropTypes.string,
+    }),
+    PropTypes.shape({
+      schema: PropTypes.array,
+      rows: PropTypes.array,
+    }),
+    PropTypes.array,
+  ]).isRequired,
 };

@@ -6,8 +6,12 @@ import styled, { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
-import { ApolloClient, ApolloProvider, createNetworkInterface } from 'react-apollo';
-
+import {
+  ApolloClient,
+  ApolloProvider,
+  createNetworkInterface,
+  IntrospectionFragmentMatcher,
+} from 'react-apollo';
 import StartButton from './StartButton';
 import WebChat from './WebChat';
 // import baseTheme from './theme/base';
@@ -26,8 +30,24 @@ const networkInterface = createNetworkInterface({
 // Extend the network interface with the WebSocket
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient);
 // Finally, create your ApolloClient instance with the modified network interface
+
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+  introspectionQueryResultData: {
+    __schema: {
+      types: [
+        {
+          kind: 'UNION',
+          name: 'Value',
+          possibleTypes: [{ name: 'Text' }, { name: 'Table' }, { name: 'Choices' }],
+        }, // this is just an example, put your own INTERFACE and UNION types here!
+      ],
+    },
+  },
+});
+
 const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
+  fragmentMatcher,
 });
 export default class BotfuelWebChat {
   static init(param) {

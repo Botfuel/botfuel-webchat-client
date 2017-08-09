@@ -1,13 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-<<<<<<< HEAD
-=======
 import { gql, graphql, compose } from 'react-apollo';
-
-import Bottom from './Bottom';
-import Top from './Top';
->>>>>>> Subscribe to new message using ws
 import MessageListContainer from '../components/message/MessageListContainer';
 import Top from './Top';
 import Bottom from './Bottom';
@@ -31,11 +25,8 @@ const Container = styled.div`
   }
 `;
 
-<<<<<<< HEAD
 const SERVER_URL = 'https://botfuel-webchat-server.herokuapp.com';
 
-export default class WebChat extends React.Component {
-=======
 const MESSAGES_QUERY = gql`
   query messages($user: ID!, $bot: ID!) {
     messages(user: $user, bot: $bot) {
@@ -43,7 +34,24 @@ const MESSAGES_QUERY = gql`
       user
       bot
       type
-      value
+      value {
+        ... on Text {
+          text
+        }
+        ... on Table {
+          schema {
+            key
+            label
+          }
+          rows
+        }
+        ... on Choices {
+          choices {
+            id
+            text
+          }
+        }
+      }
       sender
     }
   }
@@ -55,7 +63,24 @@ const MESSAGES_SUBSCRIPTION = gql`
       id
       user
       bot
-      value
+      value {
+        ... on Text {
+          text
+        }
+        ... on Table {
+          schema {
+            key
+            label
+          }
+          rows
+        }
+        ... on Choices {
+          choices {
+            id
+            text
+          }
+        }
+      }
       sender
       type
     }
@@ -68,7 +93,24 @@ const MESSAGE_MUTATION = gql`
       id
       user
       bot
-      value
+      value {
+        ... on Text {
+          text
+        }
+        ... on Table {
+          schema {
+            key
+            label
+          }
+          rows
+        }
+        ... on Choices {
+          choices {
+            id
+            text
+          }
+        }
+      }
       sender
       type
     }
@@ -76,7 +118,6 @@ const MESSAGE_MUTATION = gql`
 `;
 
 class WebChat extends React.Component {
->>>>>>> Subscribe to new message using ws
   constructor(props) {
     super(props);
     this.state = {
@@ -172,7 +213,7 @@ class WebChat extends React.Component {
         isVisible={this.props.isVisible}
       >
         <Top switchMode={this.props.switchMode} />
-        <MessageListContainer messages={this.state.messages} />
+        <MessageListContainer messages={this.props.messages} />
         <Bottom
           sendMessage={this.sendMessage}
           onKeyPress={this.handleKeyPress}
@@ -194,7 +235,7 @@ WebChat.propTypes = {
       id: PropTypes.string,
       user: PropTypes.string,
       bot: PropTypes.string,
-      value: PropTypes.string,
+      value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
       sender: PropTypes.string,
       type: PropTypes.string,
     }),

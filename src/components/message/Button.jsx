@@ -10,6 +10,8 @@ const Button = styled.button`
   padding: 10px;
   border-radius: 7px;
   cursor: pointer;
+  display: block;
+  width: 100%;
   &:hover {
     background-color: ${props => props.theme.colors.primaryLight};
   }

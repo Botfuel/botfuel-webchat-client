@@ -26,8 +26,6 @@ const Container = styled.div`
   }
 `;
 
-const SERVER_URL = 'https://botfuel-webchat-server.herokuapp.com';
-
 const MESSAGES_QUERY = gql`
   query messages($user: ID!, $bot: ID!) {
     messages(user: $user, bot: $bot) {
@@ -191,18 +189,6 @@ class WebChat extends React.Component {
         },
       });
       this.resetInput();
-
-      // MOCKING
-      if (['text', 'table', 'choices'].includes(text)) {
-        const response = await fetch(`${SERVER_URL}/${text}`);
-        const answer = text === 'text' ? await response.text() : await response.json();
-
-        setTimeout(() => {
-          this.setState(oldState => ({
-            messages: [...oldState.messages, { type: text, value: answer, sender: 'bot' }],
-          }));
-        }, 1000);
-      }
     }
   }
 

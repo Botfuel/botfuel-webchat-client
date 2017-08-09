@@ -100,7 +100,7 @@ class Container extends React.Component {
   }
 
   switchState() {
-    this.setState(oldState => ({ chatStarted: !oldState.chatStarted }));
+    this.setState(oldState => ({ chatStarted: !oldState.chatStarted, fullScreen: false }));
   }
 
   toggleFullScreen() {
@@ -124,6 +124,7 @@ class Container extends React.Component {
             toggleFullScreen={this.toggleFullScreen}
           />
           <StartButton
+            fullScreen={this.state.fullScreen}
             isVisible={!this.state.chatStarted}
             size={this.props.startButtonSize}
             switchMode={this.switchState}

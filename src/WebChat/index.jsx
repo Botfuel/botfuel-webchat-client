@@ -214,7 +214,11 @@ class WebChat extends React.Component {
         isVisible={this.props.isVisible}
         fullScreen={this.props.fullScreen}
       >
-        <Top switchMode={this.props.switchMode} switchSize={this.props.toggleFullScreen} />
+        <Top
+          fullScreen={this.props.fullScreen}
+          switchMode={this.props.switchMode}
+          switchSize={this.props.toggleFullScreen}
+        />
         <MessageListContainer messages={this.props.messages} />
         <Bottom
           sendMessage={this.sendMessage}

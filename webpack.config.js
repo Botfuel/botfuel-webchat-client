@@ -62,7 +62,7 @@ module.exports = {
           process.env.SERVER_ENDPOINT || 'http://localhost:7001/graphql',
         ),
         SERVER_ENDPOINT_WEBSOCKET: JSON.stringify(
-          process.env.SERVER_ENDPOINT_WEBSOCKET || 'ws://localhost:7002/graphql',
+          process.env.SERVER_ENDPOINT_WEBSOCKET || 'ws://localhost:7001/graphql',
         ),
       },
     }),

@@ -9,15 +9,15 @@ const Button = styled.div`
   border-radius: ${props => props.size}px;
   transition: opacity .5s ease-in-out;
   background-color: #fbfbfb;
-  padding: 11px;
-  display: ${props => (props.isVisible ? 'flex' : 'none')};
-  justify-content: center;
-  align-items: center;
+  padding-top: 10%;
+  padding-left: 10%;
+  display: ${props => (props.isVisible ? 'block' : 'none')};
   box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
   cursor: pointer;
 `;
 
 const Logo = styled.img`
+  padding: 5px;
   height: 90%;
   width: 90%;
 }`;

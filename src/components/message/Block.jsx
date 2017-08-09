@@ -6,32 +6,35 @@ const Container = styled.div`
   background-color: #f8f9fa;
   padding: 18px 18px 22px;
   border-bottom: 1px solid #e6e6e6;
-  min-height: 90px;
-  margin: -10px -10px 10px;
+  border-top: ${props => (props.top ? 0 : '1px solid #e6e6e6')};
+  margin: 0 -10px 10px;
+  margin-top: ${props => (props.top ? -10 : 0)}px;
 `;
 
 const Title = styled.div`
   color: #464646;
   font-size: 18px;
   font-weight: 700;
+  margin-bottom: 8px;
 `;
 
 const Text = styled.div`
   color: #787f8c;
   font-size: 13px;
   line-height: 1.3;
-  margin-top: 8px;
 `;
 
 export default function TextMessage({ value }) {
   return (
-    <Container>
-      <Title>
-        {value.title}
-      </Title>
-      <Text>
-        {value.text}
-      </Text>
+    <Container top={value.top}>
+      {value.title &&
+        <Title>
+          {value.title}
+        </Title>}
+      {value.text &&
+        <Text>
+          {value.text}
+        </Text>}
     </Container>
   );
 }

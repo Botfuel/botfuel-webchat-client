@@ -30,6 +30,7 @@ export default class WebChat extends React.Component {
           bot: '1',
           type: 'block',
           value: {
+            top: true,
             title: 'La Poste',
             text: 'Assistant Courier. Commandes : table, text, choices.',
           },

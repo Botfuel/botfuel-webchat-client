@@ -21,14 +21,20 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: ['transform-react-jsx'],
+            plugins: [
+              'transform-object-rest-spread',
+              'transform-react-jsx',
+              'react-hot-loader/babel',
+              'transform-runtime',
+            ],
             presets: [
               [
                 'env',
                 {
                   targets: {
-                    browsers: '> 5%',
+                    ie: 9,
                   },
+                  useBuiltIns: true,
                 },
               ],
             ],

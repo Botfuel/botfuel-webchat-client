@@ -189,6 +189,11 @@ class WebChat extends React.Component {
         },
       });
       this.resetInput();
+      // If subscriptions are not used, we need to refetch manually the message that was just
+      // sent by the user so he gets immediate success feedback on his own message
+      if (!window.WebSocket) {
+        this.props.refetch();
+      }
     }
   }
 
@@ -205,7 +210,7 @@ class WebChat extends React.Component {
           switchMode={this.props.switchMode}
           switchSize={this.props.toggleFullScreen}
         />
-        <MessageListContainer messages={this.props.messages} />
+        <MessageListContainer messages={this.props.messages || []} />
         <Bottom
           sendMessage={this.sendMessage}
           onKeyPress={this.handleKeyPress}
@@ -236,6 +241,7 @@ WebChat.propTypes = {
   ),
   subscribeToNewMessages: PropTypes.func.isRequired,
   createMessageMutation: PropTypes.func.isRequired,
+  refetch: PropTypes.func.isRequired,
 };
 
 WebChat.defaultProps = {
@@ -244,31 +250,40 @@ WebChat.defaultProps = {
 
 export default compose(
   graphql(MESSAGES_QUERY, {
-    name: 'messages',
-    options: () => ({
-      variables: {
+    options: () => {
+      const options = {};
+
+      options.variables = {
         user: localStorage.getItem('userId'),
         bot: '1234',
-      },
-    }),
+      };
+
+      // Poll regulary if websockets are not enabled
+      if (!window.WebSocket) {
+        options.pollInterval = 5000;
+      }
+
+      return options;
+    },
     props: props => ({
-      messages: props.messages.messages,
+      messages: props.data.messages,
+      refetch: props.data.refetch,
       subscribeToNewMessages: params =>
-        props.messages.subscribeToMore({
-          document: MESSAGES_SUBSCRIPTION,
-          variables: params,
-          updateQuery: (prev, { subscriptionData }) => {
-            if (!subscriptionData.data) {
-              return prev;
-            }
-
-            const newMessage = subscriptionData.data.messageAdded;
-
-            return {
-              messages: [...prev.messages, { ...newMessage }],
-            };
-          },
-        }),
+        (window.WebSocket
+          ? props.data.subscribeToMore({
+            document: MESSAGES_SUBSCRIPTION,
+            variables: params,
+            updateQuery: (prev, { subscriptionData }) => {
+              if (!subscriptionData.data) {
+                return prev;
+              }
+              const newMessage = subscriptionData.data.messageAdded;
+              return {
+                messages: [...prev.messages, { ...newMessage }],
+              };
+            },
+          })
+          : null),
     }),
   }),
   graphql(MESSAGE_MUTATION, { name: 'createMessageMutation' }),

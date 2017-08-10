@@ -27,6 +27,7 @@ const Table = styled.table`
     }
   }
 `;
+
 function generateTable(value) {
   const header = value.schema.map(h =>
     (<th key={h.key}>

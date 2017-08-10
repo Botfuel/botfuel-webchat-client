@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "npm run serve:production",
-    "build:production": "NODE_ENV=production webpack",
+    "build:production": "NODE_ENV=production webpack --config webpack.config.prod --color",
     "serve:production": "npm run build:production & node server.js",
     "serve:dev": "node server.js & webpack --watch",
     "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\"",
@@ -33,6 +33,7 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
     "babili-webpack-plugin": "^0.1.2",
+    "compression": "^1.7.0",
     "express": "^4.15.4",
     "heroku-ssl-redirect": "0.0.4",
     "prop-types": "^15.5.10",
@@ -42,10 +43,10 @@
     "react-hot-loader": "^3.0.0-beta.6",
     "react-table": "^6.5.3",
     "styled-components": "^2.1.2",
+    "subscriptions-transport-ws": "^0.8.2",
     "uuid": "^3.1.0",
     "webpack": "^3.5.1",
-    "whatwg-fetch": "^2.0.3",
-    "subscriptions-transport-ws": "^0.8.2"
+    "whatwg-fetch": "^2.0.3"
   },
   "engines": {
     "node": "8.x"

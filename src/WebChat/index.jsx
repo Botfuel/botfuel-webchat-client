@@ -179,6 +179,7 @@ class WebChat extends React.Component {
   async sendMessage() {
     const text = this.state.input;
     if (text) {
+      this.resetInput();
       await this.props.createMessageMutation({
         variables: {
           user: localStorage.getItem('userId'),
@@ -188,7 +189,6 @@ class WebChat extends React.Component {
           sender: 'user',
         },
       });
-      this.resetInput();
       // If subscriptions are not used, we need to refetch manually the message that was just
       // sent by the user so he gets immediate success feedback on his own message
       if (!window.WebSocket) {

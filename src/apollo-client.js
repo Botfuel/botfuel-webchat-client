@@ -4,10 +4,6 @@ import { ApolloClient, createNetworkInterface, IntrospectionFragmentMatcher } fr
 const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT;
 const SERVER_ENDPOINT_WEBSOCKET = process.env.SERVER_ENDPOINT_WEBSOCKET;
 
-const wsClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
-  reconnect: true,
-});
-
 const networkInterface = createNetworkInterface({
   uri: SERVER_ENDPOINT,
 });
@@ -29,6 +25,9 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 
 function createApolloClient() {
   if (window.WebSocket) {
+    const wsClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
+      reconnect: true,
+    });
     const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(networkInterface, wsClient);
 
     return new ApolloClient({

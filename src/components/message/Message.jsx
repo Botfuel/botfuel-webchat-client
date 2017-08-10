@@ -5,6 +5,16 @@ import Table from './Table';
 import Text from './Text';
 import ButtonList from './ButtonList';
 import Block from './Block';
+import QuickReplies from './QuickReplies';
+import Bubble from './Bubble';
+
+const componentsDict = {
+  text: Text,
+  table: Table,
+  choices: QuickReplies,
+  choicesOld: ButtonList,
+  block: Block,
+};
 
 const ClearDiv = styled.div`
   &::after {
@@ -12,23 +22,6 @@ const ClearDiv = styled.div`
     content: "";
     display: block;
   }
-`;
-
-const StyledMessageContainer = styled.div`
-  font-size: 15px;
-  font-weight: 300;
-  overflow: hidden;
-  margin-bottom: 10px;
-  float: ${props => props.side};
-  display: inline-block;
-  padding: 8px 10px;
-  border-radius: 14px;
-  position: relative;
-  max-width: calc(100% - 75px);
-  color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
-  background-color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
 `;
 
 const Avatar = styled.img`
@@ -41,25 +34,16 @@ const Avatar = styled.img`
   float: left;
 `;
 
-export default function MessageContainer({ value, side, type, sender, ...props }) {
-  return type === 'block'
-    ? <Block {...props} />
-    : <ClearDiv>
+export default function MessageContainer({ side, type, sender, ...props }) {
+  const Component = componentsDict[type];
+  const disableBubble = ['block', 'choices'].includes(type);
+  return disableBubble
+    ? <Component type={type} {...props} />
+    : <ClearDiv component={Component}>
       {side === 'left' && <Avatar src={`/avatar-${sender}.png`} />}
-      <StyledMessageContainer side={side}>
-        {(() => {
-          switch (type) {
-            case 'text':
-              return <Text {...props} value={value.text} side={side} />;
-            case 'table':
-              return <Table {...props} value={value} />;
-            case 'choices':
-              return <ButtonList {...props} value={value.choices} />;
-            default:
-              return <Text {...props} value={value.text} side={side} />;
-          }
-        })()}
-      </StyledMessageContainer>
+      <Bubble side={side}>
+        <Component {...props} />
+      </Bubble>
     </ClearDiv>;
 }
 

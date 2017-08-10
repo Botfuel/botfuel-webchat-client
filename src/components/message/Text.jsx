@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 export default function TextMessage({ value }) {
   return (
     <div>
-      {value}
+      {value.text}
     </div>
   );
 }

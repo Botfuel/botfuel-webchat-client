@@ -218,6 +218,12 @@ class WebChat extends React.Component {
   }
 
   render() {
+    // We need to remove messages that are quick replies
+    // and are not the last message
+    const isQuickRepliesAndNotLast = (m, index) =>
+      m.type === 'choices' && index !== this.props.messages.length - 1;
+    const messages = this.props.messages.filter((m, index) => !isQuickRepliesAndNotLast(m, index));
+
     return (
       <Container
         width={this.state.width || this.props.width}
@@ -230,7 +236,7 @@ class WebChat extends React.Component {
           switchMode={this.props.switchMode}
           switchSize={this.props.toggleFullScreen}
         />
-        <MessageListContainer sendAction={this.sendAction} messages={this.props.messages || []} />
+        <MessageListContainer sendAction={this.sendAction} messages={messages || []} />
         <Bottom
           sendMessage={this.sendMessage}
           onKeyPress={this.handleKeyPress}

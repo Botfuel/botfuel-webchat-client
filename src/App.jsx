@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 import { ApolloProvider } from 'react-apollo';
 import StartButton from './StartButton';
-import WebChat from './WebChat';
+import WebChat from './components/WebChat';
 // import baseTheme from './theme/base';
 import laposteTheme from './theme/laposte';
 import createApolloClient from './apollo-client';

@@ -6,7 +6,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 import { ApolloProvider } from 'react-apollo';
-import StartButton from './StartButton';
+import StartButton from './components/StartButton';
 import WebChat from './components/WebChat';
 // import baseTheme from './theme/base';
 import laposteTheme from './theme/laposte';

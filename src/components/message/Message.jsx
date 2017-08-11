@@ -14,6 +14,7 @@ const componentsDict = {
   choices: QuickReplies,
   choicesOld: ButtonList,
   block: Block,
+  action: Text,
 };
 
 const ClearDiv = styled.div`

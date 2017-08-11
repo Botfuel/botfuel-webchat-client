@@ -11,11 +11,15 @@ const Container = styled.div`
     max-width: 200px;
   }
 `;
-export default function ButtonList({ value }) {
+export default function ButtonList({ value, sendAction }) {
   const choices = value.choices;
+
   return (
     <Container size={value.choices.length}>
-      {choices && choices.map(choice => <ButtonMessage key={choice.id} text={choice.text} />)}
+      {choices &&
+        choices.map(choice =>
+          <ButtonMessage onClick={sendAction(choice)} key={choice.id} text={choice.text} />,
+        )}
     </Container>
   );
 }
@@ -35,9 +39,9 @@ const Button = Bubble.extend`
   }
 `;
 
-function ButtonMessage({ text }) {
+function ButtonMessage({ text, ...props }) {
   return (
-    <Button>
+    <Button {...props}>
       {text}
     </Button>
   );
@@ -51,4 +55,5 @@ ButtonList.propTypes = {
   value: PropTypes.shape({
     choices: PropTypes.array.isRequired,
   }).isRequired,
+  sendAction: PropTypes.func.isRequired,
 };

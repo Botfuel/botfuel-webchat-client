@@ -13,7 +13,7 @@ const Messages = styled.div`
   overflow-y: auto;
 `;
 
-const MessageList = ({ messages, setRef }) =>
+const MessageList = ({ messages, setRef, sendAction }) =>
   (<Messages innerRef={setRef}>
     <Block
       value={{
@@ -22,14 +22,21 @@ const MessageList = ({ messages, setRef }) =>
         top: true,
       }}
     />
+    <Message value={{ text: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
     {messages.map(message =>
-      <Message {...message} side={message.sender === 'user' ? 'right' : 'left'} key={message.id} />,
+      (<Message
+        {...message}
+        side={message.sender === 'user' ? 'right' : 'left'}
+        sendAction={sendAction}
+        key={message.id}
+      />),
     )}
   </Messages>);
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   setRef: PropTypes.func.isRequired,
+  sendAction: PropTypes.func.isRequired,
 };
 
 export default MessageList;

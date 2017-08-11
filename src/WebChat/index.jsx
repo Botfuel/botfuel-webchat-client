@@ -48,6 +48,7 @@ const MESSAGES_QUERY = gql`
           choices {
             id
             text
+            payload
           }
         }
       }
@@ -77,6 +78,7 @@ const MESSAGES_SUBSCRIPTION = gql`
           choices {
             id
             text
+            payload
           }
         }
       }
@@ -87,8 +89,22 @@ const MESSAGES_SUBSCRIPTION = gql`
 `;
 
 const MESSAGE_MUTATION = gql`
-  mutation createMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!, $type: String!) {
-    createMessage(user: $user, bot: $bot, value: $value, sender: $sender, type: $type) {
+  mutation createMessage(
+    $user: ID!
+    $bot: ID!
+    $value: String
+    $action: ActionInput
+    $sender: String!
+    $type: String!
+  ) {
+    createMessage(
+      user: $user
+      bot: $bot
+      value: $value
+      action: $action
+      sender: $sender
+      type: $type
+    ) {
       id
       user
       bot
@@ -107,6 +123,7 @@ const MESSAGE_MUTATION = gql`
           choices {
             id
             text
+            payload
           }
         }
       }
@@ -120,28 +137,6 @@ class WebChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: [
-        {
-          id: '1',
-          user: '1',
-          bot: '1',
-          type: 'block',
-          value: {
-            top: true,
-            title: 'La Poste',
-            text: 'Assistant Courier. Commandes : table, text, choices.',
-          },
-          sender: 'bot',
-        },
-        {
-          id: '2',
-          user: '1',
-          bot: '1',
-          type: 'text',
-          value: 'Bonjour !',
-          sender: 'bot',
-        },
-      ],
       input: '',
     };
 
@@ -149,6 +144,7 @@ class WebChat extends React.Component {
     this.resetInput = this.resetInput.bind(this);
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
+    this.sendAction = this.sendAction.bind(this);
   }
 
   componentWillMount() {
@@ -197,6 +193,30 @@ class WebChat extends React.Component {
     }
   }
 
+  sendAction({ payload, text, id }) {
+    return async () => {
+      await this.props.createMessageMutation({
+        variables: {
+          user: localStorage.getItem('userId'),
+          bot: '1234',
+          action: {
+            payload,
+            text,
+            id,
+          },
+          type: 'action',
+          sender: 'user',
+        },
+      });
+
+      // If subscriptions are not used, we need to refetch manually the message that was just
+      // sent by the user so he gets immediate success feedback on his own message
+      if (!window.WebSocket) {
+        this.props.refetch();
+      }
+    };
+  }
+
   render() {
     return (
       <Container
@@ -210,7 +230,7 @@ class WebChat extends React.Component {
           switchMode={this.props.switchMode}
           switchSize={this.props.toggleFullScreen}
         />
-        <MessageListContainer messages={this.props.messages || []} />
+        <MessageListContainer sendAction={this.sendAction} messages={this.props.messages || []} />
         <Bottom
           sendMessage={this.sendMessage}
           onKeyPress={this.handleKeyPress}

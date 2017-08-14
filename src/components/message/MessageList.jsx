@@ -17,8 +17,7 @@ const MessageList = ({ messages, setRef, sendAction }) =>
   (<Messages innerRef={setRef}>
     <Block
       value={{
-        title: 'La Poste',
-        text: 'Assistant Courier. Commandes : table, text, choices.',
+        text: 'Assistant Courier. Commandes de test : _test_table, _test_text, _test_choices.',
         top: true,
       }}
     />

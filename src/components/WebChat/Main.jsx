@@ -46,7 +46,13 @@ const Main = ({
     isVisible={isVisible}
     fullScreen={fullScreen}
   >
-    <Top fullScreen={fullScreen} switchMode={switchMode} switchSize={toggleFullScreen} />
+    <Top
+      width={width || width}
+      height={height || height}
+      fullScreen={fullScreen}
+      switchMode={switchMode}
+      switchSize={toggleFullScreen}
+    />
     <MessageListContainer sendAction={sendAction} messages={messages} />
     <Bottom
       sendMessage={sendMessage}

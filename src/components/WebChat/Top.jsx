@@ -33,6 +33,12 @@ const FullScreen = Icon.extend`
     top: 10px;
     content: ${props => (props.fullScreen ? '"\f066"' : '"\f065"')};
   }
+  @media (max-height: ${props => props.height + 20}px),
+    (max-width: ${props => props.width + 20}px) {
+    &::before {
+      content: "";
+    }
+  }
 `;
 
 const TopMenu = styled.div`
@@ -49,7 +55,12 @@ const TopMenu = styled.div`
 export default function Top(props) {
   return (
     <TopMenu>
-      <FullScreen fullScreen={props.fullScreen} onClick={props.switchSize} />
+      <FullScreen
+        width={props.width}
+        height={props.height}
+        fullScreen={props.fullScreen}
+        onClick={props.switchSize}
+      />
       <Cross onClick={props.switchMode} />
       Comment puis-je vous aider ?
     </TopMenu>
@@ -60,4 +71,6 @@ Top.propTypes = {
   switchMode: PropTypes.func.isRequired,
   switchSize: PropTypes.func.isRequired,
   fullScreen: PropTypes.bool.isRequired,
+  width: PropTypes.number.isRequired,
+  height: PropTypes.number.isRequired,
 };

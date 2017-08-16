@@ -5,6 +5,8 @@ import Bubble from './Bubble';
 
 const Container = styled.div`
   text-align: right;
+  display: flex;
+  justify-content: flex-end;
   > div {
     margin-left: ${props => 5 / props.size}%;
     width: ${props => 90 / props.size}%;
@@ -30,7 +32,10 @@ const Button = Bubble.extend`
   color: ${props => props.theme.colors.primary};
   border: 2px solid ${props => props.theme.colors.primary};
   cursor: pointer;
-  width: 30%
+  width: 30%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   &:hover {
     background-color: ${props => props.theme.colors.secondaryLight};
   }

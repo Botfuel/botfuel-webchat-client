@@ -6,8 +6,9 @@ import Top from './Top';
 import Bottom from './Bottom';
 
 const Container = styled.div`
-  transition: opacity 0.5s ease-in-out;
-  display: ${props => (props.isVisible ? 'block' : 'none')};
+  opacity: ${props => (props.isVisible ? 1 : 0)};
+  visibility: ${props => (props.isVisible ? 'visible' : 'hidden')};
+  transition: opacity .3s ease-in-out;
   color: #000;
   width: ${props => props.width}px;
   height: ${props => props.height}px;

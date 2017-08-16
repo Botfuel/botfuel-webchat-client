@@ -64,7 +64,7 @@ class Container extends React.Component {
   }
 
   switchState() {
-    this.setState(oldState => ({ chatStarted: !oldState.chatStarted, fullScreen: false }));
+    this.setState(oldState => ({ chatStarted: !oldState.chatStarted }));
   }
 
   toggleFullScreen() {
@@ -74,26 +74,30 @@ class Container extends React.Component {
   render() {
     return (
       <ThemeProvider theme={laposteTheme}>
-        <StyledContainer
-          fullScreen={this.state.fullScreen}
-          width={this.props.width}
-          height={this.props.height}
-        >
-          <WebChat
+        <div>
+          <StyledContainer
             fullScreen={this.state.fullScreen}
             width={this.props.width}
             height={this.props.height}
-            isVisible={this.state.chatStarted}
-            switchMode={this.switchState}
-            toggleFullScreen={this.toggleFullScreen}
-          />
-          <StartButton
-            fullScreen={this.state.fullScreen}
-            isVisible={!this.state.chatStarted}
-            size={this.props.startButtonSize}
-            switchMode={this.switchState}
-          />
-        </StyledContainer>
+          >
+            <WebChat
+              fullScreen={this.state.fullScreen}
+              width={this.props.width}
+              height={this.props.height}
+              isVisible={this.state.chatStarted}
+              switchMode={this.switchState}
+              toggleFullScreen={this.toggleFullScreen}
+            />
+          </StyledContainer>
+          <StyledContainer>
+            <StartButton
+              fullScreen={this.state.fullScreen}
+              isVisible={!this.state.chatStarted}
+              size={this.props.startButtonSize}
+              switchMode={this.switchState}
+            />
+          </StyledContainer>
+        </div>
       </ThemeProvider>
     );
   }

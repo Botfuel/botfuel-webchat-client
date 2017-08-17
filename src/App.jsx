@@ -3,13 +3,13 @@ import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import styled, { ThemeProvider } from 'styled-components';
+import { merge } from 'lodash';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
 import { ApolloProvider } from 'react-apollo';
 import StartButton from './components/StartButton';
 import WebChat from './components/WebChat';
-// import baseTheme from './theme/base';
-import laposteTheme from './theme/laposte';
+import defaultTheme from './theme/base';
 import createApolloClient from './apollo-client';
 
 const client = createApolloClient();
@@ -25,8 +25,9 @@ export default class BotfuelWebChat {
       <ApolloProvider client={client}>
         <Container
           startButtonSize={param.startButtonSize || 90}
-          width={param.width || 400}
-          height={param.height || 500}
+          width={param.size.width || 400}
+          height={param.size.height || 500}
+          theme={merge(defaultTheme, param.theme)}
         />
       </ApolloProvider>,
       document.getElementById('botfuel'),
@@ -73,7 +74,7 @@ class Container extends React.Component {
 
   render() {
     return (
-      <ThemeProvider theme={laposteTheme}>
+      <ThemeProvider theme={this.props.theme}>
         <div>
           <StyledContainer
             fullScreen={this.state.fullScreen}
@@ -107,6 +108,9 @@ Container.propTypes = {
   startButtonSize: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  theme: PropTypes.shape({
+    colors: PropTypes.object,
+  }).isRequired,
 };
 
 self.BotfuelWebChat = BotfuelWebChat;

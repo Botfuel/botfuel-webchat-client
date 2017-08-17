@@ -16,6 +16,7 @@ const Container = styled.div`
   border: 1px solid #e3e3e3;
   border-radius: 10px;
   overflow: hidden;
+  background: ${props => props.theme.colors.background};
   @media (max-height: ${props => props.height + 20}px),
     (max-width: ${props => props.width + 20}px),
     ${props => props.fullScreen && 'all'} {

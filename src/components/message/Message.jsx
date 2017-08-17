@@ -25,14 +25,18 @@ const ClearDiv = styled.div`
   }
 `;
 
-const Avatar = styled.img`
+const Avatar = styled.div`
   padding: 3px 0px;
-  width: 28px;
-  height: auto;
+  height: 30px;
+  width: 30px;
   border-radius: 50%;
   display: inline-block;
   margin-right: 9px;
   float: left;
+  background-image: url("${props => props.theme.images.botAvatar}");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
 `;
 
 export default function MessageContainer({ side, type, sender, ...props }) {
@@ -41,7 +45,7 @@ export default function MessageContainer({ side, type, sender, ...props }) {
   return disableBubble
     ? <Component type={type} {...props} />
     : <ClearDiv component={Component}>
-      {side === 'left' && <Avatar src={`avatar-${sender}.png`} />}
+      {side === 'left' && <Avatar />}
       <Bubble side={side}>
         <Component {...props} />
       </Bubble>

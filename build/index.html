@@ -4,13 +4,29 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <title>Botfuel WebChat Demo</title>
 </head>
 
 <body>
-  Botfuel WebChat Demo
+  Code used to add the webchat to this html page:
+  <pre><code class="html">
+    &lt;script src=&quot;https://webchat.bofuel.io/script.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+    BotfuelWebChat.init({
+      theme: {
+        colors: {
+          main: '#3d3d3d',
+          primary: '#f4b600',
+        },
+      },
+      size: { width: 500, height: 600 },
+    });
+    &lt;/script&gt;
+  </code></pre>
 </body>
-
+<script>hljs.initHighlightingOnLoad();</script>
 <script src="script.js"></script>
 <script>
 BotfuelWebChat.init({

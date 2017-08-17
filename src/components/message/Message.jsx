@@ -41,7 +41,7 @@ export default function MessageContainer({ side, type, sender, ...props }) {
   return disableBubble
     ? <Component type={type} {...props} />
     : <ClearDiv component={Component}>
-      {side === 'left' && <Avatar src={`/avatar-${sender}.png`} />}
+      {side === 'left' && <Avatar src={`avatar-${sender}.png`} />}
       <Bubble side={side}>
         <Component {...props} />
       </Bubble>

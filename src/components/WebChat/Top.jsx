@@ -21,6 +21,7 @@ const Icon = styled.span`
 
 const Cross = Icon.extend`
   &::before {
+    display: ${props => (props.theme.buttons.close ? 'block' : 'none')};
     right: 15px;
     top: 10px;
     content: "\f00d";
@@ -29,6 +30,7 @@ const Cross = Icon.extend`
 
 const FullScreen = Icon.extend`
   &::before {
+    display: ${props => (props.theme.buttons.fullScreen ? 'block' : 'none')};
     left: 15px;
     top: 10px;
     content: ${props => (props.fullScreen ? '"\f066"' : '"\f065"')};

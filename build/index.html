@@ -14,15 +14,22 @@
   <pre><code class="html">
     &lt;script src=&quot;https://webchat.bofuel.io/script.js&quot;&gt;&lt;/script&gt;
     &lt;script&gt;
-    BotfuelWebChat.init({
-      theme: {
-        colors: {
-          main: '#3d3d3d',
-          primary: '#f4b600',
+      BotfuelWebChat.init({
+        botId: 145289361545843
+        theme: {
+          colors: {
+            main: '#3d3d3d',
+            primary: '#f4b600',
+          },
+          buttons: {
+            close: true,
+            fullScreen: true,
+          },
         },
-      },
-      size: { width: 500, height: 600 },
-    });
+        size: { width: 500, height: 600 },
+        startOpen: false,
+        startFullScreen: false,
+      });
     &lt;/script&gt;
   </code></pre>
 </body>
@@ -35,8 +42,14 @@ BotfuelWebChat.init({
       main: '#3d3d3d',
       primary: '#f4b600',
     },
+    buttons: {
+      close: true,
+      fullScreen: true,
+    },
   },
   size: { width: 500, height: 600 },
+  startOpen: false,
+  startFullScreen: false,
 });
 </script>
 

@@ -28,6 +28,10 @@ export default class BotfuelWebChat {
           width={param.size.width || 400}
           height={param.size.height || 500}
           theme={merge(defaultTheme, param.theme)}
+          initialState={{
+            chatStarted: param.startOpen || false,
+            fullScreen: param.startFullScreen || false,
+          }}
         />
       </ApolloProvider>,
       document.getElementById('botfuel'),
@@ -56,10 +60,7 @@ class Container extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      chatStarted: false,
-      fullScreen: false,
-    };
+    this.state = props.initialState;
     this.switchState = this.switchState.bind(this);
     this.toggleFullScreen = this.toggleFullScreen.bind(this);
   }
@@ -110,6 +111,10 @@ Container.propTypes = {
   height: PropTypes.number.isRequired,
   theme: PropTypes.shape({
     colors: PropTypes.object,
+  }).isRequired,
+  initialState: PropTypes.shape({
+    startOpen: PropTypes.bool,
+    startFullScreen: PropTypes.bool,
   }).isRequired,
 };
 

@@ -9,4 +9,8 @@ export default {
     secondaryText: '#000',
     background: '#fff',
   },
+  buttons: {
+    close: true,
+    fullScreen: true,
+  },
 };

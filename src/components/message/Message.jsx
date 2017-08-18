@@ -33,7 +33,8 @@ const Avatar = styled.div`
   display: inline-block;
   margin-right: 9px;
   float: left;
-  background-image: url("${props => props.theme.images.botAvatar}");
+  background-image: url("${props =>
+    (props.sender === 'bot' ? props.theme.images.botAvatar : props.theme.images.userAvatar)}");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -45,7 +46,7 @@ export default function MessageContainer({ side, type, sender, ...props }) {
   return disableBubble
     ? <Component type={type} {...props} />
     : <ClearDiv component={Component}>
-      {side === 'left' && <Avatar />}
+      {side === 'left' && <Avatar sender={sender} />}
       <Bubble side={side}>
         <Component {...props} />
       </Bubble>

@@ -15,6 +15,7 @@ export default {
   },
   images: {
     botAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
+    userAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
     startButton: 'https://webchat.botfuel.io/img/icons/botfuel.png',
   },
   startButtonStyle: 'bubble',

@@ -20,7 +20,19 @@ class BotfuelWebChat {
       localStorage.setItem('userId', uuidv4());
     }
 
-    document.body.innerHTML += '<div id="botfuel"></div>';
+    const overWriteTheme = {
+      buttons: {
+        close: !!param.embeddedContainerId,
+      },
+      fixed: !!param.embeddedContainerId,
+    };
+    overWriteTheme.buttons.close = !param.embeddedContainerId;
+    // overWriteTheme.buttons.fullScreen = !param.embeddedContainerId;
+    overWriteTheme.fixed = !param.embeddedContainerId;
+
+    if (overWriteTheme.fixed) {
+      document.body.innerHTML += '<div id="botfuel"></div>';
+    }
     ReactDOM.render(
       <ApolloProvider client={client}>
         <Container
@@ -28,20 +40,21 @@ class BotfuelWebChat {
           startButtonSize={param.startButtonSize || 90}
           width={param.size.width || 400}
           height={param.size.height || 500}
-          theme={merge(defaultTheme, param.theme)}
+          theme={merge(defaultTheme, param.theme, overWriteTheme)}
           initialState={{
-            chatStarted: param.startOpen || false,
-            fullScreen: param.startFullScreen || false,
+            chatStarted: !!param.embeddedContainerId || param.startOpen,
+            fullScreen: !param.embeddedContainerId && param.startFullScreen,
           }}
         />
       </ApolloProvider>,
-      document.getElementById('botfuel'),
+      document.getElementById(param.embeddedContainerId || 'botfuel'),
     );
   }
 }
 
 const StyledContainer = styled.div`
-  position: fixed;
+  text-align: left;
+  position: ${props => (props.theme.fixed ? 'fixed' : 'static')};
   bottom: 20px;
   right: 20px;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
@@ -93,14 +106,15 @@ class Container extends React.Component {
               toggleFullScreen={this.toggleFullScreen}
             />
           </StyledContainer>
-          <StyledContainer>
-            <StartButton
-              fullScreen={this.state.fullScreen}
-              isVisible={!this.state.chatStarted}
-              size={this.props.startButtonSize}
-              switchMode={this.switchState}
-            />
-          </StyledContainer>
+          {this.props.theme.fixed &&
+            <StyledContainer>
+              <StartButton
+                fullScreen={this.state.fullScreen}
+                isVisible={!this.state.chatStarted}
+                size={this.props.startButtonSize}
+                switchMode={this.switchState}
+              />
+            </StyledContainer>}
         </div>
       </ThemeProvider>
     );
@@ -114,6 +128,7 @@ Container.propTypes = {
   height: PropTypes.number.isRequired,
   theme: PropTypes.shape({
     colors: PropTypes.object,
+    fixed: PropTypes.bool,
   }).isRequired,
   initialState: PropTypes.shape({
     startOpen: PropTypes.bool,

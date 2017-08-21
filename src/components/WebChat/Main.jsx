@@ -1,29 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import MessageListContainer from '../message/MessageListContainer';
 import Top from './Top';
 import Bottom from './Bottom';
+
+const fullScreenMode = css`
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+  border: 0;
+`;
+
+const DialogStyles = {
+  hover: css`
+    box-shadow: 0 0 24px rgba(0, 0, 0, .15);
+    border: 1px solid #e3e3e3;
+    border-radius: 10px;
+  `,
+};
 
 const Container = styled.div`
   opacity: ${props => (props.isVisible ? 1 : 0)};
   visibility: ${props => (props.isVisible ? 'visible' : 'hidden')};
   transition: opacity .3s ease-in-out;
   color: #000;
-  width: ${props => props.width}px;
-  height: ${props => props.height}px;
-  box-shadow: 0 0 24px rgba(0, 0, 0, .15);
-  border: 1px solid #e3e3e3;
-  border-radius: 10px;
+  width: ${props => (props.theme.fluid ? '100%' : `${props.width}px`)};
+  height: ${props => (props.theme.fluid ? '100%' : `${props.height}px`)};
   overflow: hidden;
   background: ${props => props.theme.colors.background};
+
+  ${props => DialogStyles[props.theme.dialogStyle]};
   @media (max-height: ${props => props.height + 20}px),
     (max-width: ${props => props.width + 20}px),
     ${props => props.fullScreen && 'all'} {
-    width: 100vw;
-    height: 100vh;
-    border-radius: 0;
-    border: 0;
+    ${props => props.theme.fixed && fullScreenMode};
   }
 `;
 

@@ -19,4 +19,5 @@ export default {
     startButton: 'https://webchat.botfuel.io/img/icons/botfuel.png',
   },
   startButtonStyle: 'bubble',
+  dialogStyle: 'hover',
 };

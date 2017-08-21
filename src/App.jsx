@@ -14,7 +14,7 @@ import createApolloClient from './apollo-client';
 
 const client = createApolloClient();
 
-export default class BotfuelWebChat {
+class BotfuelWebChat {
   static init(param) {
     if (!localStorage.getItem('userId')) {
       localStorage.setItem('userId', uuidv4());
@@ -24,6 +24,7 @@ export default class BotfuelWebChat {
     ReactDOM.render(
       <ApolloProvider client={client}>
         <Container
+          appId={param.appId}
           startButtonSize={param.startButtonSize || 90}
           width={param.size.width || 400}
           height={param.size.height || 500}
@@ -83,6 +84,7 @@ class Container extends React.Component {
             height={this.props.height}
           >
             <WebChat
+              appId={this.props.appId}
               fullScreen={this.state.fullScreen}
               width={this.props.width}
               height={this.props.height}
@@ -106,6 +108,7 @@ class Container extends React.Component {
 }
 
 Container.propTypes = {
+  appId: PropTypes.string.isRequired,
   startButtonSize: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,

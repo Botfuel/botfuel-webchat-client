@@ -11,8 +11,7 @@ import StartButton from './components/StartButton';
 import WebChat from './components/WebChat';
 import defaultTheme from './theme/base';
 import createApolloClient from './apollo-client';
-
-const client = createApolloClient();
+import websocketsCheck from './utils/websockets-check';
 
 class BotfuelWebChat {
   static init(param) {
@@ -34,19 +33,17 @@ class BotfuelWebChat {
       document.body.innerHTML += '<div id="botfuel"></div>';
     }
     ReactDOM.render(
-      <ApolloProvider client={client}>
-        <Container
-          appId={param.appId}
-          startButtonSize={param.startButtonSize || 90}
-          width={(param.size && param.size.width) || 400}
-          height={(param.size && param.size.height) || 500}
-          theme={merge(defaultTheme, param.theme, overWriteTheme)}
-          initialState={{
-            chatStarted: !!param.embeddedContainerId || param.startOpen || false,
-            fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,
-          }}
-        />
-      </ApolloProvider>,
+      <Container
+        appId={param.appId}
+        startButtonSize={param.startButtonSize || 90}
+        width={(param.size && param.size.width) || 400}
+        height={(param.size && param.size.height) || 500}
+        theme={merge(defaultTheme, param.theme, overWriteTheme)}
+        initialState={{
+          chatStarted: !!param.embeddedContainerId || param.startOpen || false,
+          fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,
+        }}
+      />,
       document.getElementById(param.embeddedContainerId || 'botfuel'),
     );
   }
@@ -79,6 +76,18 @@ class Container extends React.Component {
     this.toggleFullScreen = this.toggleFullScreen.bind(this);
   }
 
+  componentWillMount() {
+    const setWebsocket = (websocket) => {
+      // Store whether websockets are supported
+      this.client = createApolloClient(websocket);
+      this.setState({
+        websocketsSupported: websocket,
+      });
+    };
+
+    websocketsCheck(setWebsocket);
+  }
+
   switchState() {
     this.setState(oldState => ({ chatStarted: !oldState.chatStarted }));
   }
@@ -88,35 +97,43 @@ class Container extends React.Component {
   }
 
   render() {
+    // While we check for websockets support
+    if (this.state.websocketsSupported === null || !this.client) {
+      return <div>LOADING</div>;
+    }
+
     return (
-      <ThemeProvider theme={this.props.theme}>
-        <div>
-          <StyledContainer
-            fullScreen={this.state.fullScreen}
-            width={this.props.width}
-            height={this.props.height}
-          >
-            <WebChat
-              appId={this.props.appId}
+      <ApolloProvider client={this.client}>
+        <ThemeProvider theme={this.props.theme}>
+          <div>
+            <StyledContainer
               fullScreen={this.state.fullScreen}
               width={this.props.width}
               height={this.props.height}
-              isVisible={this.state.chatStarted}
-              switchMode={this.switchState}
-              toggleFullScreen={this.toggleFullScreen}
-            />
-          </StyledContainer>
-          {this.props.theme.fixed &&
-            <StyledContainer>
-              <StartButton
+            >
+              <WebChat
+                appId={this.props.appId}
                 fullScreen={this.state.fullScreen}
-                isVisible={!this.state.chatStarted}
-                size={this.props.startButtonSize}
+                width={this.props.width}
+                height={this.props.height}
+                isVisible={this.state.chatStarted}
                 switchMode={this.switchState}
+                toggleFullScreen={this.toggleFullScreen}
+                websocketsSupported={this.state.websocketsSupported}
               />
-            </StyledContainer>}
-        </div>
-      </ThemeProvider>
+            </StyledContainer>
+            {this.props.theme.fixed &&
+              <StyledContainer>
+                <StartButton
+                  fullScreen={this.state.fullScreen}
+                  isVisible={!this.state.chatStarted}
+                  size={this.props.startButtonSize}
+                  switchMode={this.switchState}
+                />
+              </StyledContainer>}
+          </div>
+        </ThemeProvider>
+      </ApolloProvider>
     );
   }
 }

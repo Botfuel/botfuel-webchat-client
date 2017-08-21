@@ -125,10 +125,9 @@ class WebChat extends React.Component {
           sender: 'user',
         },
       });
-
       // If subscriptions are not used, we need to refetch manually the message that was just
       // sent by the user so he gets immediate success feedback on his own message
-      if (!window.WebSocket) {
+      if (!this.props.websocketsSupported) {
         this.props.refetch();
       }
     }
@@ -152,7 +151,7 @@ class WebChat extends React.Component {
 
       // If subscriptions are not used, we need to refetch manually the message that was just
       // sent by the user so he gets immediate success feedback on his own message
-      if (!window.WebSocket) {
+      if (!this.props.websocketsSupported) {
         this.props.refetch();
       }
     };
@@ -194,6 +193,7 @@ WebChat.propTypes = {
   subscribeToNewMessages: PropTypes.func.isRequired,
   createMessageMutation: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
+  websocketsSupported: PropTypes.bool.isRequired,
 };
 
 WebChat.defaultProps = {
@@ -211,7 +211,7 @@ export default compose(
       };
 
       // Poll regulary if websockets are not enabled
-      if (!window.WebSocket) {
+      if (!props.websocketsSupported) {
         options.pollInterval = 5000;
       }
 
@@ -221,7 +221,7 @@ export default compose(
       messages: props.data.messages,
       refetch: props.data.refetch,
       subscribeToNewMessages: params =>
-        (window.WebSocket
+        (props.ownProps.websocketsSupported
           ? props.data.subscribeToMore({
             document: MESSAGES_SUBSCRIPTION,
             variables: params,

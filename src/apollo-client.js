@@ -23,8 +23,8 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   },
 });
 
-function createApolloClient() {
-  if (window.WebSocket) {
+function createApolloClient(websocketsSupported) {
+  if (websocketsSupported) {
     const wsClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
       reconnect: true,
     });

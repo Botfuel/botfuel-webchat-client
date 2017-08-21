@@ -40,17 +40,22 @@ const Avatar = styled.div`
   background-repeat: no-repeat;
 `;
 
-export default function MessageContainer({ side, type, sender, ...props }) {
-  const Component = componentsDict[type];
-  const disableBubble = ['block', 'choices'].includes(type);
-  return disableBubble
-    ? <Component type={type} {...props} />
-    : <ClearDiv component={Component}>
-      {side === 'left' && <Avatar sender={sender} />}
-      <Bubble side={side}>
-        <Component {...props} />
-      </Bubble>
-    </ClearDiv>;
+// eslint-disable-next-line react/prefer-stateless-function
+export default class MessageContainer extends React.Component {
+  render() {
+    const { side, type, sender, ...props } = this.props;
+    const Component = componentsDict[type];
+    const disableBubble = ['block', 'choices'].includes(type);
+
+    return disableBubble
+      ? <Component type={type} {...props} />
+      : <ClearDiv component={Component}>
+        {side === 'left' && <Avatar sender={sender} />}
+        <Bubble side={side}>
+          <Component {...props} />
+        </Bubble>
+      </ClearDiv>;
+  }
 }
 
 MessageContainer.propTypes = {

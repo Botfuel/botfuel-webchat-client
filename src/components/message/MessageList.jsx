@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import FlipMove from 'react-flip-move';
 import Message from './Message';
 import Block from './Block';
 
@@ -22,14 +23,16 @@ const MessageList = ({ messages, setRef, sendAction }) =>
       }}
     />
     <Message value={{ text: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
-    {messages.map(message =>
-      (<Message
-        {...message}
-        side={message.sender === 'user' ? 'right' : 'left'}
-        sendAction={sendAction}
-        key={message.id}
-      />),
-    )}
+    <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
+      {messages.map(message =>
+        (<Message
+          {...message}
+          side={message.sender === 'user' ? 'right' : 'left'}
+          sendAction={sendAction}
+          key={message.id}
+        />),
+      )}
+    </FlipMove>
   </Messages>);
 
 MessageList.propTypes = {

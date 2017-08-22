@@ -42,8 +42,8 @@ class BotfuelWebChat {
           height={(param.size && param.size.height) || 500}
           theme={merge(defaultTheme, param.theme, overWriteTheme)}
           initialState={{
-            chatStarted: !!param.embeddedContainerId || param.startOpen,
-            fullScreen: !param.embeddedContainerId && param.startFullScreen,
+            chatStarted: !!param.embeddedContainerId || param.startOpen || false,
+            fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,
           }}
         />
       </ApolloProvider>,

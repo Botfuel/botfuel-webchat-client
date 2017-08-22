@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 const Container = styled.div`
-  background-color: #f8f9fa;
+  background-color: ${props => props.theme.colors.mainLight};
   padding: 18px 18px 22px;
   border-bottom: 1px solid #e6e6e6;
   border-top: ${props => (props.top ? 0 : '1px solid #e6e6e6')};

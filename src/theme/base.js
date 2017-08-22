@@ -1,9 +1,9 @@
 export default {
   colors: {
-    main: '#65758e',
+    main: '#244891',
+    mainLight: '#e4e9f2',
     mainText: '#fff',
     primary: '#0084f4',
-    primaryLight: '#0099ff',
     secondary: '#f1f0f0',
     primaryText: '#fff',
     secondaryText: '#000',

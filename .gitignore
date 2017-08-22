@@ -59,3 +59,4 @@ typings/
 
 yarn.lock
 build/script.js
+build/script.js.map

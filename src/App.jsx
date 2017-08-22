@@ -38,8 +38,8 @@ class BotfuelWebChat {
         <Container
           appId={param.appId}
           startButtonSize={param.startButtonSize || 90}
-          width={param.size.width || 400}
-          height={param.size.height || 500}
+          width={(param.size && param.size.width) || 400}
+          height={(param.size && param.size.height) || 500}
           theme={merge(defaultTheme, param.theme, overWriteTheme)}
           initialState={{
             chatStarted: !!param.embeddedContainerId || param.startOpen,

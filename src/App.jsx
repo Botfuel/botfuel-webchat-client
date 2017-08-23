@@ -49,7 +49,10 @@ class BotfuelWebChat {
   }
 }
 
+const MainContainer = styled.div`${props => props.theme.fluid && 'height:100%;'};`;
+
 const StyledContainer = styled.div`
+  ${props => props.theme.fluid && 'height:100%;'};
   text-align: left;
   position: ${props => (props.theme.fixed ? 'fixed' : 'static')};
   bottom: 20px;
@@ -105,7 +108,7 @@ class Container extends React.Component {
     return (
       <ApolloProvider client={this.client}>
         <ThemeProvider theme={this.props.theme}>
-          <div>
+          <MainContainer>
             <StyledContainer
               fullScreen={this.state.fullScreen}
               width={this.props.width}
@@ -131,7 +134,7 @@ class Container extends React.Component {
                   switchMode={this.switchState}
                 />
               </StyledContainer>}
-          </div>
+          </MainContainer>
         </ThemeProvider>
       </ApolloProvider>
     );

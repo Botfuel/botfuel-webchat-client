@@ -6,12 +6,20 @@ import styled, { ThemeProvider } from 'styled-components';
 import { merge } from 'lodash';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloProvider, gql, graphql } from 'react-apollo';
 import StartButton from './components/StartButton';
 import WebChat from './components/WebChat';
 import defaultTheme from './theme/base';
 import createApolloClient from './apollo-client';
 import websocketsCheck from './utils/websockets-check';
+
+const BOT_QUERY = gql`
+  query bot($appId: ID!) {
+    bot(appId: $appId) {
+      allowedOrigins
+    }
+  }
+`;
 
 class BotfuelWebChat {
   static init(param) {
@@ -33,7 +41,7 @@ class BotfuelWebChat {
       document.body.innerHTML += '<div id="botfuel"></div>';
     }
     ReactDOM.render(
-      <Container
+      <Root
         appId={param.appId}
         startButtonSize={param.startButtonSize || 90}
         width={(param.size && param.size.width) || 400}
@@ -70,7 +78,7 @@ const StyledContainer = styled.div`
   }
 `;
 
-class Container extends React.Component {
+class Root extends React.Component {
   constructor(props) {
     super(props);
 
@@ -107,39 +115,85 @@ class Container extends React.Component {
 
     return (
       <ApolloProvider client={this.client}>
-        <ThemeProvider theme={this.props.theme}>
-          <MainContainer>
-            <StyledContainer
-              fullScreen={this.state.fullScreen}
-              width={this.props.width}
-              height={this.props.height}
-            >
-              <WebChat
-                appId={this.props.appId}
-                fullScreen={this.state.fullScreen}
-                width={this.props.width}
-                height={this.props.height}
-                isVisible={this.state.chatStarted}
-                switchMode={this.switchState}
-                toggleFullScreen={this.toggleFullScreen}
-                websocketsSupported={this.state.websocketsSupported}
-              />
-            </StyledContainer>
-            {this.props.theme.fixed &&
-              <StyledContainer>
-                <StartButton
-                  fullScreen={this.state.fullScreen}
-                  isVisible={!this.state.chatStarted}
-                  size={this.props.startButtonSize}
-                  switchMode={this.switchState}
-                />
-              </StyledContainer>}
-          </MainContainer>
-        </ThemeProvider>
+        <ContainerWithData
+          {...this.state}
+          {...this.props}
+          switchState={this.switchState}
+          toggleFullScreen={this.toggleFullScreen}
+        />
       </ApolloProvider>
     );
   }
 }
+
+Root.propTypes = {
+  initialState: PropTypes.shape({
+    startOpen: PropTypes.bool,
+    startFullScreen: PropTypes.bool,
+  }).isRequired,
+};
+
+const Container = ({
+  theme,
+  width,
+  height,
+  appId,
+  startButtonSize,
+  fullScreen,
+  chatStarted,
+  switchState,
+  websocketsSupported,
+  toggleFullScreen,
+  data: { bot = {}, loading },
+}) => {
+  const { allowedOrigins = [] } = bot;
+  const cleanUrls = allowedOrigins.map(url => url.replace(/\/+$/, ''));
+
+  if (!window.location.origin) {
+    // Some browsers (mainly IE < 11) does not have this property, so we need to build it manually
+    window.location.origin = `${window.location.protocol}//${window.location.hostname}${window
+      .location.port
+      ? `:${window.location.port}`
+      : ''}`;
+  }
+
+  if (!cleanUrls.includes('*') && !cleanUrls.includes(window.location.origin) && !loading) {
+    /* eslint-disable no-console */
+    console.log(
+      'Your website is not allowed to use this webchat. Please check that this website’s url is among the allowed origins of the bot on https://botfuel.io.',
+    );
+    /* eslint-enable no-console */
+    return null;
+  }
+
+  return (
+    <ThemeProvider theme={theme}>
+      <MainContainer>
+        <StyledContainer fullScreen={fullScreen} width={width} height={height}>
+          <WebChat
+            appId={appId}
+            fullScreen={fullScreen}
+            width={width}
+            height={height}
+            isVisible={chatStarted}
+            switchMode={switchState}
+            toggleFullScreen={toggleFullScreen}
+            websocketsSupported={websocketsSupported}
+          />
+        </StyledContainer>
+        {theme.fixed &&
+          <StyledContainer>
+            <StartButton
+              fullScreen={fullScreen}
+              isVisible={!chatStarted}
+              size={startButtonSize}
+              switchMode={switchState}
+            />
+          </StyledContainer>}
+      </MainContainer>
+    </ThemeProvider>
+  );
+};
 
 Container.propTypes = {
   appId: PropTypes.string.isRequired,
@@ -150,10 +204,23 @@ Container.propTypes = {
     colors: PropTypes.object,
     fixed: PropTypes.bool,
   }).isRequired,
-  initialState: PropTypes.shape({
-    startOpen: PropTypes.bool,
-    startFullScreen: PropTypes.bool,
+  fullScreen: PropTypes.bool,
+  chatStarted: PropTypes.bool,
+  switchState: PropTypes.func.isRequired,
+  websocketsSupported: PropTypes.bool,
+  toggleFullScreen: PropTypes.func.isRequired,
+  data: PropTypes.shape({
+    bot: PropTypes.object,
+    loading: PropTypes.bool,
   }).isRequired,
 };
+
+Container.defaultProps = {
+  fullScreen: false,
+  chatStarted: false,
+  websocketsSupported: false,
+};
+
+const ContainerWithData = graphql(BOT_QUERY)(Container);
 
 self.BotfuelWebChat = BotfuelWebChat;

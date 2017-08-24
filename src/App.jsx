@@ -110,7 +110,7 @@ class Root extends React.Component {
   render() {
     // While we check for websockets support
     if (this.state.websocketsSupported === null || !this.client) {
-      return <div>LOADING</div>;
+      return null;
     }
 
     return (
@@ -146,6 +146,12 @@ const Container = ({
   toggleFullScreen,
   data: { bot = {}, loading },
 }) => {
+  if (!bot && !loading) {
+    /* eslint-disable no-console */
+    console.log('Bot not found.');
+    /* eslint-enable no-console */
+  }
+
   const { allowedOrigins = [] } = bot;
   const cleanUrls = allowedOrigins.map(url => url.replace(/\/+$/, ''));
 

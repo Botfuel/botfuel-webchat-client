@@ -5,7 +5,7 @@ export default function websocketsCheck(setWebsocket) {
     const websocket = new WebSocket('wss://echo.websocket.org/');
 
     websocket.onopen = () => {
-      console.log(' Websockets supported');
+      console.log('Websockets supported');
       setWebsocket(true);
     };
 

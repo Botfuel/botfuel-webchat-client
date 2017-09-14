@@ -11,7 +11,7 @@ module.exports = {
   ],
   // plugins: [new BabiliPlugin()],
   output: {
-    path: path.join(__dirname, './build'),
+    path: path.join(__dirname, './dist'),
     filename: 'script.js',
   },
   module: {

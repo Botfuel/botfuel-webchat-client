@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+    <title>Botfuel WebChat Demo</title>
+</head>
+
+<body>
+    <div id="botfuel"></div>
+</body>
+<script>
+    BotfuelWebChat.init({
+        appId: '24d1a9e7',
+        theme: {
+            colors: {
+                main: '#3d3d3d',
+                mainLight: '#f5f5f5',
+                primary: '#f4b600',
+            },
+            buttons: {
+                close: true,
+                fullScreen: true,
+            },
+            images: {
+                botAvatar: 'https://webchat.botfuel.io/img/avatars/laposte.png',
+                startButton: 'https://webchat.botfuel.io/img/icons/botfuel.png',
+            },
+            startButtonStyle: 'bubble',
+        },
+        size: { width: 500, height: 600 },
+        startOpen: false,
+        startFullScreen: false,
+    });
+
+</script>
+
+</html>

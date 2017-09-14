@@ -1,19 +1,29 @@
 const path = require('path');
-// const BabiliPlugin = require('babili-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const APP = path.join(process.cwd(), 'src');
 
 module.exports = {
-  entry: './src/App.jsx',
+  entry: [
+    // 'react-hot-loader/patch',
+    // `webpack-dev-server/client?http://localhost:${process.env.PORT || 7000}`,
+    // 'webpack/hot/only-dev-server',
+    // 'babel-regenerator-runtime',
+    './src/App.jsx',
+  ],
+
   externals: [
     {
       BotfuelWeb: true,
     },
   ],
-  // plugins: [new BabiliPlugin()],
+
   output: {
-    path: path.join(__dirname, './build'),
-    filename: 'script.js',
+    filename: 'build/bundle.js',
+    chunkFilename: 'build/[name].chunk.js',
   },
+
   module: {
     rules: [
       {
@@ -45,6 +55,7 @@ module.exports = {
       },
     ],
   },
+
   resolve: {
     alias: {
       ROOT: path.join(process.cwd()),
@@ -55,6 +66,7 @@ module.exports = {
   },
 
   devtool: 'eval-cheap-module-source-map',
+
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
@@ -66,5 +78,25 @@ module.exports = {
         ),
       },
     }),
+
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
+
+    new HtmlWebpackPlugin({
+      template: 'src/index.html',
+      inject: true,
+    }),
   ],
+
+  devServer: {
+    port: process.env.PORT || 7000,
+    hot: true,
+    historyApiFallback: true,
+    stats: {
+      colors: true,
+      cached: false,
+      cachedAssets: false,
+    },
+  },
 };

@@ -43,7 +43,7 @@ class BotfuelWebChat {
 
     ReactDOM.render(
       <Root
-        botId={param.botId}
+        botId={param.applicationId}
         startButtonSize={param.startButtonSize || 90}
         width={(param.size && param.size.width) || 400}
         height={(param.size && param.size.height) || 500}

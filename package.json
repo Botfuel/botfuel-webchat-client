@@ -2,12 +2,15 @@
   "name": "botfuel-webchat-client",
   "version": "1.0.0",
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server --config webpack.config --color",
-    "build:production": "NODE_ENV=production webpack --config webpack.config.prod --color",
+    "start":
+      "NODE_ENV=development webpack-dev-server --config webpack.config --color",
+    "build:production":
+      "NODE_ENV=production webpack --config webpack.config.prod --color",
     "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\"",
     "test": "echo 'No tests'",
     "precommit": "npm test && npm run style"
   },
+  "main": "dist/botfuel-webchat-client.js",
   "devDependencies": {
     "babel-cli": "^6.24.1",
     "babel-eslint": "^7.2.3",

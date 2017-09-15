@@ -12,7 +12,7 @@ module.exports = {
   // plugins: [new BabiliPlugin()],
   output: {
     path: path.join(__dirname, './dist'),
-    filename: 'script.js',
+    filename: 'botfuel-webchat-client.js',
   },
   module: {
     rules: [

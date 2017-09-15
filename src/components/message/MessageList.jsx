@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
+import WithLabels from '../utils/WithLabels';
 import Message from './Message';
 import Block from './Block';
 
@@ -14,31 +15,35 @@ const Messages = styled.div`
   overflow-y: auto;
 `;
 
-const MessageList = ({ messages, setRef, sendAction }) =>
-  (<Messages innerRef={setRef}>
+const MessageList = ({ messages, setRef, sendAction, labels }) => (
+  <Messages innerRef={setRef}>
     <Block
       value={{
-        text: 'Assistant Courier. Commandes de test : _test_table, _test_text, _test_choices.',
+        text: labels.helpMessage,
         top: true,
       }}
     />
     <Message value={{ text: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
     <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
-      {messages.map(message =>
-        (<Message
+      {messages.map(message => (
+        <Message
           {...message}
           side={message.sender === 'user' ? 'right' : 'left'}
           sendAction={sendAction}
           key={message.id}
-        />),
-      )}
+        />
+      ))}
     </FlipMove>
-  </Messages>);
+  </Messages>
+);
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,
+  labels: PropTypes.shape({
+    helpMessage: PropTypes.string,
+  }).isRequired,
 };
 
-export default MessageList;
+export default WithLabels(MessageList);

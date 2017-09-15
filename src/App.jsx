@@ -40,6 +40,7 @@ class BotfuelWebChat {
     if (overWriteTheme.fixed) {
       document.body.innerHTML += '<div id="botfuel"></div>';
     }
+
     ReactDOM.render(
       <Root
         appId={param.appId}
@@ -51,6 +52,7 @@ class BotfuelWebChat {
           chatStarted: !!param.embeddedContainerId || param.startOpen || false,
           fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,
         }}
+        customLabels={param.labels}
       />,
       document.getElementById(param.embeddedContainerId || 'botfuel'),
     );
@@ -65,7 +67,7 @@ const StyledContainer = styled.div`
   position: ${props => (props.theme.fixed ? 'fixed' : 'static')};
   bottom: 20px;
   right: 20px;
-  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
   * {
     box-sizing: border-box;
@@ -85,6 +87,12 @@ class Root extends React.Component {
     this.state = props.initialState;
     this.switchState = this.switchState.bind(this);
     this.toggleFullScreen = this.toggleFullScreen.bind(this);
+  }
+
+  getChildContext() {
+    return {
+      customLabels: this.props.customLabels,
+    };
   }
 
   componentWillMount() {
@@ -131,6 +139,15 @@ Root.propTypes = {
     startOpen: PropTypes.bool,
     startFullScreen: PropTypes.bool,
   }).isRequired,
+  customLabels: PropTypes.shape({}),
+};
+
+Root.defaultProps = {
+  customLabels: {},
+};
+
+Root.childContextTypes = {
+  customLabels: PropTypes.object,
 };
 
 const Container = ({
@@ -187,7 +204,7 @@ const Container = ({
             websocketsSupported={websocketsSupported}
           />
         </StyledContainer>
-        {theme.fixed &&
+        {theme.fixed && (
           <StyledContainer>
             <StartButton
               fullScreen={fullScreen}
@@ -195,7 +212,8 @@ const Container = ({
               size={startButtonSize}
               switchMode={switchState}
             />
-          </StyledContainer>}
+          </StyledContainer>
+        )}
       </MainContainer>
     </ThemeProvider>
   );

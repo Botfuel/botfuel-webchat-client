@@ -2,8 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const APP = path.join(process.cwd(), 'src');
-
 module.exports = {
   entry: [
     // 'react-hot-loader/patch',

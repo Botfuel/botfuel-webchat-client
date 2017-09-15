@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import WithLabels from '../utils/WithLabels';
 
 const Icon = styled.span`
   @font-face {
@@ -10,7 +11,7 @@ const Icon = styled.span`
     font-weight: normal;
     font-style: normal;
   }
-  font-family: "font-awesome";
+  font-family: 'font-awesome';
   cursor: pointer;
   &::before {
     position: absolute;
@@ -24,7 +25,7 @@ const Cross = Icon.extend`
     display: ${props => (props.theme.buttons.close ? 'block' : 'none')};
     right: 15px;
     top: 10px;
-    content: "\f00d";
+    content: '\f00d';
   }
 `;
 
@@ -38,7 +39,7 @@ const FullScreen = Icon.extend`
   @media (max-height: ${props => props.height + 20}px),
     (max-width: ${props => props.width + 20}px) {
     &::before {
-      content: "";
+      content: '';
     }
   }
 `;
@@ -54,7 +55,7 @@ const TopMenu = styled.div`
   font-size: 16px;
 `;
 
-export default function Top(props) {
+function Top(props) {
   return (
     <TopMenu>
       <FullScreen
@@ -64,7 +65,7 @@ export default function Top(props) {
         onClick={props.switchSize}
       />
       <Cross onClick={props.switchMode} />
-      Comment puis-je vous aider ?
+      {props.labels.webchatHeaderTitle}
     </TopMenu>
   );
 }
@@ -75,4 +76,9 @@ Top.propTypes = {
   fullScreen: PropTypes.bool.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
+  labels: PropTypes.shape({
+    webchatHeaderTitle: PropTypes.string,
+  }).isRequired,
 };
+
+export default WithLabels(Top);

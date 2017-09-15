@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import WithLabels from '../utils/WithLabels';
 
 const SendButton = styled.div`
   width: 70px;
@@ -41,23 +42,23 @@ const InputWrapper = styled.div`
 const BottomWrapper = styled.div`
   width: 100%;
   background-color: #fff;
-  box-shadow: 0 -1px 3px rgba(0, 0, 0, .1);
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
   height: 45px;
 `;
 
-export default function Bottom(props) {
+function Bottom(props) {
   return (
     <BottomWrapper>
       <InputWrapper>
         <input
           tabIndex={-1}
           value={props.input}
-          placeholder="Écrivez un message..."
+          placeholder={props.labels.messageInputPlaceholder}
           onChange={props.onInputChange}
           onKeyPress={props.onKeyPress}
         />
       </InputWrapper>
-      <SendButton onClick={props.sendMessage}>Envoyer</SendButton>
+      <SendButton onClick={props.sendMessage}>{props.labels.sendButtonLabel}</SendButton>
     </BottomWrapper>
   );
 }
@@ -67,4 +68,10 @@ Bottom.propTypes = {
   onKeyPress: PropTypes.func.isRequired,
   onInputChange: PropTypes.func.isRequired,
   input: PropTypes.string.isRequired,
+  labels: PropTypes.shape({
+    messageInputPlaceholder: PropTypes.string,
+    sendButtonLabel: PropTypes.string,
+  }).isRequired,
 };
+
+export default WithLabels(Bottom);

@@ -1,3 +1,6 @@
+import userAvatar from '../../assets/images/avatars/user.png';
+import startButton from '../../assets/images/icons/botfuel.png';
+
 export default {
   colors: {
     main: '#244891',
@@ -14,9 +17,9 @@ export default {
     fullScreen: true,
   },
   images: {
-    // botAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
-    // userAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
-    // startButton: 'https://webchat.botfuel.io/img/icons/botfuel.png',
+    botAvatar: userAvatar,
+    userAvatar,
+    startButton,
   },
   startButtonStyle: 'bubble',
   dialogStyle: 'hover',

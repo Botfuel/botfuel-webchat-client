@@ -8,7 +8,8 @@
       "NODE_ENV=production webpack --config webpack.config.prod --color",
     "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\"",
     "test": "echo 'No tests'",
-    "precommit": "npm test && npm run style"
+    "precommit": "npm test && npm run style",
+    "prepublish": "npm run build:production"
   },
   "main": "dist/botfuel-webchat-client.js",
   "devDependencies": {

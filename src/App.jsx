@@ -14,8 +14,8 @@ import createApolloClient from './apollo-client';
 import websocketsCheck from './utils/websockets-check';
 
 const BOT_QUERY = gql`
-  query bot($appId: ID!) {
-    bot(appId: $appId) {
+  query bot($botId: ID!) {
+    bot(id: $botId) {
       allowedOrigins
     }
   }
@@ -43,7 +43,7 @@ class BotfuelWebChat {
 
     ReactDOM.render(
       <Root
-        appId={param.appId}
+        botId={param.botId}
         startButtonSize={param.startButtonSize || 90}
         width={(param.size && param.size.width) || 400}
         height={(param.size && param.size.height) || 500}
@@ -154,7 +154,7 @@ const Container = ({
   theme,
   width,
   height,
-  appId,
+  botId,
   startButtonSize,
   fullScreen,
   chatStarted,
@@ -194,7 +194,7 @@ const Container = ({
       <MainContainer>
         <StyledContainer fullScreen={fullScreen} width={width} height={height}>
           <WebChat
-            appId={appId}
+            botId={botId}
             fullScreen={fullScreen}
             width={width}
             height={height}
@@ -220,7 +220,7 @@ const Container = ({
 };
 
 Container.propTypes = {
-  appId: PropTypes.string.isRequired,
+  botId: PropTypes.string.isRequired,
   startButtonSize: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,

@@ -14,9 +14,9 @@ export default {
     fullScreen: true,
   },
   images: {
-    botAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
-    userAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
-    startButton: 'https://webchat.botfuel.io/img/icons/botfuel.png',
+    // botAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
+    // userAvatar: 'https://webchat.botfuel.io/img/avatars/user.png',
+    // startButton: 'https://webchat.botfuel.io/img/icons/botfuel.png',
   },
   startButtonStyle: 'bubble',
   dialogStyle: 'hover',

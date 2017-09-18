@@ -30,3 +30,15 @@ BotfuelWebChat.init({
 ```
 
 Note: Register and create an app on https://app.botfuel.io to get a `<BOTFUEL_APPLICATION_ID>`. 
+
+
+## Publishing
+
+To publish package on NPM and jsdelivr, simply bump the version (according to semver) and publish it:
+
+```
+npm version <patch, minor, major>
+npm publish
+```
+
+The script will automatically be available on jsdelivr.

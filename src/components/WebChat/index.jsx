@@ -90,7 +90,7 @@ class WebChat extends React.Component {
   componentWillMount() {
     this.props.subscribeToNewMessages({
       user: localStorage.getItem('userId'),
-      bot: this.props.appId,
+      bot: this.props.botId,
     });
   }
 
@@ -119,7 +119,7 @@ class WebChat extends React.Component {
       await this.props.createMessageMutation({
         variables: {
           user: localStorage.getItem('userId'),
-          bot: this.props.appId,
+          bot: this.props.botId,
           value: text,
           type: 'text',
           sender: 'user',
@@ -138,7 +138,7 @@ class WebChat extends React.Component {
       await this.props.createMessageMutation({
         variables: {
           user: localStorage.getItem('userId'),
-          bot: this.props.appId,
+          bot: this.props.botId,
           action: {
             payload,
             text,
@@ -179,7 +179,7 @@ class WebChat extends React.Component {
 }
 
 WebChat.propTypes = {
-  appId: PropTypes.string.isRequired,
+  botId: PropTypes.string.isRequired,
   messages: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -207,7 +207,7 @@ export default compose(
 
       options.variables = {
         user: localStorage.getItem('userId'),
-        bot: props.appId,
+        bot: props.botId,
       };
 
       // Poll regulary if websockets are not enabled

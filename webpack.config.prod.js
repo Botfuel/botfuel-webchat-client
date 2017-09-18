@@ -11,8 +11,8 @@ module.exports = {
   ],
   // plugins: [new BabiliPlugin()],
   output: {
-    path: path.join(__dirname, './build'),
-    filename: 'script.js',
+    path: path.join(__dirname, './dist'),
+    filename: 'botfuel-webchat-client.js',
   },
   module: {
     rules: [
@@ -42,6 +42,15 @@ module.exports = {
             comments: false,
           },
         },
+      },
+      {
+        test: /\.(png|jpg|gif)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {},
+          },
+        ],
       },
     ],
   },

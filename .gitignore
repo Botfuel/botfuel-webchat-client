@@ -58,5 +58,4 @@ typings/
 .env
 
 yarn.lock
-build/script.js
-build/script.js.map
+build

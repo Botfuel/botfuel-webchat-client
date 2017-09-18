@@ -20,7 +20,7 @@ const componentsDict = {
 const ClearDiv = styled.div`
   &::after {
     clear: both;
-    content: "";
+    content: '';
     display: block;
   }
 `;
@@ -47,14 +47,16 @@ export default class MessageContainer extends React.Component {
     const Component = componentsDict[type];
     const disableBubble = ['block', 'choices'].includes(type);
 
-    return disableBubble
-      ? <Component type={type} {...props} />
-      : <ClearDiv component={Component}>
+    return disableBubble ? (
+      <Component type={type} {...props} />
+    ) : (
+      <ClearDiv component={Component}>
         {side === 'left' && <Avatar sender={sender} />}
         <Bubble side={side}>
           <Component {...props} />
         </Bubble>
-      </ClearDiv>;
+      </ClearDiv>
+    );
   }
 }
 

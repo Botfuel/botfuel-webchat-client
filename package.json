@@ -1,6 +1,6 @@
 {
   "name": "botfuel-webchat-client",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --config webpack.config --color",
     "build:production": "NODE_ENV=production SERVER_ENDPOINT=https://botfuel-webchat-server.herokuapp.com/graphql SERVER_ENDPOINT_WEBSOCKET=wss://botfuel-webchat-server.herokuapp.com/graphql webpack --config webpack.config.prod --color",

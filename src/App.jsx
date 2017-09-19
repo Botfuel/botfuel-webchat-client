@@ -54,6 +54,7 @@ class BotfuelWebChat {
         }}
         customLabels={param.labels}
         serverUrl={param.serverUrl}
+        extraAllowedOrigins={param.extraAllowedOrigins}
       />,
       document.getElementById(param.embeddedContainerId || 'botfuel'),
     );
@@ -164,16 +165,18 @@ const Container = ({
   switchState,
   websocketsSupported,
   toggleFullScreen,
+  extraAllowedOrigins,
   data: { bot = {}, loading },
 }) => {
   if (!bot && !loading) {
     /* eslint-disable no-console */
     console.log('Bot not found.');
     /* eslint-enable no-console */
+    return null;
   }
 
   const { allowedOrigins = [] } = bot;
-  const cleanUrls = allowedOrigins.map(url => url.replace(/\/+$/, ''));
+  const cleanUrls = extraAllowedOrigins.concat(allowedOrigins).map(url => url.replace(/\/+$/, ''));
 
   if (!window.location.origin) {
     // Some browsers (mainly IE < 11) does not have this property, so we need to build it manually
@@ -186,7 +189,7 @@ const Container = ({
   if (!cleanUrls.includes('*') && !cleanUrls.includes(window.location.origin) && !loading) {
     /* eslint-disable no-console */
     console.log(
-      'Your website is not allowed to use this webchat. Please check that this website’s url is among the allowed origins of the bot on https://botfuel.io.',
+      'Your website is not allowed to use this webchat. Please check that this website’s url is among the allowed origins of the bot on https://app.botfuel.io.',
     );
     /* eslint-enable no-console */
     return null;
@@ -236,6 +239,7 @@ Container.propTypes = {
   switchState: PropTypes.func.isRequired,
   websocketsSupported: PropTypes.bool,
   toggleFullScreen: PropTypes.func.isRequired,
+  extraAllowedOrigins: PropTypes.arrayOf(PropTypes.string),
   data: PropTypes.shape({
     bot: PropTypes.object,
     loading: PropTypes.bool,
@@ -246,6 +250,7 @@ Container.defaultProps = {
   fullScreen: false,
   chatStarted: false,
   websocketsSupported: false,
+  extraAllowedOrigins: [],
 };
 
 const ContainerWithData = graphql(BOT_QUERY)(Container);

@@ -1,13 +1,6 @@
 import { SubscriptionClient, addGraphQLSubscriptions } from 'subscriptions-transport-ws';
 import { ApolloClient, createNetworkInterface, IntrospectionFragmentMatcher } from 'react-apollo';
 
-const SERVER_ENDPOINT = process.env.SERVER_ENDPOINT;
-const SERVER_ENDPOINT_WEBSOCKET = process.env.SERVER_ENDPOINT_WEBSOCKET;
-
-const networkInterface = createNetworkInterface({
-  uri: SERVER_ENDPOINT,
-});
-
 // Fragment matcher so we can use inline fragments on type Value in GraphQL queries
 const fragmentMatcher = new IntrospectionFragmentMatcher({
   introspectionQueryResultData: {
@@ -23,7 +16,17 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
   },
 });
 
-function createApolloClient(websocketsSupported) {
+function createApolloClient(
+  websocketsSupported,
+  serverUrl = 'https://botfuel-webchat-server.herokuapp.com',
+) {
+  const SERVER_ENDPOINT = `${serverUrl}/graphql`;
+  const SERVER_ENDPOINT_WEBSOCKET = `${serverUrl.replace('http', 'ws')}/graphql`;
+
+  const networkInterface = createNetworkInterface({
+    uri: SERVER_ENDPOINT,
+  });
+
   if (websocketsSupported) {
     const wsClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
       reconnect: true,

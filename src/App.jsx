@@ -53,6 +53,7 @@ class BotfuelWebChat {
           fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,
         }}
         customLabels={param.labels}
+        serverUrl={param.serverUrl}
       />,
       document.getElementById(param.embeddedContainerId || 'botfuel'),
     );
@@ -98,7 +99,7 @@ class Root extends React.Component {
   componentWillMount() {
     const setWebsocket = (websocket) => {
       // Store whether websockets are supported
-      this.client = createApolloClient(websocket);
+      this.client = createApolloClient(websocket, this.props.serverUrl);
       this.setState({
         websocketsSupported: websocket,
       });
@@ -140,10 +141,12 @@ Root.propTypes = {
     startFullScreen: PropTypes.bool,
   }).isRequired,
   customLabels: PropTypes.shape({}),
+  serverUrl: PropTypes.string,
 };
 
 Root.defaultProps = {
   customLabels: {},
+  serverUrl: undefined,
 };
 
 Root.childContextTypes = {

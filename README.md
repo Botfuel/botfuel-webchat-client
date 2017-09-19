@@ -25,12 +25,20 @@ Then add the following script on your page:
 
 ```javascript
 BotfuelWebChat.init({
-    applicationId: '<BOTFUEL_APPLICATION_ID'
+    applicationId: '<BOTFUEL_APPLICATION_ID>'
 });
 ```
 
 Note: Register and create an app on https://app.botfuel.io to get a `<BOTFUEL_APPLICATION_ID>`. 
 
+For development, you can also provide a custom backend:
+
+```javascript
+BotfuelWebChat.init({
+    applicationId: '<BOTFUEL_APPLICATION_ID>'
+    serverUrl: 'http://localhost:7001'
+});
+```
 
 ## Publishing
 

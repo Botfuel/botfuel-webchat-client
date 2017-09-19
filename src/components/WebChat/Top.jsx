@@ -4,13 +4,6 @@ import PropTypes from 'prop-types';
 import WithLabels from '../utils/WithLabels';
 
 const Icon = styled.span`
-  @font-face {
-    font-family: 'font-awesome';
-    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff')
-      format('woff');
-    font-weight: normal;
-    font-style: normal;
-  }
   font-family: 'font-awesome';
   cursor: pointer;
   &::before {
@@ -20,21 +13,21 @@ const Icon = styled.span`
   }
 `;
 
-const Cross = Icon.extend`
+const Cross = styled(Icon)`
   &::before {
     display: ${props => (props.theme.buttons.close ? 'block' : 'none')};
     right: 15px;
     top: 10px;
-    content: '\f00d';
+    content: '\\f00d';
   }
 `;
 
-const FullScreen = Icon.extend`
+const FullScreen = styled(Icon)`
   &::before {
     display: ${props => (props.theme.buttons.fullScreen ? 'block' : 'none')};
     left: 15px;
     top: 10px;
-    content: ${props => (props.fullScreen ? '"\f066"' : '"\f065"')};
+    content: ${props => (props.fullScreen ? '"\\f066"' : '"\\f065"')};
   }
   @media (max-height: ${props => props.height + 20}px),
     (max-width: ${props => props.width + 20}px) {

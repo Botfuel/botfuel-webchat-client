@@ -2,7 +2,7 @@ import 'babel-polyfill';
 import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider, injectGlobal } from 'styled-components';
 import { merge } from 'lodash';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
@@ -12,6 +12,18 @@ import WebChat from './components/WebChat';
 import defaultTheme from './theme/base';
 import createApolloClient from './apollo-client';
 import websocketsCheck from './utils/websockets-check';
+
+/* eslint-disable */
+injectGlobal`
+@font-face {
+  font-family: 'font-awesome';
+  src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff')
+  format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+`;
+/* eslint-enable */
 
 const BOT_QUERY = gql`
   query bot($botId: ID!) {

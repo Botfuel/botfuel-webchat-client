@@ -27,14 +27,8 @@ const Text = styled.div`
 export default function TextMessage({ value }) {
   return (
     <Container top={value.top}>
-      {value.title &&
-        <Title>
-          {value.title}
-        </Title>}
-      {value.text &&
-        <Text>
-          {value.text}
-        </Text>}
+      {value.title && <Title>{value.title}</Title>}
+      {value.text && <Text>{value.text}</Text>}
     </Container>
   );
 }

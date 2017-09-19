@@ -2,8 +2,10 @@
   "name": "botfuel-webchat-client",
   "version": "1.0.4",
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server --config webpack.config --color",
-    "build:production": "NODE_ENV=production webpack --config webpack.config.prod --color",
+    "start":
+      "NODE_ENV=development webpack-dev-server --config webpack.config --color",
+    "build:production":
+      "NODE_ENV=production webpack --config webpack.config.prod --color",
     "style": "eslint \"{src,tests,config}/**/*.{js,jsx}\"",
     "test": "echo 'No tests'",
     "precommit": "npm test && npm run style",
@@ -42,7 +44,7 @@
     "react-flip-move": "^2.9.14",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-table": "^6.5.3",
-    "styled-components": "^2.1.2",
+    "styled-components": "1.4.6",
     "subscriptions-transport-ws": "^0.8.2",
     "url-loader": "^0.5.9",
     "uuid": "^3.1.0",

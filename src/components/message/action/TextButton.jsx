@@ -2,28 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const Container = styled.div`
-  text-align: right;
-  display: flex;
-  justify-content: flex-end;
-  > div {
-    margin-left: ${props => 5 / props.size}%;
-    width: ${props => 90 / props.size}%;
-    max-width: 200px;
-  }
-`;
-export default function ButtonList({ value, sendAction }) {
-  const choices = value.choices;
+const TextButton = ({ handleClick, label }) => <Button onClick={handleClick}>{label}</Button>;
 
-  return (
-    <Container size={value.choices.length}>
-      {choices &&
-        choices.map(choice => (
-          <ButtonMessage onClick={sendAction(choice)} key={choice.id} text={choice.text} />
-        ))}
-    </Container>
-  );
-}
+TextButton.propTypes = {
+  handleClick: PropTypes.func.isRequired,
+  label: PropTypes.func.isRequired,
+};
 
 const Button = styled.div`
   font-size: 15px;
@@ -63,11 +47,4 @@ function ButtonMessage({ text, ...props }) {
 
 ButtonMessage.propTypes = {
   text: PropTypes.string.isRequired,
-};
-
-ButtonList.propTypes = {
-  value: PropTypes.shape({
-    choices: PropTypes.array.isRequired,
-  }).isRequired,
-  sendAction: PropTypes.func.isRequired,
 };

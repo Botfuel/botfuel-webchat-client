@@ -2,19 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import Table from './Table';
-import Text from './Text';
-import ButtonList from './ButtonList';
-import Block from './Block';
-import QuickReplies from './QuickReplies';
+import TextMessage from './TextMessage';
+import Actions from './action/Actions';
 import Bubble from './Bubble';
 
 const componentsDict = {
-  text: Text,
+  text: TextMessage,
   table: Table,
-  choices: QuickReplies,
-  choicesOld: ButtonList,
-  block: Block,
-  action: Text,
+  actions: Actions,
+  postback: TextMessage,
 };
 
 const ClearDiv = styled.div`
@@ -45,7 +41,7 @@ export default class MessageContainer extends React.Component {
   render() {
     const { side, type, sender, ...props } = this.props;
     const Component = componentsDict[type];
-    const disableBubble = ['block', 'choices'].includes(type);
+    const disableBubble = ['actions'].includes(type);
 
     return disableBubble ? (
       <Component type={type} {...props} />

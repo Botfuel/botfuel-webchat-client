@@ -48,3 +48,5 @@ function ButtonMessage({ text, ...props }) {
 ButtonMessage.propTypes = {
   text: PropTypes.string.isRequired,
 };
+
+export default TextButton;

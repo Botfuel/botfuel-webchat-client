@@ -43,7 +43,7 @@ const Actions = ({ payload, sendAction }) => {
             case 'postback':
               return (
                 <TextButton
-                  key={action.postbackActionValue}
+                  key={JSON.stringify(action.postbackActionValue)}
                   handleClick={sendAction({
                     type: 'postback',
                     value: action.postbackActionValue,

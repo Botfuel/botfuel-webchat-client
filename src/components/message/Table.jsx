@@ -29,44 +29,26 @@ const Table = styled.table`
 `;
 
 function generateTable(value) {
-  const header = value.schema.map(h =>
-    (<th key={h.key}>
-      {h.label}
-    </th>),
-  );
-  const rows = value.rows.map(row =>
-    (<tr key={uuidv4()}>
-      {value.schema.map(h =>
-        (<td key={h.key}>
-          {row[h.key]}
-        </td>),
-      )}
-    </tr>),
-  );
+  const header = value.schema.map(h => <th key={h.key}>{h.label}</th>);
+  const rows = value.rows.map(row => (
+    <tr key={uuidv4()}>{value.schema.map(h => <td key={h.key}>{row[h.key]}</td>)}</tr>
+  ));
   return (
     <Table>
       <Thead>
-        <tr>
-          {header}
-        </tr>
+        <tr>{header}</tr>
       </Thead>
-      <tbody id="tbody">
-        {rows}
-      </tbody>
+      <tbody id="tbody">{rows}</tbody>
     </Table>
   );
 }
 
-export default function MessageTable({ value }) {
-  return (
-    <div>
-      {generateTable(value)}
-    </div>
-  );
+export default function MessageTable({ payload }) {
+  return <div>{generateTable(payload.tableValue)}</div>;
 }
 
 MessageTable.propTypes = {
-  value: PropTypes.shape({
+  payload: PropTypes.shape({
     schema: PropTypes.array.isRequired,
     rows: PropTypes.array.isRequired,
   }),

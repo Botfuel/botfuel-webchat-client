@@ -10,23 +10,36 @@ const MessageFragment = gql`
     user
     bot
     sender
-    value {
+    payload {
       ... on Text {
-        text
+        textValue: value
       }
       ... on Table {
-        schema {
-          key
-          label
+        tableValue: value {
+          schema {
+            key
+            label
+          }
+          rows
         }
-        rows
       }
-      ... on Choices {
-        choices {
-          id
-          text
-          payload
+      ... on Actions {
+        actionValue: value {
+          ... on TextAction {
+            type
+            text
+            textActionValue: value
+          }
+          ... on PostbackAction {
+            type
+            text
+            postbackActionValue: value
+          }
         }
+      }
+      ... on Postback {
+        postbackValue: value
+        text
       }
     }
   }
@@ -50,22 +63,39 @@ const MESSAGES_SUBSCRIPTION = gql`
   ${MessageFragment}
 `;
 
-const MESSAGE_MUTATION = gql`
-  mutation createMessage(
+const TEXT_MESSAGE_MUTATION = gql`
+  mutation createTextMessage(
     $user: ID!
     $bot: ID!
-    $value: String
-    $action: ActionInput
+    $value: String!
     $sender: String!
-    $type: String!
   ) {
-    createMessage(
+    createTextMessage(
       user: $user
       bot: $bot
       value: $value
-      action: $action
       sender: $sender
-      type: $type
+    ) {
+      ...FullMessage
+    }
+  }
+  ${MessageFragment}
+`;
+
+const POSTBACK_MESSAGE_MUTATION = gql`
+  mutation createPostbackMessage(
+    $user: ID!
+    $bot: ID!
+    $value: JSON!
+    $text: String!
+    $sender: String!
+  ) {
+    createPostbackMessage(
+      user: $user
+      bot: $bot
+      value: $value
+      text: $text
+      sender: $sender
     ) {
       ...FullMessage
     }
@@ -116,12 +146,11 @@ class WebChat extends React.Component {
     const text = this.state.input;
     if (text) {
       this.resetInput();
-      await this.props.createMessageMutation({
+      await this.props.createTextMessageMutation({
         variables: {
           user: localStorage.getItem('userId'),
           bot: this.props.botId,
           value: text,
-          type: 'text',
           sender: 'user',
         },
       });
@@ -133,19 +162,20 @@ class WebChat extends React.Component {
     }
   }
 
-  sendAction({ payload, text, id }) {
+  sendAction({ type, value, text }) {
     return async () => {
-      await this.props.createMessageMutation({
+      const { createTextMessageMutation, createPostbackMessageMutation } = this.props;
+      const mutation = type === 'text' ? createTextMessageMutation : createPostbackMessageMutation;
+
+      await mutation({
         variables: {
           user: localStorage.getItem('userId'),
           bot: this.props.botId,
-          action: {
-            payload,
-            text,
-            id,
-          },
-          type: 'action',
+          value,
           sender: 'user',
+          ...(!!text && {
+            text,
+          }),
         },
       });
 
@@ -160,9 +190,14 @@ class WebChat extends React.Component {
   render() {
     // We need to remove messages that are quick replies
     // and are not the last message
+    // We keep intact actions with only links
     const isQuickRepliesAndNotLast = (m, index) =>
-      m.type === 'choices' && index !== this.props.messages.length - 1;
-    const messages = this.props.messages.filter((m, index) => !isQuickRepliesAndNotLast(m, index));
+      m.type === 'actions' && index !== this.props.messages.length - 1;
+    const isLinks = m =>
+      m.type === 'actions' && m.payload.actionValue.every(a => a.type === 'link');
+    const messages = this.props.messages.filter(
+      (m, index) => !isQuickRepliesAndNotLast(m, index) || isLinks(m),
+    );
 
     return (
       <Main
@@ -191,7 +226,8 @@ WebChat.propTypes = {
     }),
   ),
   subscribeToNewMessages: PropTypes.func.isRequired,
-  createMessageMutation: PropTypes.func.isRequired,
+  createTextMessageMutation: PropTypes.func.isRequired,
+  createPostbackMessageMutation: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
   websocketsSupported: PropTypes.bool.isRequired,
 };
@@ -238,5 +274,6 @@ export default compose(
           : null),
     }),
   }),
-  graphql(MESSAGE_MUTATION, { name: 'createMessageMutation' }),
+  graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),
+  graphql(POSTBACK_MESSAGE_MUTATION, { name: 'createPostbackMessageMutation' }),
 )(WebChat);

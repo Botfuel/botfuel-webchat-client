@@ -23,7 +23,7 @@ const MessageList = ({ messages, setRef, sendAction, labels }) => (
         top: true,
       }}
     />
-    <Message value={{ text: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
+    <Message payload={{ textValue: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
     <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
       {messages.map(message => (
         <Message

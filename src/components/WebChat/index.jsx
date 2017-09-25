@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { gql, graphql, compose } from 'react-apollo';
+import last from 'lodash/last';
 import Main from './Main';
 
 const MessageFragment = gql`
@@ -40,6 +41,9 @@ const MessageFragment = gql`
       ... on Postback {
         postbackValue: value
         text
+      }
+      ... on Quickreplies {
+        quickrepliesValue: value
       }
     }
   }
@@ -164,7 +168,7 @@ class WebChat extends React.Component {
 
   sendAction({ type, value, text }) {
     return async () => {
-      const { createTextMessageMutation, createPostbackMessageMutation } = this.props;
+      const { createPostbackMessageMutation, createTextMessageMutation } = this.props;
       const mutation = type === 'text' ? createTextMessageMutation : createPostbackMessageMutation;
 
       await mutation({
@@ -188,22 +192,21 @@ class WebChat extends React.Component {
   }
 
   render() {
-    // We need to remove messages that are quick replies
-    // and are not the last message
-    // We keep intact actions with only links
-    const isQuickRepliesAndNotLast = (m, index) =>
-      m.type === 'actions' && index !== this.props.messages.length - 1;
-    const isLinks = m =>
-      m.type === 'actions' && m.payload.actionValue.every(a => a.type === 'link');
-    const messages = this.props.messages.filter(
-      (m, index) => !isQuickRepliesAndNotLast(m, index) || isLinks(m),
-    );
+    // Quickreplies are only displayed if they are the last message
+    const lastMessage = last(this.props.messages);
+    const quickreplies =
+      (!!lastMessage &&
+        lastMessage.type === 'quickreplies' &&
+        lastMessage.payload.quickrepliesValue) ||
+      [];
+    const messages = this.props.messages.filter(m => m.type !== 'quickreplies');
 
     return (
       <Main
         {...this.props}
         {...this.state}
         messages={messages}
+        quickreplies={quickreplies}
         sendAction={this.sendAction}
         sendMessage={this.sendMessage}
         handleKeyPress={this.handleKeyPress}

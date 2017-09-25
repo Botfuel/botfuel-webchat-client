@@ -24,14 +24,6 @@ const Actions = ({ payload, sendAction }) => {
       {actions &&
         actions.map((action) => {
           switch (action.type) {
-            case 'text':
-              return (
-                <TextButton
-                  key={action.textActionValue}
-                  handleClick={sendAction({ type: 'text', value: action.textActionValue })}
-                  label={action.text || action.textActionValue}
-                />
-              );
             case 'link':
               return (
                 <LinkButton

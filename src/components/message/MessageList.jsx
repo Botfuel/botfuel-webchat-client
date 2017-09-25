@@ -5,6 +5,7 @@ import FlipMove from 'react-flip-move';
 import WithLabels from '../utils/WithLabels';
 import Message from './Message';
 import Block from './Block';
+import Quickreplies from './Quickreplies';
 
 const Messages = styled.div`
   list-style: none;
@@ -15,7 +16,7 @@ const Messages = styled.div`
   overflow-y: auto;
 `;
 
-const MessageList = ({ messages, setRef, sendAction, labels }) => (
+const MessageList = ({ messages, setRef, sendAction, labels, quickreplies }) => (
   <Messages innerRef={setRef}>
     <Block
       value={{
@@ -34,11 +35,13 @@ const MessageList = ({ messages, setRef, sendAction, labels }) => (
         />
       ))}
     </FlipMove>
+    <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
   </Messages>
 );
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,
   labels: PropTypes.shape({

@@ -16,40 +16,49 @@ const Container = styled.div`
   }
 `;
 
-const Actions = ({ payload, sendAction }) => {
-  const actions = payload.actionValue;
+const Actions = ({ payload, sendAction, markAsClicked }) => {
+  const hasAClickedAction = payload.actionValue.some(a => !!a.clicked);
+  const actions = payload.actionValue.map(a => ({
+    ...a,
+    ...{
+      disabled: !a.clicked && hasAClickedAction,
+      clicked: !!a.clicked,
+    },
+  }));
 
   return (
     <Container size={actions.length}>
       {actions &&
-        actions.map((action) => {
+        actions.map((action, index) => {
           switch (action.type) {
-            case 'text':
-              return (
-                <TextButton
-                  key={action.textActionValue}
-                  handleClick={sendAction({ type: 'text', value: action.textActionValue })}
-                  label={action.text || action.textActionValue}
-                />
-              );
             case 'link':
               return (
                 <LinkButton
-                  key={action.textActionValue}
-                  link={action.textActionValue}
-                  label={action.text || action.textActionValue}
+                  index={index}
+                  key={action.linkActionValue}
+                  link={action.linkActionValue}
+                  label={action.text || action.linkActionValue}
+                  handleClick={() => markAsClicked(index)}
+                  disabled={action.disabled}
+                  clicked={action.clicked}
                 />
               );
             case 'postback':
               return (
                 <TextButton
+                  index={index}
                   key={JSON.stringify(action.postbackActionValue)}
-                  handleClick={sendAction({
-                    type: 'postback',
-                    value: action.postbackActionValue,
-                    text: action.text,
-                  })}
+                  handleClick={() => {
+                    sendAction({
+                      type: 'postback',
+                      value: action.postbackActionValue,
+                      text: action.text,
+                    })();
+                    markAsClicked(index);
+                  }}
                   label={action.text || action.postbackActionValue}
+                  disabled={action.disabled}
+                  clicked={action.clicked}
                 />
               );
             default:
@@ -71,6 +80,7 @@ Actions.propTypes = {
     ),
   }).isRequired,
   sendAction: PropTypes.func,
+  markAsClicked: PropTypes.func.isRequired,
 };
 
 Actions.defaultProps = {

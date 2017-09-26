@@ -2,12 +2,51 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const TextButton = ({ handleClick, label }) => <Button onClick={handleClick}>{label}</Button>;
+const TextButton = ({ handleClick, label, disabled, clicked }) => (
+  <Button
+    onClick={disabled || clicked ? () => null : handleClick}
+    disabled={disabled}
+    clicked={clicked}
+  >
+    {label}
+  </Button>
+);
 
 TextButton.propTypes = {
   handleClick: PropTypes.func.isRequired,
-  label: PropTypes.func.isRequired,
+  label: PropTypes.string.isRequired,
+  disabled: PropTypes.bool,
+  clicked: PropTypes.bool,
 };
+
+TextButton.defaultProps = {
+  disabled: false,
+  clicked: false,
+};
+
+function getStatusBackgroundColor(props) {
+  if (props.disabled) {
+    return 'transparent';
+  }
+
+  if (props.clicked) {
+    return props.theme.colors.primary;
+  }
+
+  return 'transparent';
+}
+
+function getStatusColor(props) {
+  if (props.disabled) {
+    return 'lightgrey';
+  }
+
+  if (props.clicked) {
+    return props.theme.colors.primaryText;
+  }
+
+  return props.theme.colors.primary;
+}
 
 const Button = styled.div`
   font-size: 15px;
@@ -20,15 +59,11 @@ const Button = styled.div`
   border-radius: 14px;
   position: relative;
   max-width: calc(100% - 75px);
-  color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
-  background-color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
   text-align: center;
-  background-color: transparent;
-  color: ${props => props.theme.colors.primary};
-  border: 2px solid ${props => props.theme.colors.primary};
-  cursor: pointer;
+  background-color: ${props => getStatusBackgroundColor(props)};
+  color: ${props => getStatusColor(props)};
+  border: 2px solid ${props => getStatusColor(props)};
+  cursor: ${props => (props.disabled || props.clicked ? 'default' : 'pointer')};
   width: 30%;
   display: flex;
   align-items: center;
@@ -39,6 +74,8 @@ const Button = styled.div`
   &:focus {
     outline: none;
   }
+
+  transition: all 400ms ease;
 `;
 
 function ButtonMessage({ text, ...props }) {

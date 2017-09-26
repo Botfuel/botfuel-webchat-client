@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { gql, graphql, compose } from 'react-apollo';
+import last from 'lodash/last';
 import Main from './Main';
 
 const MessageFragment = gql`
@@ -25,14 +26,16 @@ const MessageFragment = gql`
       }
       ... on Actions {
         actionValue: value {
-          ... on TextAction {
+          ... on LinkAction {
             type
             text
-            textActionValue: value
+            clicked
+            linkActionValue: value
           }
           ... on PostbackAction {
             type
             text
+            clicked
             postbackActionValue: value
           }
         }
@@ -40,6 +43,9 @@ const MessageFragment = gql`
       ... on Postback {
         postbackValue: value
         text
+      }
+      ... on Quickreplies {
+        quickrepliesValue: value
       }
     }
   }
@@ -103,6 +109,14 @@ const POSTBACK_MESSAGE_MUTATION = gql`
   ${MessageFragment}
 `;
 
+const MARK_ACTION_AS_CLICKED_MUTATION = gql`
+  mutation markActionAsClicked($message: ID!, $actionIndex: Int!) {
+    markActionAsClicked(message: $message, actionIndex: $actionIndex) {
+      id
+    }
+  }
+`;
+
 class WebChat extends React.Component {
   constructor(props) {
     super(props);
@@ -115,6 +129,7 @@ class WebChat extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.sendAction = this.sendAction.bind(this);
+    this.markAsClicked = this.markAsClicked.bind(this);
   }
 
   componentWillMount() {
@@ -164,7 +179,7 @@ class WebChat extends React.Component {
 
   sendAction({ type, value, text }) {
     return async () => {
-      const { createTextMessageMutation, createPostbackMessageMutation } = this.props;
+      const { createPostbackMessageMutation, createTextMessageMutation } = this.props;
       const mutation = type === 'text' ? createTextMessageMutation : createPostbackMessageMutation;
 
       await mutation({
@@ -187,24 +202,46 @@ class WebChat extends React.Component {
     };
   }
 
+  markAsClicked(messageId) {
+    return async (actionIndex) => {
+      const { markActionAsClickedMutation } = this.props;
+
+      await markActionAsClickedMutation({
+        variables: {
+          message: messageId,
+          actionIndex,
+        },
+      });
+
+      this.props.refetch();
+    };
+  }
+
   render() {
-    // We need to remove messages that are quick replies
-    // and are not the last message
-    // We keep intact actions with only links
-    const isQuickRepliesAndNotLast = (m, index) =>
-      m.type === 'actions' && index !== this.props.messages.length - 1;
-    const isLinks = m =>
-      m.type === 'actions' && m.payload.actionValue.every(a => a.type === 'link');
+    // Quickreplies are only displayed if they are the last message
+    const lastMessage = last(this.props.messages);
+    const quickreplies =
+      (!!lastMessage &&
+        lastMessage.type === 'quickreplies' &&
+        lastMessage.payload.quickrepliesValue) ||
+      [];
     const messages = this.props.messages.filter(
-      (m, index) => !isQuickRepliesAndNotLast(m, index) || isLinks(m),
+      m => m.type !== 'quickreplies' && m.type !== 'postback',
     );
+    // .map(m => ({
+    //   ...m,
+    //   disabled: m.type === 'actions' && m.payload.value.some(action => !!action.clicked)
+    // }));
+    // .map((m, index) => m.index === this.props.messages.length - 1);
 
     return (
       <Main
         {...this.props}
         {...this.state}
         messages={messages}
+        quickreplies={quickreplies}
         sendAction={this.sendAction}
+        markAsClicked={this.markAsClicked}
         sendMessage={this.sendMessage}
         handleKeyPress={this.handleKeyPress}
         handleInputChange={this.handleInputChange}
@@ -276,4 +313,5 @@ export default compose(
   }),
   graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),
   graphql(POSTBACK_MESSAGE_MUTATION, { name: 'createPostbackMessageMutation' }),
+  graphql(MARK_ACTION_AS_CLICKED_MUTATION, { name: 'markActionAsClickedMutation' }),
 )(WebChat);

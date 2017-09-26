@@ -14,7 +14,7 @@ const fullScreenMode = css`
 
 const DialogStyles = {
   hover: css`
-    box-shadow: 0 0 24px rgba(0, 0, 0, .15);
+    box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
     border: 1px solid #e3e3e3;
     border-radius: 10px;
   `,
@@ -23,7 +23,7 @@ const DialogStyles = {
 const Container = styled.div`
   opacity: ${props => (props.isVisible ? 1 : 0)};
   visibility: ${props => (props.isVisible ? 'visible' : 'hidden')};
-  transition: opacity .3s ease-in-out;
+  transition: opacity 0.3s ease-in-out;
   color: #000;
   width: ${props => (props.theme.fluid ? '100%' : `${props.width}px`)};
   height: ${props => (props.theme.fluid ? '100%' : `${props.height}px`)};
@@ -40,6 +40,7 @@ const Container = styled.div`
 
 const Main = ({
   messages,
+  quickreplies,
   width,
   height,
   isVisible,
@@ -47,12 +48,13 @@ const Main = ({
   switchMode,
   toggleFullScreen,
   sendAction,
+  markAsClicked,
   sendMessage,
   handleKeyPress,
   handleInputChange,
   input,
-}) =>
-  (<Container
+}) => (
+  <Container
     width={width || width}
     height={height || height}
     isVisible={isVisible}
@@ -65,14 +67,20 @@ const Main = ({
       switchMode={switchMode}
       switchSize={toggleFullScreen}
     />
-    <MessageListContainer sendAction={sendAction} messages={messages} />
+    <MessageListContainer
+      sendAction={sendAction}
+      markAsClicked={markAsClicked}
+      messages={messages}
+      quickreplies={quickreplies}
+    />
     <Bottom
       sendMessage={sendMessage}
       onKeyPress={handleKeyPress}
       onInputChange={handleInputChange}
       input={input}
     />
-  </Container>);
+  </Container>
+);
 
 Main.propTypes = {
   switchMode: PropTypes.func.isRequired,
@@ -91,7 +99,9 @@ Main.propTypes = {
       type: PropTypes.string,
     }),
   ),
+  quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   sendAction: PropTypes.func.isRequired,
+  markAsClicked: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
   handleKeyPress: PropTypes.func.isRequired,
   handleInputChange: PropTypes.func.isRequired,

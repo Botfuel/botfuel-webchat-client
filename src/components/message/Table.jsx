@@ -49,7 +49,9 @@ export default function MessageTable({ payload }) {
 
 MessageTable.propTypes = {
   payload: PropTypes.shape({
-    schema: PropTypes.array.isRequired,
-    rows: PropTypes.array.isRequired,
+    value: PropTypes.shape({
+      schema: PropTypes.array.isRequired,
+      rows: PropTypes.array.isRequired,
+    }),
   }),
 };

@@ -26,14 +26,16 @@ const MessageFragment = gql`
       }
       ... on Actions {
         actionValue: value {
-          ... on TextAction {
+          ... on LinkAction {
             type
             text
-            textActionValue: value
+            clicked
+            linkActionValue: value
           }
           ... on PostbackAction {
             type
             text
+            clicked
             postbackActionValue: value
           }
         }
@@ -107,6 +109,14 @@ const POSTBACK_MESSAGE_MUTATION = gql`
   ${MessageFragment}
 `;
 
+const MARK_ACTION_AS_CLICKED_MUTATION = gql`
+  mutation markActionAsClicked($message: ID!, $actionIndex: Int!) {
+    markActionAsClicked(message: $message, actionIndex: $actionIndex) {
+      id
+    }
+  }
+`;
+
 class WebChat extends React.Component {
   constructor(props) {
     super(props);
@@ -119,6 +129,7 @@ class WebChat extends React.Component {
     this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.sendAction = this.sendAction.bind(this);
+    this.markAsClicked = this.markAsClicked.bind(this);
   }
 
   componentWillMount() {
@@ -191,6 +202,21 @@ class WebChat extends React.Component {
     };
   }
 
+  markAsClicked(messageId) {
+    return async (actionIndex) => {
+      const { markActionAsClickedMutation } = this.props;
+
+      await markActionAsClickedMutation({
+        variables: {
+          message: messageId,
+          actionIndex,
+        },
+      });
+
+      this.props.refetch();
+    };
+  }
+
   render() {
     // Quickreplies are only displayed if they are the last message
     const lastMessage = last(this.props.messages);
@@ -199,7 +225,14 @@ class WebChat extends React.Component {
         lastMessage.type === 'quickreplies' &&
         lastMessage.payload.quickrepliesValue) ||
       [];
-    const messages = this.props.messages.filter(m => m.type !== 'quickreplies');
+    const messages = this.props.messages.filter(
+      m => m.type !== 'quickreplies' && m.type !== 'postback',
+    );
+    // .map(m => ({
+    //   ...m,
+    //   disabled: m.type === 'actions' && m.payload.value.some(action => !!action.clicked)
+    // }));
+    // .map((m, index) => m.index === this.props.messages.length - 1);
 
     return (
       <Main
@@ -208,6 +241,7 @@ class WebChat extends React.Component {
         messages={messages}
         quickreplies={quickreplies}
         sendAction={this.sendAction}
+        markAsClicked={this.markAsClicked}
         sendMessage={this.sendMessage}
         handleKeyPress={this.handleKeyPress}
         handleInputChange={this.handleInputChange}
@@ -279,4 +313,5 @@ export default compose(
   }),
   graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),
   graphql(POSTBACK_MESSAGE_MUTATION, { name: 'createPostbackMessageMutation' }),
+  graphql(MARK_ACTION_AS_CLICKED_MUTATION, { name: 'markActionAsClickedMutation' }),
 )(WebChat);

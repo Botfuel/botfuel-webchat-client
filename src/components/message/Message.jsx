@@ -60,14 +60,22 @@ MessageContainer.propTypes = {
   side: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired,
   sender: PropTypes.string.isRequired,
-  value: PropTypes.oneOfType([
-    PropTypes.shape({
-      text: PropTypes.string,
-    }),
-    PropTypes.shape({
+  payload: PropTypes.shape({
+    textValue: PropTypes.string,
+    tableValue: PropTypes.shape({
       schema: PropTypes.array,
       rows: PropTypes.array,
     }),
-    PropTypes.array,
-  ]).isRequired,
+    actionValue: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string,
+        text: PropTypes.string,
+        clicked: PropTypes.bool,
+        linkActionValue: PropTypes.string,
+        postbackActionValue: PropTypes.object,
+      }),
+    ),
+    postbackValue: PropTypes.object,
+    quickrepliesValue: PropTypes.arrayOf(PropTypes.string),
+  }).isRequired,
 };

@@ -16,7 +16,7 @@ const Messages = styled.div`
   overflow-y: auto;
 `;
 
-const MessageList = ({ messages, setRef, sendAction, labels, quickreplies }) => (
+const MessageList = ({ messages, setRef, sendAction, labels, quickreplies, markAsClicked }) => (
   <Messages innerRef={setRef}>
     <Block
       value={{
@@ -31,6 +31,7 @@ const MessageList = ({ messages, setRef, sendAction, labels, quickreplies }) => 
           {...message}
           side={message.sender === 'user' ? 'right' : 'left'}
           sendAction={sendAction}
+          markAsClicked={markAsClicked(message.id)}
           key={message.id}
         />
       ))}
@@ -44,6 +45,7 @@ MessageList.propTypes = {
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,
+  markAsClicked: PropTypes.func.isRequired,
   labels: PropTypes.shape({
     helpMessage: PropTypes.string,
   }).isRequired,

@@ -2,8 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-const LinkButton = ({ label, link }) => (
-  <Link href={link} target="_blank">
+const LinkButton = ({ label, link, handleClick, disabled, clicked }) => (
+  <Link href={link} onClick={handleClick} target="_blank" disabled={disabled} clicked={clicked}>
     {label}
   </Link>
 );
@@ -11,7 +11,22 @@ const LinkButton = ({ label, link }) => (
 LinkButton.propTypes = {
   label: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
+  handleClick: PropTypes.func.isRequired,
+  disabled: PropTypes.bool.isRequired,
+  clicked: PropTypes.bool.isRequired,
 };
+
+function getStatusColor(props) {
+  if (props.disabled) {
+    return 'lightgrey';
+  }
+
+  if (props.clicked) {
+    return '#609';
+  }
+
+  return props.theme.colors.primary;
+}
 
 export default LinkButton;
 
@@ -26,14 +41,9 @@ const Link = styled.a`
   border-radius: 14px;
   position: relative;
   max-width: calc(100% - 75px);
-  color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
-  background-color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
+  color: ${props => getStatusColor(props)};
   text-align: center;
   background-color: transparent;
-  color: ${props => props.theme.colors.primary};
-  border: 2px solid ${props => props.theme.colors.primary};
   cursor: pointer;
   width: 30%;
   display: flex;
@@ -45,4 +55,5 @@ const Link = styled.a`
   &:focus {
     outline: none;
   }
+  ${props => (props.clicked || props.disabled ? 'pointer-events: none' : '')};
 `;

@@ -48,6 +48,7 @@ const Main = ({
   switchMode,
   toggleFullScreen,
   sendAction,
+  markAsClicked,
   sendMessage,
   handleKeyPress,
   handleInputChange,
@@ -66,7 +67,12 @@ const Main = ({
       switchMode={switchMode}
       switchSize={toggleFullScreen}
     />
-    <MessageListContainer sendAction={sendAction} messages={messages} quickreplies={quickreplies} />
+    <MessageListContainer
+      sendAction={sendAction}
+      markAsClicked={markAsClicked}
+      messages={messages}
+      quickreplies={quickreplies}
+    />
     <Bottom
       sendMessage={sendMessage}
       onKeyPress={handleKeyPress}
@@ -95,6 +101,7 @@ Main.propTypes = {
   ),
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   sendAction: PropTypes.func.isRequired,
+  markAsClicked: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
   handleKeyPress: PropTypes.func.isRequired,
   handleInputChange: PropTypes.func.isRequired,

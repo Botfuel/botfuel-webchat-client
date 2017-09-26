@@ -19,7 +19,7 @@ function Quickreplies({ quickreplies, sendAction }) {
   return (
     <Container size={quickreplies.length}>
       {quickreplies.map(q => (
-        <TextButton handleClick={sendAction({ type: 'text', value: q })} label={q} />
+        <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
       ))}
     </Container>
   );

@@ -18,7 +18,7 @@ const fragmentMatcher = new IntrospectionFragmentMatcher({
 
 function createApolloClient(
   websocketsSupported,
-  serverUrl = 'https://botfuel-webchat-server.herokuapp.com',
+  serverUrl = 'https://webchat.botfuel.io',
 ) {
   const SERVER_ENDPOINT = `${serverUrl}/graphql`;
   const SERVER_ENDPOINT_WEBSOCKET = `${serverUrl.replace('http', 'ws')}/graphql`;

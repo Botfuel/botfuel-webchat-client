@@ -35,7 +35,7 @@ const Actions = ({ payload, sendAction, markAsClicked }) => {
               return (
                 <LinkButton
                   index={index}
-                  key={action.linkActionValue}
+                  key={`${action.text}${action.linkActionValue}`}
                   link={action.linkActionValue}
                   label={action.text || action.linkActionValue}
                   handleClick={() => markAsClicked(index)}
@@ -47,7 +47,7 @@ const Actions = ({ payload, sendAction, markAsClicked }) => {
               return (
                 <TextButton
                   index={index}
-                  key={JSON.stringify(action.postbackActionValue)}
+                  key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
                   handleClick={() => {
                     sendAction({
                       type: 'postback',

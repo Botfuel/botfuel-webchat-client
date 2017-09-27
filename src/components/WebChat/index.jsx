@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { gql, graphql, compose } from 'react-apollo';
 import last from 'lodash/last';
+import uuidv4 from 'uuid/v4';
 import Main from './Main';
 
 const MessageFragment = gql`
@@ -139,6 +140,15 @@ class WebChat extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.error && nextProps.error.graphQLErrors) {
+      /* eslint-disable no-console */
+      console.log('Error while fetching messages. Assuming message format has changed.');
+      /* eslint-enable no-console */
+      localStorage.setItem('userId', uuidv4());
+    }
+  }
+
   handleInputChange(e) {
     this.setState({
       input: e.target.value,
@@ -228,11 +238,6 @@ class WebChat extends React.Component {
     const messages = this.props.messages.filter(
       m => m.type !== 'quickreplies' && m.type !== 'postback',
     );
-    // .map(m => ({
-    //   ...m,
-    //   disabled: m.type === 'actions' && m.payload.value.some(action => !!action.clicked)
-    // }));
-    // .map((m, index) => m.index === this.props.messages.length - 1);
 
     return (
       <Main
@@ -252,6 +257,9 @@ class WebChat extends React.Component {
 
 WebChat.propTypes = {
   botId: PropTypes.string.isRequired,
+  error: PropTypes.shape({
+    graphQLErrors: PropTypes.string,
+  }),
   messages: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.string,
@@ -271,6 +279,7 @@ WebChat.propTypes = {
 
 WebChat.defaultProps = {
   messages: [],
+  error: {},
 };
 
 export default compose(
@@ -291,6 +300,7 @@ export default compose(
       return options;
     },
     props: props => ({
+      error: props.data.error,
       messages: props.data.messages,
       refetch: props.data.refetch,
       subscribeToNewMessages: params =>

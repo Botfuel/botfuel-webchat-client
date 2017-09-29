@@ -182,6 +182,10 @@ const Container = ({
   disableFullScreenButton,
   data: { bot = {}, loading },
 }) => {
+  if (loading) {
+    return null;
+  }
+
   if (!bot && !loading) {
     /* eslint-disable no-console */
     console.log('Bot not found.');

@@ -51,12 +51,14 @@ const TopMenu = styled.div`
 function Top(props) {
   return (
     <TopMenu>
-      <FullScreen
-        width={props.width}
-        height={props.height}
-        fullScreen={props.fullScreen}
-        onClick={props.switchSize}
-      />
+      {!props.disableFullScreenButton && (
+        <FullScreen
+          width={props.width}
+          height={props.height}
+          fullScreen={props.fullScreen}
+          onClick={props.switchSize}
+        />
+      )}
       <Cross onClick={props.switchMode} />
       {props.labels.webchatHeaderTitle}
     </TopMenu>
@@ -72,6 +74,7 @@ Top.propTypes = {
   labels: PropTypes.shape({
     webchatHeaderTitle: PropTypes.string,
   }).isRequired,
+  disableFullScreenButton: PropTypes.bool.isRequired,
 };
 
 export default WithLabels(Top);

@@ -53,6 +53,7 @@ const Main = ({
   handleKeyPress,
   handleInputChange,
   input,
+  disableFullScreenButton,
 }) => (
   <Container
     width={width || width}
@@ -66,6 +67,7 @@ const Main = ({
       fullScreen={fullScreen}
       switchMode={switchMode}
       switchSize={toggleFullScreen}
+      disableFullScreenButton={disableFullScreenButton}
     />
     <MessageListContainer
       sendAction={sendAction}
@@ -106,6 +108,7 @@ Main.propTypes = {
   handleKeyPress: PropTypes.func.isRequired,
   handleInputChange: PropTypes.func.isRequired,
   input: PropTypes.string,
+  disableFullScreenButton: PropTypes.bool.isRequired,
 };
 
 Main.defaultProps = {

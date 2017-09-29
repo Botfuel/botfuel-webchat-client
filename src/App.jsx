@@ -67,6 +67,7 @@ class BotfuelWebChat {
         customLabels={param.labels}
         serverUrl={param.serverUrl}
         extraAllowedOrigins={param.extraAllowedOrigins}
+        disableFullScreenButton={!!param.embeddedContainerId}
       />,
       document.getElementById(param.embeddedContainerId || 'botfuel'),
     );
@@ -178,6 +179,7 @@ const Container = ({
   websocketsSupported,
   toggleFullScreen,
   extraAllowedOrigins,
+  disableFullScreenButton,
   data: { bot = {}, loading },
 }) => {
   if (!bot && !loading) {
@@ -220,6 +222,7 @@ const Container = ({
             switchMode={switchState}
             toggleFullScreen={toggleFullScreen}
             websocketsSupported={websocketsSupported}
+            disableFullScreenButton={disableFullScreenButton}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -252,6 +255,7 @@ Container.propTypes = {
   websocketsSupported: PropTypes.bool,
   toggleFullScreen: PropTypes.func.isRequired,
   extraAllowedOrigins: PropTypes.arrayOf(PropTypes.string),
+  disableFullScreenButton: PropTypes.bool.isRequired,
   data: PropTypes.shape({
     bot: PropTypes.object,
     loading: PropTypes.bool,

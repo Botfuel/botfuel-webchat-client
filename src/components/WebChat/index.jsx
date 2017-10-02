@@ -135,7 +135,7 @@ class WebChat extends React.Component {
 
   componentWillMount() {
     this.props.subscribeToNewMessages({
-      user: localStorage.getItem('userId'),
+      user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
       bot: this.props.botId,
     });
   }
@@ -145,7 +145,7 @@ class WebChat extends React.Component {
       /* eslint-disable no-console */
       console.log('Error while fetching messages. Assuming message format has changed.');
       /* eslint-enable no-console */
-      localStorage.setItem('userId', uuidv4());
+      localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
     }
   }
 
@@ -173,7 +173,7 @@ class WebChat extends React.Component {
       this.resetInput();
       await this.props.createTextMessageMutation({
         variables: {
-          user: localStorage.getItem('userId'),
+          user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
           bot: this.props.botId,
           value: text,
           sender: 'user',
@@ -194,7 +194,7 @@ class WebChat extends React.Component {
 
       await mutation({
         variables: {
-          user: localStorage.getItem('userId'),
+          user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
           bot: this.props.botId,
           value,
           sender: 'user',
@@ -288,7 +288,7 @@ export default compose(
       const options = {};
 
       options.variables = {
-        user: localStorage.getItem('userId'),
+        user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
         bot: props.botId,
       };
 

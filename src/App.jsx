@@ -35,8 +35,8 @@ const BOT_QUERY = gql`
 
 class BotfuelWebChat {
   static init(param) {
-    if (!localStorage.getItem('userId')) {
-      localStorage.setItem('userId', uuidv4());
+    if (!localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')) {
+      localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
     }
 
     const overWriteTheme = {

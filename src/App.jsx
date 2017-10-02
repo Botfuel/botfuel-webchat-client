@@ -53,9 +53,17 @@ class BotfuelWebChat {
       document.body.innerHTML += '<div id="botfuel"></div>';
     }
 
+    if (param.applicationId) {
+      /* eslint-disable no-console */
+      console.warn(
+        'Using applicationId in the Botfuel Webchat init script is deprecated. Please use appToken instead.',
+      );
+      /* eslint-enable no-console */
+    }
+
     ReactDOM.render(
       <Root
-        botId={param.applicationId}
+        botId={param.appToken || param.applicationId}
         startButtonSize={param.startButtonSize || 90}
         width={(param.size && param.size.width) || 400}
         height={(param.size && param.size.height) || 500}

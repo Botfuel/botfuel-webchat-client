@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DEFAULT_LABELS from '../../labels';
+import DEFAULT_LABELS from 'labels';
 
 export default function WithLabels(Component) {
   const ComponentWithLabels = ({ ...props }, context) => {

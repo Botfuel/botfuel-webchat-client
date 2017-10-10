@@ -26,16 +26,21 @@
                 mainLight: '#f5f5f5',
                 primary: '#7479b3',
                 secondary: '#ffffff',
-                background: '#e6eaf3'
+                background: '#e6eaf3',
+                primary: '#f4b600',
+                menuIcon: '#ddd',
+                menuBackground: '#fff',
+                menuLink: '#555',
+                menuLinkHover: '#fde9b0'
             },
             buttons: {
                 close: true,
-                fullScreen: true,
+                fullScreen: true
             },
             startButtonStyle: 'bubble',
         },
         size: { width: 500, height: 600 },
-        startOpen: false,
+        startOpen: true,
         startFullScreen: false,
         labels: {
             sendButtonLabel: 'Envoyer',
@@ -44,7 +49,39 @@
             webchatHeaderTitle: 'Comment puis-je vous aider ?'
         },
         serverUrl: 'http://localhost:7001',
-        extraAllowedOrigins: ['http://localhost:7000']
+        extraAllowedOrigins: ['http://localhost:7000'],
+        debug: true,
+        menuActions: [
+            {
+                label: 'Recommencer',
+                message: {
+                    type: 'text',
+                    payload: {
+                        value: 'Salut!'
+                    }
+                }
+            },
+            {
+                label: 'Envoyer',
+                message: {
+                    type: 'text',
+                    payload: {
+                        value: 'envoi'
+                    }
+                }
+            },
+            {
+                label: 'Exploser',
+                message: {
+                    type: 'postback',
+                    payload: {
+                        value: {
+                            custom: 'this is custom'
+                        }
+                    }
+                }
+            },
+        ]
     });
 
 </script>

@@ -16,6 +16,10 @@ export default {
     primaryText: '#fff',
     secondaryText: '#000',
     background: '#fff',
+    menuIcon: '#ddd',
+    menuBackground: '#fff',
+    menuLink: '#555',
+    menuLinkHover: '#d7e0f2',
   },
   buttons: {
     close: true,

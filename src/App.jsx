@@ -26,17 +26,17 @@ class BotfuelWebChat {
       localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
     }
 
-    const overWriteTheme = {
+    const updatedTheme = {
       buttons: {
         close: !!param.embeddedContainerId,
       },
       fixed: !!param.embeddedContainerId,
     };
-    overWriteTheme.buttons.close = !param.embeddedContainerId;
-    // overWriteTheme.buttons.fullScreen = !param.embeddedContainerId;
-    overWriteTheme.fixed = !param.embeddedContainerId;
+    updatedTheme.buttons.close = !param.embeddedContainerId;
+    // updatedTheme.buttons.fullScreen = !param.embeddedContainerId;
+    updatedTheme.fixed = !param.embeddedContainerId;
 
-    if (overWriteTheme.fixed) {
+    if (updatedTheme.fixed) {
       document.body.innerHTML += '<div id="botfuel"></div>';
     }
 
@@ -54,7 +54,7 @@ class BotfuelWebChat {
         startButtonSize={param.startButtonSize || 90}
         width={(param.size && param.size.width) || 400}
         height={(param.size && param.size.height) || 500}
-        theme={merge(defaultTheme, param.theme, overWriteTheme)}
+        theme={merge(defaultTheme, param.theme, updatedTheme)}
         initialState={{
           chatStarted: !!param.embeddedContainerId || param.startOpen || false,
           fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,

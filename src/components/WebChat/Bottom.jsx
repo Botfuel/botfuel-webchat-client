@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import WithLabels from 'components/utils/WithLabels';
+import Menu from 'components/ui/Menu';
 
 const SendButton = styled.div`
   width: 70px;
@@ -20,22 +21,22 @@ const SendButton = styled.div`
 `;
 
 const InputWrapper = styled.div`
-  display: inline-block;
+  display: flex;
   height: 100%;
   border-radius: 25px;
   width: calc(100% - 85px);
   position: relative;
-  padding: 0 20px;
+
   input {
     border: none;
     height: 100%;
     box-sizing: border-box;
     width: 100%;
-    position: absolute;
     outline-width: 0;
     color: gray;
     font-size: 12px;
     padding-bottom: 6px;
+    padding-left: 20px;
   }
 `;
 
@@ -50,6 +51,9 @@ function Bottom(props) {
   return (
     <BottomWrapper>
       <InputWrapper>
+        {!!props.menuActions.length && (
+          <Menu sendAction={props.sendAction} menuActions={props.menuActions} />
+        )}
         <input
           tabIndex={-1}
           value={props.input}
@@ -72,6 +76,16 @@ Bottom.propTypes = {
     messageInputPlaceholder: PropTypes.string,
     sendButtonLabel: PropTypes.string,
   }).isRequired,
+  sendAction: PropTypes.func.isRequired,
+  menuActions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      message: PropTypes.shape({
+        type: PropTypes.string,
+        payload: PropTypes.shape({}),
+      }),
+    }),
+  ).isRequired,
 };
 
 export default WithLabels(Bottom);

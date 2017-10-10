@@ -54,6 +54,8 @@ const Main = ({
   handleInputChange,
   input,
   disableFullScreenButton,
+  menuActions,
+  debug,
 }) => (
   <Container
     width={width || width}
@@ -74,9 +76,12 @@ const Main = ({
       markAsClicked={markAsClicked}
       messages={messages}
       quickreplies={quickreplies}
+      debug={debug}
     />
     <Bottom
       sendMessage={sendMessage}
+      sendAction={sendAction}
+      menuActions={menuActions}
       onKeyPress={handleKeyPress}
       onInputChange={handleInputChange}
       input={input}
@@ -109,6 +114,16 @@ Main.propTypes = {
   handleInputChange: PropTypes.func.isRequired,
   input: PropTypes.string,
   disableFullScreenButton: PropTypes.bool.isRequired,
+  menuActions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      message: PropTypes.shape({
+        type: PropTypes.string,
+        payload: PropTypes.shape({}),
+      }),
+    }),
+  ).isRequired,
+  debug: PropTypes.bool.isRequired,
 };
 
 Main.defaultProps = {

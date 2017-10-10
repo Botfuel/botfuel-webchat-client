@@ -16,8 +16,24 @@ const Messages = styled.div`
   overflow-y: auto;
 `;
 
-const MessageList = ({ messages, setRef, sendAction, labels, quickreplies, markAsClicked }) => (
+const MessageList = ({
+  messages,
+  setRef,
+  sendAction,
+  labels,
+  quickreplies,
+  markAsClicked,
+  debug,
+}) => (
   <Messages innerRef={setRef}>
+    {debug && (
+      <Block
+        value={{
+          text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
+          top: true,
+        }}
+      />
+    )}
     <Block
       value={{
         text: labels.helpMessage,
@@ -49,6 +65,7 @@ MessageList.propTypes = {
   labels: PropTypes.shape({
     helpMessage: PropTypes.string,
   }).isRequired,
+  debug: PropTypes.bool.isRequired,
 };
 
 export default WithLabels(MessageList);

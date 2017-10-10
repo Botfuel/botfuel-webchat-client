@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 const ButtonStyles = {
   bubble: css`
-    box-shadow: 0 1px 2px rgba(0, 0, 0, .15);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     background-color: #fbfbfb;
     background-size: 75%;
   `,

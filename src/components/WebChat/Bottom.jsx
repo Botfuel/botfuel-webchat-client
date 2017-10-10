@@ -15,6 +15,7 @@ const SendButton = styled.div`
   font-size: 13px;
   line-height: 40px;
   font-weight: 600;
+  padding-right: 10px;
   &:focus {
     outline: none;
   }
@@ -24,7 +25,6 @@ const InputWrapper = styled.div`
   display: flex;
   height: 100%;
   border-radius: 25px;
-  width: calc(100% - 85px);
   position: relative;
 
   input {
@@ -61,8 +61,8 @@ function Bottom(props) {
           onChange={props.onInputChange}
           onKeyPress={props.onKeyPress}
         />
+        <SendButton onClick={props.sendMessage}>{props.labels.sendButtonLabel}</SendButton>
       </InputWrapper>
-      <SendButton onClick={props.sendMessage}>{props.labels.sendButtonLabel}</SendButton>
     </BottomWrapper>
   );
 }

@@ -23,6 +23,7 @@ const StyledContainer = styled.div`
   position: ${props => (props.theme.fixed ? 'fixed' : 'static')};
   bottom: 20px;
   right: 20px;
+  ${props => props.noEvents && 'pointer-events: none'};
   font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
   * {
@@ -104,7 +105,7 @@ const Container = ({
           />
         </StyledContainer>
         {theme.fixed && (
-          <StyledContainer>
+          <StyledContainer noEvents={chatStarted}>
             <StartButton
               fullScreen={fullScreen}
               isVisible={!chatStarted}

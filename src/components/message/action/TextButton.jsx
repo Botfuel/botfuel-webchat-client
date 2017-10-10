@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 const TextButton = ({ handleClick, label, disabled, clicked }) => (
   <Button
@@ -33,7 +34,7 @@ function getStatusBackgroundColor(props) {
     return props.theme.colors.primary;
   }
 
-  return 'transparent';
+  return props.theme.colors.secondary;
 }
 
 function getStatusColor(props) {
@@ -62,14 +63,21 @@ const Button = styled.div`
   text-align: center;
   background-color: ${props => getStatusBackgroundColor(props)};
   color: ${props => getStatusColor(props)};
-  border: 2px solid ${props => getStatusColor(props)};
+  border: 2px solid ${props => (props.disabled ? 'lightgrey' : props.theme.colors.primary)};
   cursor: ${props => (props.disabled || props.clicked ? 'default' : 'pointer')};
+  box-shadow: ${props =>
+    (props.theme.layout.shadowed && !props.disabled && !props.clicked
+      ? `3px 3px 5px 0px ${darken(0.1, props.theme.colors.background)}`
+      : null)};
   width: 30%;
   display: flex;
   align-items: center;
   justify-content: center;
   &:hover {
-    background-color: ${props => props.theme.colors.secondaryLight};
+    ${props =>
+    !props.disabled &&
+      !props.clicked &&
+      `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
   }
   &:focus {
     outline: none;

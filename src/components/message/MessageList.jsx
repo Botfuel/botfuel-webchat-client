@@ -23,6 +23,7 @@ const MessageList = ({
   labels,
   quickreplies,
   markAsClicked,
+  theme,
   debug,
 }) => (
   <Messages innerRef={setRef}>
@@ -34,12 +35,14 @@ const MessageList = ({
         }}
       />
     )}
-    <Block
-      value={{
-        text: labels.helpMessage,
-        top: true,
-      }}
-    />
+    {!theme.layout.noHelpMessage && (
+      <Block
+        value={{
+          text: labels.helpMessage,
+          top: true,
+        }}
+      />
+    )}
     <Message payload={{ textValue: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
     <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
       {messages.map(message => (
@@ -64,6 +67,9 @@ MessageList.propTypes = {
   markAsClicked: PropTypes.func.isRequired,
   labels: PropTypes.shape({
     helpMessage: PropTypes.string,
+  }).isRequired,
+  theme: PropTypes.shape({
+    layout: PropTypes.object,
   }).isRequired,
   debug: PropTypes.bool.isRequired,
 };

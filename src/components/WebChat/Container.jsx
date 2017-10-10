@@ -100,6 +100,7 @@ const Container = ({
             disableFullScreenButton={disableFullScreenButton}
             menuActions={menuActions}
             debug={debug}
+            theme={theme}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -125,6 +126,11 @@ Container.propTypes = {
   theme: PropTypes.shape({
     colors: PropTypes.object,
     fixed: PropTypes.bool,
+    layout: PropTypes.shape({
+      compact: PropTypes.bool,
+      rounded: PropTypes.bool,
+      shadowed: PropTypes.bool,
+    }),
   }).isRequired,
   fullScreen: PropTypes.bool,
   chatStarted: PropTypes.bool,

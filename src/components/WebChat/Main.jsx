@@ -56,6 +56,7 @@ const Main = ({
   disableFullScreenButton,
   menuActions,
   debug,
+  theme,
 }) => (
   <Container
     width={width || width}
@@ -63,19 +64,22 @@ const Main = ({
     isVisible={isVisible}
     fullScreen={fullScreen}
   >
-    <Top
-      width={width || width}
-      height={height || height}
-      fullScreen={fullScreen}
-      switchMode={switchMode}
-      switchSize={toggleFullScreen}
-      disableFullScreenButton={disableFullScreenButton}
-    />
+    {!theme.layout.noHeader && (
+      <Top
+        width={width || width}
+        height={height || height}
+        fullScreen={fullScreen}
+        switchMode={switchMode}
+        switchSize={toggleFullScreen}
+        disableFullScreenButton={disableFullScreenButton}
+      />
+    )}
     <MessageListContainer
       sendAction={sendAction}
       markAsClicked={markAsClicked}
       messages={messages}
       quickreplies={quickreplies}
+      theme={theme}
       debug={debug}
     />
     <Bottom
@@ -124,6 +128,7 @@ Main.propTypes = {
     }),
   ).isRequired,
   debug: PropTypes.bool.isRequired,
+  theme: PropTypes.shape({}).isRequired,
 };
 
 Main.defaultProps = {

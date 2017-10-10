@@ -50,6 +50,7 @@ const Container = ({
   extraAllowedOrigins,
   disableFullScreenButton,
   menuActions,
+  debug,
   data: { bot = {}, loading },
 }) => {
   if (loading) {
@@ -98,6 +99,7 @@ const Container = ({
             websocketsSupported={websocketsSupported}
             disableFullScreenButton={disableFullScreenButton}
             menuActions={menuActions}
+            debug={debug}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -144,6 +146,7 @@ Container.propTypes = {
       }),
     }),
   ).isRequired,
+  debug: PropTypes.bool.isRequired,
 };
 
 Container.defaultProps = {

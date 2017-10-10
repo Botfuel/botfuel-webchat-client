@@ -55,6 +55,7 @@ const Main = ({
   input,
   disableFullScreenButton,
   menuActions,
+  debug,
 }) => (
   <Container
     width={width || width}
@@ -75,6 +76,7 @@ const Main = ({
       markAsClicked={markAsClicked}
       messages={messages}
       quickreplies={quickreplies}
+      debug={debug}
     />
     <Bottom
       sendMessage={sendMessage}
@@ -121,6 +123,7 @@ Main.propTypes = {
       }),
     }),
   ).isRequired,
+  debug: PropTypes.bool.isRequired,
 };
 
 Main.defaultProps = {

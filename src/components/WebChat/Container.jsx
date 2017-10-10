@@ -49,6 +49,7 @@ const Container = ({
   toggleFullScreen,
   extraAllowedOrigins,
   disableFullScreenButton,
+  menuActions,
   data: { bot = {}, loading },
 }) => {
   if (loading) {
@@ -96,6 +97,7 @@ const Container = ({
             toggleFullScreen={toggleFullScreen}
             websocketsSupported={websocketsSupported}
             disableFullScreenButton={disableFullScreenButton}
+            menuActions={menuActions}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -133,6 +135,15 @@ Container.propTypes = {
     bot: PropTypes.object,
     loading: PropTypes.bool,
   }).isRequired,
+  menuActions: PropTypes.arrayOf(
+    PropTypes.shape({
+      label: PropTypes.string,
+      message: PropTypes.shape({
+        type: PropTypes.string,
+        payload: PropTypes.shape({}),
+      }),
+    }),
+  ).isRequired,
 };
 
 Container.defaultProps = {

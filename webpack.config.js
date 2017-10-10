@@ -35,6 +35,10 @@ module.exports = {
               'transform-react-jsx',
               'react-hot-loader/babel',
               'transform-runtime',
+              'transform-class-properties',
+              'babel-root-import',
+              'transform-async-to-generator',
+              'syntax-async-functions',
             ],
             presets: [
               [

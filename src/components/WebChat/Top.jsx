@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import WithLabels from '../utils/WithLabels';
+import WithLabels from 'components/utils/WithLabels';
 
 const Icon = styled.span`
   font-family: 'font-awesome';

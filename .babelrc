@@ -1,0 +1,17 @@
+{
+  "presets": ["es2015", "stage-0", "react"],
+  "plugins": [
+    "babel-root-import",
+    "react-hot-loader/babel",
+    "transform-class-properties",
+    "transform-async-to-generator",
+    "syntax-async-functions",
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "extensions": [".js", ".jsx"]
+      }
+    ]
+  ]
+}

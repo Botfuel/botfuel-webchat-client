@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
-import WithLabels from '../utils/WithLabels';
+import WithLabels from 'components/utils/WithLabels';
 import Message from './Message';
 import Block from './Block';
 import Quickreplies from './Quickreplies';

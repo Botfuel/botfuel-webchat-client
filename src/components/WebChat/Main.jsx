@@ -29,6 +29,7 @@ const Container = styled.div`
   height: ${props => (props.theme.fluid ? '100%' : `${props.height}px`)};
   overflow: hidden;
   background: ${props => props.theme.colors.background};
+  position: relative;
 
   ${props => DialogStyles[props.theme.dialogStyle]};
   @media (max-height: ${props => props.height + 20}px),

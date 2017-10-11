@@ -45,6 +45,8 @@ const BottomWrapper = styled.div`
   background-color: #fff;
   box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
   height: 45px;
+  position: absolute;
+  bottom: 0;
 `;
 
 function Bottom(props) {

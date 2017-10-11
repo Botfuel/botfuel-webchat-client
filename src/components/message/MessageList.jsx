@@ -11,7 +11,7 @@ const Messages = styled.div`
   list-style: none;
   padding: 10px;
   margin: 0;
-  height: calc(100% - 85px);
+  height: calc(100% - 45px - ${props => (props.theme.layout.noHeader ? '0px' : '40px')});
   overflow-x: hidden;
   overflow-y: auto;
 `;

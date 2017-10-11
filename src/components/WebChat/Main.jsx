@@ -31,7 +31,7 @@ const Container = styled.div`
   background: ${props => props.theme.colors.background};
   position: relative;
 
-  ${props => DialogStyles[props.theme.dialogStyle]};
+  ${props => (props.theme.layout.noBorder ? '' : DialogStyles[props.theme.dialogStyle])};
   @media (max-height: ${props => props.height + 20}px),
     (max-width: ${props => props.width + 20}px),
     ${props => props.fullScreen && 'all'} {

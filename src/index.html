@@ -9,19 +9,21 @@
     <title>Botfuel WebChat Demo</title>
 </head>
 
-<body>
-    <div id="botfuel"></div>
+<body style="background: #e6eaf3;">
+    <div style="float: right;" id="botfuel"></div>
 </body>
 <script>
     BotfuelWebChat.init({
+        embeddedContainerId: 'botfuel',
         appToken: '1409616101942',
         theme: {
             layout: {
                 compact: false,
                 rounded: true,
                 shadowed: true,
-                noHeader: false,
-                noHelpMessage: false,
+                noHeader: true,
+                noHelpMessage: true,
+                noBorder: true
             },
             colors: {
                 main: '#3d3d3d',

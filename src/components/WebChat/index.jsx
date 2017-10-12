@@ -150,20 +150,23 @@ class WebChat extends React.Component {
   }
 
   handleInputChange(e) {
-    this.setState({
-      input: e.target.value,
-    });
+    if (!e.target.value || (e.target.value && e.target.value.length < 500)) {
+      this.setState({
+        input: e.target.value,
+      });
+    }
   }
 
   resetInput() {
     this.setState({
-      input: '',
+      input: undefined,
     });
   }
 
   handleKeyPress(e) {
     if (e && e.nativeEvent.keyCode === 13) {
       this.sendMessage(this.state.input);
+      e.preventDefault();
     }
   }
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import Textarea from 'react-textarea-autosize';
 import WithLabels from 'components/utils/WithLabels';
 import Menu from 'components/ui/Menu';
 
@@ -27,7 +28,8 @@ const InputWrapper = styled.div`
   border-radius: 25px;
   position: relative;
 
-  input {
+  textarea {
+    resize: none;
     border: none;
     height: 100%;
     box-sizing: border-box;
@@ -35,8 +37,7 @@ const InputWrapper = styled.div`
     outline-width: 0;
     color: gray;
     font-size: 12px;
-    padding-bottom: 6px;
-    padding-left: 20px;
+    margin: 10px;
   }
 `;
 
@@ -44,10 +45,11 @@ const BottomWrapper = styled.div`
   width: 100%;
   background-color: #fff;
   box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
-  height: 45px;
   position: absolute;
   bottom: 0;
 `;
+
+const WideTextarea = styled(Textarea)`width: 100%;`;
 
 function Bottom(props) {
   return (
@@ -56,7 +58,7 @@ function Bottom(props) {
         {!!props.menuActions.length && (
           <Menu sendAction={props.sendAction} menuActions={props.menuActions} />
         )}
-        <input
+        <WideTextarea
           tabIndex={-1}
           value={props.input}
           placeholder={props.labels.messageInputPlaceholder}

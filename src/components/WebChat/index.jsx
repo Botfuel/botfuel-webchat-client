@@ -157,13 +157,14 @@ class WebChat extends React.Component {
 
   resetInput() {
     this.setState({
-      input: '',
+      input: undefined,
     });
   }
 
   handleKeyPress(e) {
     if (e && e.nativeEvent.keyCode === 13) {
       this.sendMessage(this.state.input);
+      e.preventDefault();
     }
   }
 

@@ -27,18 +27,6 @@ const InputWrapper = styled.div`
   height: 100%;
   border-radius: 25px;
   position: relative;
-
-  textarea {
-    resize: none;
-    border: none;
-    height: 100%;
-    box-sizing: border-box;
-    width: 100%;
-    outline-width: 0;
-    color: gray;
-    font-size: 12px;
-    margin: 10px;
-  }
 `;
 
 const BottomWrapper = styled.div`
@@ -49,7 +37,22 @@ const BottomWrapper = styled.div`
   bottom: 0;
 `;
 
-const WideTextarea = styled(Textarea)`width: 100%;`;
+const WideTextarea = styled(Textarea)`
+  width: 100%;
+  resize: none;
+  border: none;
+  height: 100%;
+  box-sizing: border-box;
+  width: 100%;
+  outline-width: 0;
+  color: dimgray;
+  font-size: 13px;
+  margin: 10px;
+
+  &::placeholder {
+    color: lightgray;
+  }
+`;
 
 function Bottom(props) {
   return (
@@ -60,6 +63,8 @@ function Bottom(props) {
         )}
         <WideTextarea
           tabIndex={-1}
+          maxRows={4}
+          maxlength={400}
           value={props.input}
           placeholder={props.labels.messageInputPlaceholder}
           onChange={props.onInputChange}

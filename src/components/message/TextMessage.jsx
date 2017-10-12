@@ -1,8 +1,9 @@
+import React from 'react';
 import PropTypes from 'prop-types';
-import renderTextWithLinks from 'utils/text-with-links';
+import TextWithLinks from 'components/ui/TextWithLinks';
 
 export default function TextMessage({ payload }) {
-  return renderTextWithLinks(payload.textValue || payload.text);
+  return <TextWithLinks text={payload.textValue || payload.text} />;
 }
 
 TextMessage.propTypes = {

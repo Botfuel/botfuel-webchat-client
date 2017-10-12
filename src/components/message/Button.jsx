@@ -12,20 +12,18 @@ const Button = styled.button`
   cursor: pointer;
   display: block;
   width: 100%;
+
   &:hover {
     background-color: ${props => props.theme.colors.primaryLight};
   }
+
   &:focus {
     outline: none;
   }
 `;
 
 export default function ButtonMessage({ text }) {
-  return (
-    <Button>
-      {text}
-    </Button>
-  );
+  return <Button>{text}</Button>;
 }
 
 ButtonMessage.propTypes = {

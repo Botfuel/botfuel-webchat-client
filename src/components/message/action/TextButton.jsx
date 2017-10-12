@@ -73,6 +73,9 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  transition: all 400ms ease;
+
   &:hover {
     ${props =>
     !props.disabled &&
@@ -82,8 +85,6 @@ const Button = styled.div`
   &:focus {
     outline: none;
   }
-
-  transition: all 400ms ease;
 `;
 
 function ButtonMessage({ text, ...props }) {

@@ -150,9 +150,11 @@ class WebChat extends React.Component {
   }
 
   handleInputChange(e) {
-    this.setState({
-      input: e.target.value,
-    });
+    if (!e.target.value || (e.target.value && e.target.value.length < 500)) {
+      this.setState({
+        input: e.target.value,
+      });
+    }
   }
 
   resetInput() {

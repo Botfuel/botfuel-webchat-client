@@ -38,6 +38,10 @@ const Avatar = styled.div`
 
 // eslint-disable-next-line react/prefer-stateless-function
 export default class MessageContainer extends React.Component {
+  shouldComponentUpdate() {
+    return this.props.type === 'actions';
+  }
+
   render() {
     const { side, type, sender, ...props } = this.props;
     const Component = componentsDict[type];

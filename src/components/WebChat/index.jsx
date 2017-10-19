@@ -113,9 +113,10 @@ const POSTBACK_MESSAGE_MUTATION = gql`
 const MARK_ACTION_AS_CLICKED_MUTATION = gql`
   mutation markActionAsClicked($message: ID!, $actionIndex: Int!) {
     markActionAsClicked(message: $message, actionIndex: $actionIndex) {
-      id
+      ...FullMessage
     }
   }
+   ${MessageFragment}
 `;
 
 class WebChat extends React.Component {
@@ -215,15 +216,11 @@ class WebChat extends React.Component {
     };
   }
 
-  markAsClicked(messageId) {
+  markAsClicked(message) {
     return async (actionIndex) => {
-      const { markActionAsClickedMutation } = this.props;
-
-      await markActionAsClickedMutation({
-        variables: {
-          message: messageId,
-          actionIndex,
-        },
+      await this.props.markAsClicked({
+        message,
+        actionIndex,
       });
 
       this.props.refetch();
@@ -326,5 +323,53 @@ export default compose(
   }),
   graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),
   graphql(POSTBACK_MESSAGE_MUTATION, { name: 'createPostbackMessageMutation' }),
-  graphql(MARK_ACTION_AS_CLICKED_MUTATION, { name: 'markActionAsClickedMutation' }),
+  graphql(MARK_ACTION_AS_CLICKED_MUTATION, {
+    props: ({ ownProps, mutate }) => ({
+      markAsClicked({ message, actionIndex }) {
+        // Create a fictive message that is the same message
+        // with the clicked action that is set to clicked: true
+        const newMessage = {
+          ...message,
+          payload: {
+            ...message.payload,
+            actionValue: Object.assign([], message.payload.actionValue, {
+              [actionIndex]: {
+                ...message.payload.actionValue[actionIndex],
+                clicked: true,
+              },
+            }),
+          },
+        };
+
+        // Set the fictive message as the mutation optimistic result
+        return mutate({
+          variables: { message: message.id, actionIndex },
+          optimisticResponse: {
+            __typename: 'Mutation',
+            markActionAsClicked: {
+              __typename: 'Message',
+              ...newMessage,
+            },
+          },
+          update: (store, { data: { markActionAsClicked } }) => {
+            // Read the data from our cache for this query.
+            const data = store.readQuery({
+              query: MESSAGES_QUERY,
+              variables: {
+                user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
+                bot: ownProps.botId,
+              },
+            });
+
+            // Replace old message with clicked message in messages array
+            const messageIndex = data.messages.findIndex(m => m.id === message.id);
+            data.messages[messageIndex] = markActionAsClicked;
+
+            // Write our data back to the cache.
+            store.writeQuery({ query: MESSAGES_QUERY, data });
+          },
+        });
+      },
+    }),
+  }),
 )(WebChat);

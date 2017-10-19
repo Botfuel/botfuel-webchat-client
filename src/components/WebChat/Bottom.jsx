@@ -64,7 +64,7 @@ function Bottom(props) {
         <WideTextarea
           tabIndex={-1}
           maxRows={4}
-          maxlength={400}
+          maxLength={400}
           value={props.input}
           placeholder={props.labels.messageInputPlaceholder}
           onChange={props.onInputChange}

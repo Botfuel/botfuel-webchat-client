@@ -50,7 +50,7 @@ const MessageList = ({
           {...message}
           side={message.sender === 'user' ? 'right' : 'left'}
           sendAction={sendAction}
-          markAsClicked={markAsClicked(message.id)}
+          markAsClicked={markAsClicked(message)}
           key={message.id}
         />
       ))}

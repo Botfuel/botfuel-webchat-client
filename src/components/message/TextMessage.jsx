@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import TextWithLinks from 'components/ui/TextWithLinks';
 
 export default function TextMessage({ payload }) {
-  return <div>{payload.textValue || payload.text}</div>;
+  return <TextWithLinks text={payload.textValue || payload.text} />;
 }
 
 TextMessage.propTypes = {

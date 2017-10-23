@@ -5,7 +5,11 @@ const rePattern = /(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()
 
 export default class TextWithLinks extends React.PureComponent {
   static propTypes = {
-    text: PropTypes.string.isRequired,
+    text: PropTypes.string,
+  };
+
+  static defaultProps = {
+    text: '',
   };
 
   render() {

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import BotAction from './BotAction';
 import Table from './Table';
 import TextMessage from './TextMessage';
 import Actions from './action/Actions';
@@ -11,6 +12,7 @@ const componentsDict = {
   table: Table,
   actions: Actions,
   postback: TextMessage,
+  botAction: BotAction,
 };
 
 const ClearDiv = styled.div`

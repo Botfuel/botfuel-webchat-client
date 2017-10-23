@@ -12,6 +12,7 @@ const MessageFragment = gql`
     user
     bot
     sender
+    createdAt
     payload {
       ... on Text {
         textValue: value
@@ -47,6 +48,11 @@ const MessageFragment = gql`
       }
       ... on Quickreplies {
         quickrepliesValue: value
+      }
+      ... on BotAction {
+        botActionValue: value {
+          action
+        }
       }
     }
   }
@@ -148,6 +154,23 @@ class WebChat extends React.Component {
       /* eslint-enable no-console */
       localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
     }
+
+    // If a bot thinking message is found and has not expired yet,
+    // Set a timeout that will hide it
+    const { messages } = nextProps;
+    const think = messages.find(
+      (m, index) =>
+        index === messages.length - 1 &&
+        m.type === 'botAction' &&
+        // m.payload.botActionValue.action === 'THINKING_ON' &&
+        new Date() - new Date(m.createdAt) < this.props.thinkingIndicatorDelay,
+    );
+
+    if (think) {
+      setTimeout(() => {
+        this.forceUpdate();
+      }, this.props.thinkingIndicatorDelay - (new Date() - new Date(think.createdAt)));
+    }
   }
 
   handleInputChange(e) {
@@ -235,21 +258,21 @@ class WebChat extends React.Component {
         lastMessage.type === 'quickreplies' &&
         lastMessage.payload.quickrepliesValue) ||
       [];
-    const messages = this.props.messages.filter(
-      m => m.type !== 'quickreplies' && m.type !== 'postback',
-    );
+    // botAction (thinking indicator) is displayed if is the last message
+    // and its timestamp is not older than thinkingIndicatorDelay
 
     return (
       <Main
         {...this.props}
         {...this.state}
-        messages={messages}
+        messages={this.props.messages}
         quickreplies={quickreplies}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}
         sendMessage={this.sendMessage}
         handleKeyPress={this.handleKeyPress}
         handleInputChange={this.handleInputChange}
+        thinkingIndicatorDelay={this.props.thinkingIndicatorDelay}
       />
     );
   }
@@ -275,6 +298,7 @@ WebChat.propTypes = {
   createPostbackMessageMutation: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
   websocketsSupported: PropTypes.bool.isRequired,
+  thinkingIndicatorDelay: PropTypes.number.isRequired,
 };
 
 WebChat.defaultProps = {

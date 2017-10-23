@@ -64,6 +64,7 @@ class BotfuelWebChat {
         extraAllowedOrigins={param.extraAllowedOrigins}
         disableFullScreenButton={!!param.embeddedContainerId}
         menuActions={param.menuActions || []}
+        thinkingIndicatorDelay={param.thinkingIndicatorDelay || 10000}
         debug={param.debug || false}
       />,
       document.getElementById(param.embeddedContainerId || 'botfuel'),

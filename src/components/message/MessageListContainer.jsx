@@ -13,7 +13,8 @@ export default class MessageListContainer extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       this.props.messages.length !== nextProps.messages.length ||
-      this.state.justClicked !== nextState.justClicked
+      this.state.justClicked !== nextState.justClicked ||
+      this.props.messages[this.props.messages.length - 1].type === 'botAction'
     );
   }
   componentDidUpdate() {
@@ -39,9 +40,18 @@ export default class MessageListContainer extends React.Component {
   };
 
   render() {
+    const messages = this.props.messages.filter(
+      (m, index) =>
+        (m.type !== 'quickreplies' && m.type !== 'postback' && m.type !== 'botAction') ||
+        (m.type === 'botAction' &&
+          index === this.props.messages.length - 1 &&
+          new Date() - new Date(m.createdAt) < this.props.thinkingIndicatorDelay),
+    );
+
     return (
       <MessageList
         {...this.props}
+        messages={messages}
         markAsClicked={this.markAsClicked}
         setRef={(ref) => {
           this.innerRef = ref;
@@ -54,4 +64,5 @@ export default class MessageListContainer extends React.Component {
 MessageListContainer.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   markAsClicked: PropTypes.func.isRequired,
+  thinkingIndicatorDelay: PropTypes.number.isRequired,
 };

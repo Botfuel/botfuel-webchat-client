@@ -38,7 +38,6 @@ const Avatar = styled.div`
   background-repeat: no-repeat;
 `;
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class MessageContainer extends React.Component {
   shouldComponentUpdate() {
     return this.props.type === 'actions';
@@ -47,7 +46,7 @@ export default class MessageContainer extends React.Component {
   render() {
     const { side, type, sender, ...props } = this.props;
     const Component = componentsDict[type];
-    const disableBubble = ['actions'].includes(type);
+    const disableBubble = ['actions', 'botAction'].includes(type);
 
     return disableBubble ? (
       <Component type={type} {...props} />

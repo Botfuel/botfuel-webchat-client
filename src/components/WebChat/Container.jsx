@@ -51,7 +51,6 @@ const Container = ({
   extraAllowedOrigins,
   disableFullScreenButton,
   menuActions,
-  thinkingIndicatorDelay,
   debug,
   data: { bot = {}, loading },
 }) => {
@@ -101,7 +100,6 @@ const Container = ({
             websocketsSupported={websocketsSupported}
             disableFullScreenButton={disableFullScreenButton}
             menuActions={menuActions}
-            thinkingIndicatorDelay={thinkingIndicatorDelay}
             debug={debug}
             theme={theme}
           />
@@ -155,7 +153,6 @@ Container.propTypes = {
       }),
     }),
   ).isRequired,
-  thinkingIndicatorDelay: PropTypes.number.isRequired,
   debug: PropTypes.bool.isRequired,
 };
 

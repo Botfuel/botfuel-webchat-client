@@ -56,7 +56,6 @@ const Main = ({
   input,
   disableFullScreenButton,
   menuActions,
-  thinkingIndicatorDelay,
   debug,
   theme,
 }) => (
@@ -83,7 +82,6 @@ const Main = ({
       quickreplies={quickreplies}
       theme={theme}
       debug={debug}
-      thinkingIndicatorDelay={thinkingIndicatorDelay}
     />
     <Bottom
       sendMessage={sendMessage}
@@ -130,7 +128,6 @@ Main.propTypes = {
       }),
     }),
   ).isRequired,
-  thinkingIndicatorDelay: PropTypes.number.isRequired,
   debug: PropTypes.bool.isRequired,
   theme: PropTypes.shape({}).isRequired,
 };

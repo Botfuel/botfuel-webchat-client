@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
 import WithLabels from 'components/utils/WithLabels';
 import Menu from 'components/ui/Menu';
+import Voice from 'components/message/Voice';
 
 const SendButton = styled.div`
   width: 70px;
@@ -27,6 +28,7 @@ const InputWrapper = styled.div`
   height: 100%;
   border-radius: 25px;
   position: relative;
+  align-items: center;
 `;
 
 const BottomWrapper = styled.div`
@@ -54,6 +56,8 @@ const WideTextarea = styled(Textarea)`
   }
 `;
 
+const VoiceWrapper = styled.div`margin-right: 10px;`;
+
 function Bottom(props) {
   return (
     <BottomWrapper>
@@ -70,7 +74,16 @@ function Bottom(props) {
           onChange={props.onInputChange}
           onKeyPress={props.onKeyPress}
         />
-        <SendButton onClick={props.sendMessage}>{props.labels.sendButtonLabel}</SendButton>
+        {!!props.voiceEnabled && (
+          <VoiceWrapper>
+            <Voice
+              setTranscript={props.setTranscript}
+              setIsRecording={props.setIsRecording}
+              isRecording={props.isRecording}
+            />
+          </VoiceWrapper>
+        )}
+        <SendButton onClick={() => props.sendMessage()}>{props.labels.sendButtonLabel}</SendButton>
       </InputWrapper>
     </BottomWrapper>
   );
@@ -95,6 +108,10 @@ Bottom.propTypes = {
       }),
     }),
   ).isRequired,
+  setTranscript: PropTypes.func.isRequired,
+  setIsRecording: PropTypes.func.isRequired,
+  isRecording: PropTypes.bool.isRequired,
+  voiceEnabled: PropTypes.bool.isRequired,
 };
 
 export default WithLabels(Bottom);

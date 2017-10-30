@@ -18,7 +18,7 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules\/(?!react-voice-components)|bower_components)/,
         use: {
           loader: 'babel-loader',
           options: {
@@ -51,6 +51,15 @@ module.exports = {
         use: [
           {
             loader: 'url-loader',
+            options: {},
+          },
+        ],
+      },
+      {
+        test: /\.(mp3|wav)$/,
+        use: [
+          {
+            loader: 'file-loader',
             options: {},
           },
         ],

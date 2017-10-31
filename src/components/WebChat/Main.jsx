@@ -40,20 +40,12 @@ const Container = styled.div`
   }
 `;
 
-const C = styled.div``;
-
-const Micro = styled.div`
+const SpeakingIndicator = styled.div`
   &::before {
     content: '\\f130';
   }
   font-family: 'font-awesome';
 `;
-
-const SpeakingIndicator = () => (
-  <C>
-    <Micro />
-  </C>
-);
 
 const Main = ({
   messages,

@@ -164,10 +164,6 @@ class WebChat extends React.Component {
   };
 
   async setTranscript(transcript) {
-    this.setState({
-      transcript,
-    });
-
     if (transcript) {
       await this.sendMessage(transcript);
       this.setState({
@@ -187,6 +183,7 @@ class WebChat extends React.Component {
   }
 
   handleKeyPress(e) {
+    // keyCode 13 is the ENTER key
     if (e && e.nativeEvent.keyCode === 13) {
       this.sendMessage();
       e.preventDefault();

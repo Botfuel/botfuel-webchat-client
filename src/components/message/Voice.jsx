@@ -66,11 +66,6 @@ export default class Voice extends React.Component {
 
     return (
       <div>
-        {/* <button
-          onClick={() => {
-            annyang.trigger('salut');
-          }}
-        /> */}
         <Button active={isRecording} onClick={this.toggleRecording} />
       </div>
     );

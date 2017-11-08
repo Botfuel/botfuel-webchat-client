@@ -25,39 +25,45 @@ const MessageList = ({
   markAsClicked,
   theme,
   debug,
-}) => (
-  <Messages innerRef={setRef}>
-    {debug && (
-      <Block
-        value={{
-          text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
-          top: true,
-        }}
-      />
-    )}
-    {!theme.layout.noHelpMessage && (
-      <Block
-        value={{
-          text: labels.helpMessage,
-          top: true,
-        }}
-      />
-    )}
-    <Message payload={{ textValue: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
-    <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
-      {messages.map(message => (
-        <Message
-          {...message}
-          side={message.sender === 'user' ? 'right' : 'left'}
-          sendAction={sendAction}
-          markAsClicked={markAsClicked(message)}
-          key={message.id}
+}) => {
+  const fMessages = messages.filter(
+    (m, index) => m.type !== 'botAction' || index === messages.length - 1,
+  );
+
+  return (
+    <Messages innerRef={setRef}>
+      {debug && (
+        <Block
+          value={{
+            text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
+            top: true,
+          }}
         />
-      ))}
-    </FlipMove>
-    <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
-  </Messages>
-);
+      )}
+      {!theme.layout.noHelpMessage && (
+        <Block
+          value={{
+            text: labels.helpMessage,
+            top: true,
+          }}
+        />
+      )}
+      <Message payload={{ textValue: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
+      <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
+        {fMessages.map(message => (
+          <Message
+            {...message}
+            side={message.sender === 'user' ? 'right' : 'left'}
+            sendAction={sendAction}
+            markAsClicked={markAsClicked(message)}
+            key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
+          />
+        ))}
+      </FlipMove>
+      <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
+    </Messages>
+  );
+};
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,

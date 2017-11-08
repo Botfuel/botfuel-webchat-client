@@ -12,6 +12,7 @@ const MessageFragment = gql`
     user
     bot
     sender
+    createdAt
     payload {
       ... on Text {
         textValue: value
@@ -47,6 +48,11 @@ const MessageFragment = gql`
       }
       ... on Quickreplies {
         quickrepliesValue: value
+      }
+      ... on BotAction {
+        botActionValue: value {
+          action
+        }
       }
     }
   }
@@ -235,15 +241,12 @@ class WebChat extends React.Component {
         lastMessage.type === 'quickreplies' &&
         lastMessage.payload.quickrepliesValue) ||
       [];
-    const messages = this.props.messages.filter(
-      m => m.type !== 'quickreplies' && m.type !== 'postback',
-    );
 
     return (
       <Main
         {...this.props}
         {...this.state}
-        messages={messages}
+        messages={this.props.messages}
         quickreplies={quickreplies}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}

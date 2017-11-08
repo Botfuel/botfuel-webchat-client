@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import BotAction from './BotAction';
 import Table from './Table';
 import TextMessage from './TextMessage';
 import Actions from './action/Actions';
@@ -11,6 +12,7 @@ const componentsDict = {
   table: Table,
   actions: Actions,
   postback: TextMessage,
+  botAction: BotAction,
 };
 
 const ClearDiv = styled.div`
@@ -36,7 +38,6 @@ const Avatar = styled.div`
   background-repeat: no-repeat;
 `;
 
-// eslint-disable-next-line react/prefer-stateless-function
 export default class MessageContainer extends React.Component {
   shouldComponentUpdate() {
     return this.props.type === 'actions';
@@ -45,7 +46,7 @@ export default class MessageContainer extends React.Component {
   render() {
     const { side, type, sender, ...props } = this.props;
     const Component = componentsDict[type];
-    const disableBubble = ['actions'].includes(type);
+    const disableBubble = ['actions', 'botAction'].includes(type);
 
     return disableBubble ? (
       <Component type={type} {...props} />

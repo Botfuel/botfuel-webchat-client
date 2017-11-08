@@ -52,6 +52,7 @@ const Container = ({
   disableFullScreenButton,
   menuActions,
   debug,
+  voiceEnabled,
   data: { bot = {}, loading },
 }) => {
   if (loading) {
@@ -102,6 +103,7 @@ const Container = ({
             menuActions={menuActions}
             debug={debug}
             theme={theme}
+            voiceEnabled={voiceEnabled}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -154,6 +156,7 @@ Container.propTypes = {
     }),
   ).isRequired,
   debug: PropTypes.bool.isRequired,
+  voiceEnabled: PropTypes.bool.isRequired,
 };
 
 Container.defaultProps = {

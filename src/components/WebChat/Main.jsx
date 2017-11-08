@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import MessageListContainer from 'components/message/MessageListContainer';
+import Bubble from 'components/message/Bubble';
 import Top from './Top';
 import Bottom from './Bottom';
 
@@ -39,6 +40,13 @@ const Container = styled.div`
   }
 `;
 
+const SpeakingIndicator = styled.div`
+  &::before {
+    content: '\\f130';
+  }
+  font-family: 'font-awesome';
+`;
+
 const Main = ({
   messages,
   quickreplies,
@@ -58,6 +66,10 @@ const Main = ({
   menuActions,
   debug,
   theme,
+  setTranscript,
+  setIsRecording,
+  isRecording,
+  voiceEnabled,
 }) => (
   <Container
     width={width || width}
@@ -83,6 +95,13 @@ const Main = ({
       theme={theme}
       debug={debug}
     />
+    {isRecording && (
+      <div>
+        <Bubble side="right">
+          <SpeakingIndicator />
+        </Bubble>
+      </div>
+    )}
     <Bottom
       sendMessage={sendMessage}
       sendAction={sendAction}
@@ -90,6 +109,10 @@ const Main = ({
       onKeyPress={handleKeyPress}
       onInputChange={handleInputChange}
       input={input}
+      setTranscript={setTranscript}
+      setIsRecording={setIsRecording}
+      isRecording={isRecording}
+      voiceEnabled={voiceEnabled}
     />
   </Container>
 );
@@ -130,6 +153,10 @@ Main.propTypes = {
   ).isRequired,
   debug: PropTypes.bool.isRequired,
   theme: PropTypes.shape({}).isRequired,
+  setTranscript: PropTypes.func.isRequired,
+  setIsRecording: PropTypes.func.isRequired,
+  isRecording: PropTypes.bool.isRequired,
+  voiceEnabled: PropTypes.bool.isRequired,
 };
 
 Main.defaultProps = {

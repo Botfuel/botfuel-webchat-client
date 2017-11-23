@@ -62,3 +62,6 @@ build
 
 # Mac specific
 .DS_Store
+
+# jetbrains
+.idea

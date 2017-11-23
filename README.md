@@ -50,3 +50,7 @@ npm publish
 ```
 
 The script will automatically be available on jsdelivr.
+
+## License
+
+See the [LICENSE](LICENSE.md) file.

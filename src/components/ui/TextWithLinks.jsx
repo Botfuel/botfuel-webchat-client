@@ -13,9 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+/* eslint-disable react/no-danger */
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { sanitize } from 'dompurify';
 
 const emailPattern = /([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/i;
 const linkOrEmailPattern = /((?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+)|(([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+))/gi;
@@ -34,7 +36,7 @@ export default class TextWithLinks extends React.PureComponent {
     const comps = [];
     let match = linkOrEmailPattern.exec(text);
 
-    if (!match) return <span>{text}</span>;
+    if (!match) return <span dangerouslySetInnerHTML={{ __html: sanitize(text) }} />;
 
     let currentIndex = 0;
     while (match) {
@@ -59,7 +61,7 @@ export default class TextWithLinks extends React.PureComponent {
         {comps.map((component, i) => {
           const key = `${component.type}-${component.value}-${i}`;
           return component.type === 'text' ? (
-            <span key={key}>{component.value}</span>
+            <span key={key} dangerouslySetInnerHTML={{ __html: sanitize(component.value) }} />
           ) : (
             <a key={key} target={component.blank ? '_blank' : ''} href={component.href}>
               {component.value}

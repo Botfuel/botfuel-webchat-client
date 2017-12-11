@@ -41,6 +41,7 @@ const MessageList = ({
   markAsClicked,
   theme,
   debug,
+  parseHTML,
 }) => {
   const fMessages = messages.filter(
     (m, index) => m.type !== 'botAction' || index === messages.length - 1,
@@ -73,6 +74,7 @@ const MessageList = ({
             sendAction={sendAction}
             markAsClicked={markAsClicked(message)}
             key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
+            parseHTML={parseHTML}
           />
         ))}
       </FlipMove>
@@ -94,6 +96,7 @@ MessageList.propTypes = {
     layout: PropTypes.object,
   }).isRequired,
   debug: PropTypes.bool.isRequired,
+  parseHTML: PropTypes.bool.isRequired,
 };
 
 export default WithLabels(MessageList);

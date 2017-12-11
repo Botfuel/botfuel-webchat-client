@@ -31,7 +31,9 @@ const BOT_QUERY = gql`
   }
 `;
 
-const MainContainer = styled.div`${props => props.theme.fluid && 'height:100%;'};`;
+const MainContainer = styled.div`
+  ${props => props.theme.fluid && 'height:100%;'};
+`;
 
 const StyledContainer = styled.div`
   ${props => props.theme.fluid && 'height:100%;'};
@@ -68,6 +70,7 @@ const Container = ({
   disableFullScreenButton,
   menuActions,
   debug,
+  parseHTML,
   data: { bot = {}, loading },
 }) => {
   if (loading) {
@@ -86,10 +89,9 @@ const Container = ({
 
   if (!window.location.origin) {
     // Some browsers (mainly IE < 11) does not have this property, so we need to build it manually
-    window.location.origin = `${window.location.protocol}//${window.location.hostname}${window
-      .location.port
-      ? `:${window.location.port}`
-      : ''}`;
+    window.location.origin = `${window.location.protocol}//${window.location.hostname}${
+      window.location.port ? `:${window.location.port}` : ''
+    }`;
   }
 
   if (!cleanUrls.includes('*') && !cleanUrls.includes(window.location.origin) && !loading) {
@@ -118,6 +120,7 @@ const Container = ({
             menuActions={menuActions}
             debug={debug}
             theme={theme}
+            parseHTML={parseHTML}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -170,6 +173,7 @@ Container.propTypes = {
     }),
   ).isRequired,
   debug: PropTypes.bool.isRequired,
+  parseHTML: PropTypes.bool.isRequired,
 };
 
 Container.defaultProps = {

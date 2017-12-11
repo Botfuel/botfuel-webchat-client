@@ -18,10 +18,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextWithLinks from 'components/ui/TextWithLinks';
 
-export default function TextMessage({ payload }) {
-  return <TextWithLinks text={payload.textValue || payload.text} />;
+export default function TextMessage({ payload, sender, parseHTML }) {
+  return (
+    <TextWithLinks
+      text={payload.textValue || payload.text}
+      parseHTML={parseHTML && sender === 'bot'}
+    />
+  );
 }
 
 TextMessage.propTypes = {
   payload: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
+  sender: PropTypes.oneOf(['bot', 'user', 'server']).isRequired,
+  parseHTML: PropTypes.bool,
+};
+
+TextMessage.defaultProps = {
+  parseHTML: false,
 };

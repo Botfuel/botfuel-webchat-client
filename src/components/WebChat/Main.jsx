@@ -74,6 +74,7 @@ const Main = ({
   menuActions,
   debug,
   theme,
+  parseHTML,
 }) => (
   <Container
     width={width || width}
@@ -98,6 +99,7 @@ const Main = ({
       quickreplies={quickreplies}
       theme={theme}
       debug={debug}
+      parseHTML={parseHTML}
     />
     <Bottom
       sendMessage={sendMessage}
@@ -146,6 +148,7 @@ Main.propTypes = {
   ).isRequired,
   debug: PropTypes.bool.isRequired,
   theme: PropTypes.shape({}).isRequired,
+  parseHTML: PropTypes.bool.isRequired,
 };
 
 Main.defaultProps = {

@@ -70,7 +70,7 @@ export default class MessageContainer extends React.Component {
       <ClearDiv component={Component}>
         {side === 'left' && <Avatar sender={sender} />}
         <Bubble side={side}>
-          <Component {...props} />
+          <Component {...this.props} />
         </Bubble>
       </ClearDiv>
     );

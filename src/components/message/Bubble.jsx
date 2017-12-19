@@ -36,4 +36,8 @@ export default styled.div`
     (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
   background-color: ${props =>
     (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
+
+  a {
+    text-decoration: underline;
+  }
 `;

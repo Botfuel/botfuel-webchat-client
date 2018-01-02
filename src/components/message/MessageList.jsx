@@ -65,7 +65,7 @@ const MessageList = ({
           }}
         />
       )}
-      <Message payload={{ textValue: 'Bonjour!' }} type="text" sender="bot" side="left" key={0} />
+      { !!labels.onboardingMessage && <Message payload={{ textValue: labels.onboardingMessage }} type="text" sender="bot" side="left" key={0} /> }
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message

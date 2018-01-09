@@ -57,6 +57,7 @@ const MessageFragment = gql`
             postbackActionValue: value
           }
         }
+        text
       }
       ... on Postback {
         postbackValue: value

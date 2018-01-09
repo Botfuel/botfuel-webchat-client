@@ -17,6 +17,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import Message from '../Message';
 import TextButton from './TextButton';
 import LinkButton from './LinkButton';
 
@@ -43,45 +44,50 @@ const Actions = ({ payload, sendAction, markAsClicked }) => {
   }));
 
   return (
-    <Container size={actions.length}>
-      {actions &&
-        actions.map((action, index) => {
-          switch (action.type) {
-            case 'link':
-              return (
-                <LinkButton
-                  index={index}
-                  key={`${action.text}${action.linkActionValue}`}
-                  link={action.linkActionValue}
-                  label={action.text || action.linkActionValue}
-                  handleClick={() => markAsClicked(index)}
-                  disabled={action.disabled}
-                  clicked={action.clicked}
-                />
-              );
-            case 'postback':
-              return (
-                <TextButton
-                  index={index}
-                  key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
-                  handleClick={() => {
-                    sendAction({
-                      type: 'postback',
-                      value: action.postbackActionValue,
-                      text: action.text,
-                    })();
-                    markAsClicked(index);
-                  }}
-                  label={action.text || action.postbackActionValue}
-                  disabled={action.disabled}
-                  clicked={action.clicked}
-                />
-              );
-            default:
-              return null;
-          }
-        })}
-    </Container>
+    <div>
+      {!!payload.text && <Message type="text" side="left" sender="bot" payload={payload} />}
+      <Container size={actions.length}>
+        {actions &&
+          actions.map((action, index) => {
+            switch (action.type) {
+              case 'link':
+                return (
+                  <LinkButton
+                    index={index}
+                    key={`${action.text}${action.linkActionValue}`}
+                    link={action.linkActionValue}
+                    label={action.text || action.linkActionValue}
+                    handleClick={() => markAsClicked(index)}
+                    disabled={action.disabled}
+                    clicked={action.clicked}
+                    side="left"
+                  />
+                );
+              case 'postback':
+                return (
+                  <TextButton
+                    index={index}
+                    key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
+                    handleClick={() => {
+                      sendAction({
+                        type: 'postback',
+                        value: action.postbackActionValue,
+                        text: action.text,
+                      })();
+                      markAsClicked(index);
+                    }}
+                    label={action.text || action.postbackActionValue}
+                    disabled={action.disabled}
+                    clicked={action.clicked}
+                    side="left"
+                  />
+                );
+              default:
+                return null;
+            }
+          })}
+      </Container>
+    </div>
   );
 };
 

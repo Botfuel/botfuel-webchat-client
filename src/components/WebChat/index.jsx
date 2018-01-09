@@ -93,18 +93,8 @@ const MESSAGES_SUBSCRIPTION = gql`
 `;
 
 const TEXT_MESSAGE_MUTATION = gql`
-  mutation createTextMessage(
-    $user: ID!
-    $bot: ID!
-    $value: String!
-    $sender: String!
-  ) {
-    createTextMessage(
-      user: $user
-      bot: $bot
-      value: $value
-      sender: $sender
-    ) {
+  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!) {
+    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender) {
       ...FullMessage
     }
   }
@@ -119,13 +109,7 @@ const POSTBACK_MESSAGE_MUTATION = gql`
     $text: String!
     $sender: String!
   ) {
-    createPostbackMessage(
-      user: $user
-      bot: $bot
-      value: $value
-      text: $text
-      sender: $sender
-    ) {
+    createPostbackMessage(user: $user, bot: $bot, value: $value, text: $text, sender: $sender) {
       ...FullMessage
     }
   }
@@ -138,7 +122,7 @@ const MARK_ACTION_AS_CLICKED_MUTATION = gql`
       ...FullMessage
     }
   }
-   ${MessageFragment}
+  ${MessageFragment}
 `;
 
 class WebChat extends React.Component {
@@ -257,7 +241,6 @@ class WebChat extends React.Component {
         lastMessage.type === 'quickreplies' &&
         lastMessage.payload.quickrepliesValue) ||
       [];
-
     return (
       <Main
         {...this.props}

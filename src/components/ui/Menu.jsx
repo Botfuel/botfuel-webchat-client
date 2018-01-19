@@ -80,7 +80,6 @@ const MenuLink = styled.a`
   padding: 4px 20px;
   font-weight: 400;
   line-height: 1.42857143;
-  white-space: nowrap;
   text-align: left;
 `;
 

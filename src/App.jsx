@@ -80,6 +80,7 @@ class BotfuelWebChat {
         extraAllowedOrigins={param.extraAllowedOrigins}
         disableFullScreenButton={!!param.embeddedContainerId}
         menuActions={param.menuActions || []}
+        voiceEnabled={param.voiceEnabled || false}
         debug={param.debug || false}
         parseHTML={param.parseHTML || false}
       />,

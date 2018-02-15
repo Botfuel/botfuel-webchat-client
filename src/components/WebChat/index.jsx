@@ -131,6 +131,8 @@ class WebChat extends React.Component {
     super(props);
     this.state = {
       input: '',
+      isRecording: false,
+      transcript: '',
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
@@ -139,6 +141,7 @@ class WebChat extends React.Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.sendAction = this.sendAction.bind(this);
     this.markAsClicked = this.markAsClicked.bind(this);
+    this.setTranscript = this.setTranscript.bind(this);
   }
 
   componentWillMount() {
@@ -154,6 +157,21 @@ class WebChat extends React.Component {
       console.log('Error while fetching messages. Assuming message format has changed.');
       /* eslint-enable no-console */
       localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
+    }
+  }
+
+  setIsRecording = (isRecording) => {
+    this.setState({ isRecording });
+  };
+
+  async setTranscript(transcript) {
+    if (transcript) {
+      await this.sendMessage(transcript);
+      this.setState({
+        transcript: '',
+      });
+      this.setIsRecording(false);
+      this.setIsRecording(true);
     }
   }
 
@@ -173,13 +191,13 @@ class WebChat extends React.Component {
 
   handleKeyPress(e) {
     if (e && e.nativeEvent.keyCode === 13) {
-      this.sendMessage(this.state.input);
+      this.sendMessage();
       e.preventDefault();
     }
   }
 
-  async sendMessage() {
-    const text = this.state.input;
+  async sendMessage(input) {
+    const text = input || this.state.input;
     if (text) {
       this.resetInput();
       await this.props.createTextMessageMutation({
@@ -253,6 +271,8 @@ class WebChat extends React.Component {
         sendMessage={this.sendMessage}
         handleKeyPress={this.handleKeyPress}
         handleInputChange={this.handleInputChange}
+        setTranscript={this.setTranscript}
+        setIsRecording={this.setIsRecording}
       />
     );
   }

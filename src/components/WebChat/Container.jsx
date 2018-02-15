@@ -70,6 +70,7 @@ const Container = ({
   disableFullScreenButton,
   menuActions,
   debug,
+  voiceEnabled,
   parseHTML,
   data: { bot = {}, loading },
 }) => {
@@ -120,6 +121,7 @@ const Container = ({
             menuActions={menuActions}
             debug={debug}
             theme={theme}
+            voiceEnabled={voiceEnabled}
             parseHTML={parseHTML}
           />
         </StyledContainer>
@@ -173,6 +175,7 @@ Container.propTypes = {
     }),
   ).isRequired,
   debug: PropTypes.bool.isRequired,
+  voiceEnabled: PropTypes.bool.isRequired,
   parseHTML: PropTypes.bool.isRequired,
 };
 

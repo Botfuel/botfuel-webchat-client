@@ -2,7 +2,6 @@ import React from 'react';
 import styled, { keyframes } from 'styled-components';
 import annyang from 'annyang';
 import PropTypes from 'prop-types';
-import startRecordingSound from '../../../assets/sound/start-recording.wav';
 
 const pulse = keyframes`
   0% {
@@ -50,7 +49,9 @@ export default class Voice extends React.Component {
     const isRecording = !this.props.isRecording;
 
     if (isRecording) {
-      const audio = new Audio(startRecordingSound);
+      const audio = new Audio(
+        'https://s3.eu-west-3.amazonaws.com/botfuel-webchat-client/start-recording.wav',
+      );
       audio.play();
 
       annyang.start();

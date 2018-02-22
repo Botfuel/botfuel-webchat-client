@@ -25,11 +25,12 @@ const Container = styled.div`
   text-align: right;
   display: flex;
   justify-content: flex-end;
+  flex-direction: ${props => (props.theme.layout.verticalButtons ? 'column' : 'row')};
 
   > * {
     margin-left: ${props => 5 / props.size}%;
-    width: ${props => 90 / props.size}%;
-    max-width: 200px;
+    width: ${props => (props.theme.layout.verticalButtons ? 90 : 90 / props.size)}%;
+    ${props => !props.theme.layout.verticalButtons && 'max-width: 200px'};
   }
 `;
 

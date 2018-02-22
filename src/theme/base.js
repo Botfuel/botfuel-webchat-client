@@ -22,6 +22,7 @@ export default {
     compact: true,
     rounded: false,
     shadowed: false,
+    verticalButtons: false,
   },
   colors: {
     main: '#244891',

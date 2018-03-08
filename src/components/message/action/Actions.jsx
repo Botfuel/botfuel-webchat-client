@@ -27,11 +27,10 @@ const DISPLAY_VERTICAL = 'vertical';
 const DISPLAY_AUTO = 'auto';
 
 const isOneLine = (props) => {
-  const text = props.actions.reduce((prev, next) => `${prev.text} ${next.text}`);
-  const size = pixelWidth(text, { size: 15 });
-  const widthLimit = props.width * 0.9;
-  const elementsSize = (props.actions.length * 20) + size; // 20px is padding + border of one button
-  return elementsSize < widthLimit;
+  const joinedText = props.actions.map(action => action.text).join(' ');
+  const textWidth = pixelWidth(joinedText, { size: 15 });
+  const actionsWidth = (props.actions.length * 20) + textWidth;
+  return actionsWidth < (props.width * 0.9);
 };
 
 const verticalStyles = props => `

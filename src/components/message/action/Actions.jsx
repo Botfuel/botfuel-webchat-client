@@ -17,24 +17,64 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import pixelWidth from 'string-pixel-width';
 import Message from '../Message';
 import TextButton from './TextButton';
 import LinkButton from './LinkButton';
 
-const Container = styled.div`
+const DISPLAY_HORIZONTAL = 'horizontal';
+const DISPLAY_VERTICAL = 'vertical';
+const DISPLAY_AUTO = 'auto';
+
+const isOneLine = (props) => {
+  const text = props.actions.reduce((prev, next) => `${prev.text} ${next.text}`);
+  const size = pixelWidth(text, { size: 15 });
+  const widthLimit = props.width * 0.9;
+  const elementsSize = (props.actions.length * 20) + size; // 20px is padding + border of one button
+  return elementsSize < widthLimit;
+};
+
+const verticalStyles = props => `
   text-align: right;
   display: flex;
   justify-content: flex-end;
-  flex-direction: ${props => (props.theme.layout.verticalButtons ? 'column' : 'row')};
-
+  flex-direction: column;
+  
   > * {
-    margin-left: ${props => 5 / props.size}%;
-    width: ${props => (props.theme.layout.verticalButtons ? 90 : 90 / props.size)}%;
-    ${props => !props.theme.layout.verticalButtons && 'max-width: 200px'};
+    margin-left: ${5 / props.actions.length}%;
+    width: 90%;
   }
 `;
 
-const Actions = ({ payload, sendAction, markAsClicked }) => {
+const horizontalStyles = props => `
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  
+  > * {
+    margin-left: ${5 / props.actions.length}%;
+    width: ${90 / props.actions.length}%;
+    max-width: 200px;
+  }
+`;
+
+const getContainerStyle = (props) => {
+  switch (props.theme.layout.buttonsDisplay) {
+    case DISPLAY_HORIZONTAL:
+      return horizontalStyles(props);
+    case DISPLAY_VERTICAL:
+      return verticalStyles(props);
+    case DISPLAY_AUTO:
+      return isOneLine(props) ? horizontalStyles(props) : verticalStyles(props);
+    default:
+      return horizontalStyles(props);
+  }
+};
+
+const Container = styled.div`${props => getContainerStyle(props)}`;
+
+const Actions = ({ payload, sendAction, markAsClicked, width }) => {
   const hasAClickedAction = payload.actionValue.some(a => !!a.clicked);
   const actions = payload.actionValue.map(a => ({
     ...a,
@@ -47,7 +87,7 @@ const Actions = ({ payload, sendAction, markAsClicked }) => {
   return (
     <div>
       {!!payload.text && <Message type="text" side="left" sender="bot" payload={payload} />}
-      <Container size={actions.length}>
+      <Container actions={actions} width={width}>
         {actions &&
           actions.map((action, index) => {
             switch (action.type) {
@@ -104,6 +144,7 @@ Actions.propTypes = {
   }).isRequired,
   sendAction: PropTypes.func,
   markAsClicked: PropTypes.func.isRequired,
+  width: PropTypes.number.isRequired,
 };
 
 Actions.defaultProps = {

@@ -40,6 +40,7 @@ const MessageList = ({
   quickreplies,
   markAsClicked,
   theme,
+  width,
   debug,
   parseHTML,
 }) => {
@@ -79,6 +80,7 @@ const MessageList = ({
           <Message
             {...message}
             side={message.sender === 'user' ? 'right' : 'left'}
+            width={width}
             sendAction={sendAction}
             markAsClicked={markAsClicked(message)}
             key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
@@ -103,6 +105,7 @@ MessageList.propTypes = {
   theme: PropTypes.shape({
     layout: PropTypes.object,
   }).isRequired,
+  width: PropTypes.number.isRequired,
   debug: PropTypes.bool.isRequired,
   parseHTML: PropTypes.bool.isRequired,
 };

@@ -110,6 +110,7 @@ const Main = ({
       messages={messages}
       quickreplies={quickreplies}
       theme={theme}
+      width={width}
       debug={debug}
       parseHTML={parseHTML}
     />

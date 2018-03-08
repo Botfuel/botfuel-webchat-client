@@ -13,84 +13,82 @@
     <div style="float: right;" id="botfuel"></div>
 </body>
 <script>
-    BotfuelWebChat.init({
-        // embeddedContainerId: 'botfuel',
-        appToken: '1409616101942',
-        parseHTML: true,
-        theme: {
-            layout: {
-                compact: false,
-                rounded: true,
-                shadowed: true,
-                noHeader: true,
-                noHelpMessage: true,
-                noBorder: true,
-                verticalButtons: false
-            },
-            colors: {
-                main: '#3d3d3d',
-                mainLight: '#f5f5f5',
-                primary: '#7479b3',
-                secondary: '#ffffff',
-                background: '#e6eaf3',
-                menuIcon: '#ddd',
-                menuBackground: '#fff',
-                menuLink: '#555',
-                menuLinkHover: '#edeef3'
-            },
-            buttons: {
-                close: true,
-                fullScreen: true
-            },
-            startButtonStyle: 'bubble',
+  BotfuelWebChat.init({
+    // embeddedContainerId: 'botfuel',
+    appToken: '1409615570353',
+    parseHTML: true,
+    theme: {
+      layout: {
+        compact: false,
+        rounded: true,
+        shadowed: true,
+        noHeader: true,
+        noHelpMessage: true,
+        noBorder: true,
+        buttonsDisplay: 'horizontal', // vertical, horizontal or auto
+      },
+      colors: {
+        main: '#3d3d3d',
+        mainLight: '#f5f5f5',
+        primary: '#7479b3',
+        secondary: '#ffffff',
+        background: '#e6eaf3',
+        menuIcon: '#ddd',
+        menuBackground: '#fff',
+        menuLink: '#555',
+        menuLinkHover: '#edeef3',
+      },
+      buttons: {
+        close: true,
+        fullScreen: true,
+      },
+      startButtonStyle: 'bubble',
+    },
+    size: { width: 500, height: 600 },
+    // startOpen: true,
+    startFullScreen: false,
+    labels: {
+      sendButtonLabel: 'Envoyer',
+      helpMessage: 'Commandes de test : _test_table, _test_text, _test_choices.',
+      messageInputPlaceholder: 'Écrivez un message...',
+      webchatHeaderTitle: 'Comment puis-je vous aider ?',
+      onboardingMessage: 'Bonjour!',
+    },
+    serverUrl: 'http://localhost:7001',
+    extraAllowedOrigins: ['http://localhost:7000'],
+    debug: true,
+    menuActions: [
+      {
+        label: 'Recommencer',
+        message: {
+          type: 'text',
+          payload: {
+            value: 'Salut!',
+          },
         },
-        size: { width: 500, height: 600 },
-        // startOpen: true,
-        startFullScreen: false,
-        labels: {
-            sendButtonLabel: 'Envoyer',
-            helpMessage: 'Commandes de test : _test_table, _test_text, _test_choices.',
-            messageInputPlaceholder: 'Écrivez un message...',
-            webchatHeaderTitle: 'Comment puis-je vous aider ?',
-            onboardingMessage: 'Bonjour!'
+      },
+      {
+        label: 'Envoyer',
+        message: {
+          type: 'text',
+          payload: {
+            value: 'envoi',
+          },
         },
-        serverUrl: 'http://localhost:7001',
-        extraAllowedOrigins: ['http://localhost:7000'],
-        debug: true,
-        menuActions: [
-            {
-                label: 'Recommencer',
-                message: {
-                    type: 'text',
-                    payload: {
-                        value: 'Salut!'
-                    }
-                }
+      },
+      {
+        label: 'Exploser',
+        message: {
+          type: 'postback',
+          payload: {
+            value: {
+              custom: 'this is custom',
             },
-            {
-                label: 'Envoyer',
-                message: {
-                    type: 'text',
-                    payload: {
-                        value: 'envoi'
-                    }
-                }
-            },
-            {
-                label: 'Exploser',
-                message: {
-                    type: 'postback',
-                    payload: {
-                        value: {
-                            custom: 'this is custom'
-                        }
-                    }
-                }
-            },
-        ],
-        voiceEnabled: true
-    });
-
+          },
+        },
+      },
+    ],
+    voiceEnabled: true,
+  });
 </script>
-
 </html>

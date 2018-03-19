@@ -18,6 +18,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import FlipMove from 'react-flip-move';
+import isArray from 'lodash/isArray';
 import WithLabels from 'components/utils/WithLabels';
 import Message from './Message';
 import Block from './Block';
@@ -66,15 +67,25 @@ const MessageList = ({
           }}
         />
       )}
-      {!!labels.onboardingMessage && (
-        <Message
-          payload={{ textValue: labels.onboardingMessage }}
-          type="text"
-          sender="bot"
-          side="left"
-          key={0}
-        />
-      )}
+      {!!labels.onboardingMessage && isArray(labels.onboardingMessage)
+        ? labels.onboardingMessage.map(textValue => (
+          <Message
+            payload={{ textValue }}
+            type="text"
+            sender="bot"
+            side="left"
+            key={`onboarding-${textValue}`}
+          />
+        )) : (
+          <Message
+            payload={{ textValue: labels.onboardingMessage }}
+            type="text"
+            sender="bot"
+            side="left"
+            key={0}
+          />
+        )
+      }
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message

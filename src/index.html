@@ -2,20 +2,20 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
-    <title>Botfuel WebChat Demo</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <title>Botfuel WebChat Demo</title>
 </head>
 
 <body style="background: #e6eaf3;">
-    <div style="float: right;" id="botfuel"></div>
+  <div style="float: right;" id="botfuel"></div>
 </body>
 <script>
   BotfuelWebChat.init({
     // embeddedContainerId: 'botfuel',
-    appToken: '1409615570353',
+    appToken: '1409616824398',
     parseHTML: true,
     theme: {
       layout: {
@@ -52,7 +52,7 @@
       helpMessage: 'Commandes de test : _test_table, _test_text, _test_choices.',
       messageInputPlaceholder: 'Écrivez un message...',
       webchatHeaderTitle: 'Comment puis-je vous aider ?',
-      onboardingMessage: 'Bonjour!',
+      onboardingMessage: ['Bonjour!', 'e'],
     },
     serverUrl: 'http://localhost:7001',
     extraAllowedOrigins: ['http://localhost:7000'],
@@ -91,4 +91,5 @@
     voiceEnabled: true,
   });
 </script>
+
 </html>

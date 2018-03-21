@@ -67,7 +67,7 @@ const MessageList = ({
           }}
         />
       )}
-      {!!labels.onboardingMessage && isArray(labels.onboardingMessage) ? (
+      {isArray(labels.onboardingMessage) &&
         labels.onboardingMessage.map(textValue => (
           <Message
             payload={{ textValue }}
@@ -76,16 +76,17 @@ const MessageList = ({
             side="left"
             key={`onboarding-${textValue}`}
           />
-        ))
-      ) : (
-        <Message
-          payload={{ textValue: labels.onboardingMessage }}
-          type="text"
-          sender="bot"
-          side="left"
-          key={0}
-        />
-      )}
+        ))}
+      {!!labels.onboardingMessage &&
+        typeof labels.onboardingMessage === 'string' && (
+          <Message
+            payload={{ textValue: labels.onboardingMessage }}
+            type="text"
+            sender="bot"
+            side="left"
+            key={0}
+          />
+        )}
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message

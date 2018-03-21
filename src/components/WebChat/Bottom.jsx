@@ -101,7 +101,7 @@ function Bottom(props) {
             />
           </VoiceWrapper>
         )}
-        <SendButton onClick={props.sendMessage}>{props.labels.sendButtonLabel}</SendButton>
+        <SendButton onClick={() => props.sendMessage()}>{props.labels.sendButtonLabel}</SendButton>
       </InputWrapper>
     </BottomWrapper>
   );

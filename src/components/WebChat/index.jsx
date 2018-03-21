@@ -71,6 +71,9 @@ const MessageFragment = gql`
           action
         }
       }
+      ... on Image {
+        imageUrl: value
+      }
     }
   }
 `;

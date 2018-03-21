@@ -22,6 +22,7 @@ import Table from './Table';
 import TextMessage from './TextMessage';
 import Actions from './action/Actions';
 import Bubble from './Bubble';
+import Image from './Image';
 
 const componentsDict = {
   text: TextMessage,
@@ -29,6 +30,7 @@ const componentsDict = {
   actions: Actions,
   postback: TextMessage,
   botAction: BotAction,
+  image: Image,
 };
 
 const ClearDiv = styled.div`

@@ -75,6 +75,7 @@ const MessageList = ({
             sender="bot"
             side="left"
             key={`onboarding-${textValue}`}
+            parseHTML={parseHTML}
           />
         ))}
       {!!labels.onboardingMessage &&
@@ -85,6 +86,7 @@ const MessageList = ({
             sender="bot"
             side="left"
             key={0}
+            parseHTML={parseHTML}
           />
         )}
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">

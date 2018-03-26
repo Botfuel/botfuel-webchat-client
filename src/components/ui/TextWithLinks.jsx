@@ -19,6 +19,36 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 
+const emailPattern = /([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/i;
+const linkOrEmailPattern = /((?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+)|(([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+))/gi;
+
+const textToLinkComponents = (text) => {
+  const comps = [];
+  let match = linkOrEmailPattern.exec(text);
+
+  if (!match) return [];
+
+  let currentIndex = 0;
+  while (match) {
+    comps.push({ type: 'text', value: text.substr(currentIndex, match.index - currentIndex) });
+    const str = text.substr(match.index, match[0].length);
+    const isEmail = emailPattern.exec(str);
+
+    comps.push({
+      type: 'link',
+      href: isEmail ? `mailto:${str}` : str,
+      blank: !isEmail,
+      value: str,
+    });
+    currentIndex = match.index + match[0].length;
+
+    match = linkOrEmailPattern.exec(text);
+  }
+  comps.push({ type: 'text', value: text.substr(currentIndex, text.length - 1) });
+
+  return comps;
+};
+
 // Add a hook to make all links open a new window
 DOMPurify.addHook('afterSanitizeAttributes', (node) => {
   // set all elements owning target to target=_blank
@@ -49,6 +79,30 @@ export default class TextWithLinks extends React.PureComponent {
 
     if (parseHTML) {
       return <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }} />;
+    }
+
+    if (!parseHTML) {
+      const comps = textToLinkComponents(text);
+
+      if (comps.length) {
+        return (
+          <span>
+            {comps.map((component, i) => {
+              const key = `${component.type}-${component.value}-${i}`;
+              return component.type === 'text' ? (
+                <span
+                  key={key}
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(component.value) }}
+                />
+              ) : (
+                <a key={key} target={component.blank ? '_blank' : ''} href={component.href}>
+                  {component.value}
+                </a>
+              );
+            })}
+          </span>
+        );
+      }
     }
 
     return <span>{text}</span>;

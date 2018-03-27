@@ -61,7 +61,6 @@ class BotfuelWebChat {
       console.warn(
         'Using applicationId in the Botfuel Webchat init script is deprecated. Please use appToken instead.',
       );
-      /* eslint-enable no-console */
     }
 
     const mergedTheme = merge(defaultTheme, param.theme, updatedTheme);
@@ -71,6 +70,7 @@ class BotfuelWebChat {
         'Using a boolean as theme layout rounded property is deprecated. Please use a border-radius css string value instead.',
       );
       mergedTheme.layout.rounded = mergedTheme.layout.rounded ? '20px' : '15px';
+      /* eslint-enable no-console */
     }
 
     ReactDOM.render(

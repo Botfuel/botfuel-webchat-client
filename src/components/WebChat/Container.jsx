@@ -150,7 +150,7 @@ Container.propTypes = {
     fixed: PropTypes.bool,
     layout: PropTypes.shape({
       compact: PropTypes.bool,
-      rounded: PropTypes.bool,
+      rounded: PropTypes.string,
       shadowed: PropTypes.bool,
     }),
   }).isRequired,

@@ -20,7 +20,7 @@ import startButton from '../../assets/images/icons/botfuel.png';
 export default {
   layout: {
     compact: true,
-    rounded: false,
+    rounded: '15px',
     shadowed: false,
     verticalButtons: false,
   },

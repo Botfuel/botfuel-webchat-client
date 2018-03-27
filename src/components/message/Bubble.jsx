@@ -25,7 +25,7 @@ export default styled.div`
   float: ${props => props.side};
   display: inline-block;
   padding: ${props => (props.theme.layout.compact ? '8px 10px' : '10px 25px')};
-  border-radius: ${props => (props.theme.layout.rounded ? '20px' : '15px')};
+  border-radius: ${props => props.theme.layout.rounded};
   box-shadow: ${props =>
     (props.theme.layout.shadowed
       ? `0px 5px 25px 2px ${darken(0.1, props.theme.colors.background)}`

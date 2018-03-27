@@ -64,13 +64,22 @@ class BotfuelWebChat {
       /* eslint-enable no-console */
     }
 
+    const mergedTheme = merge(defaultTheme, param.theme, updatedTheme);
+
+    if (typeof mergedTheme.layout.rounded === 'boolean') {
+      console.log(
+        'Using a boolean as theme layout rounded property is deprecated. Please use a border-radius css string value instead.',
+      );
+      mergedTheme.layout.rounded = mergedTheme.layout.rounded ? '20px' : '15px';
+    }
+
     ReactDOM.render(
       <Root
         botId={param.appToken || param.applicationId}
         startButtonSize={param.startButtonSize || 90}
         width={(param.size && param.size.width) || 400}
         height={(param.size && param.size.height) || 500}
-        theme={merge(defaultTheme, param.theme, updatedTheme)}
+        theme={mergedTheme}
         initialState={{
           chatStarted: !!param.embeddedContainerId || param.startOpen || false,
           fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,

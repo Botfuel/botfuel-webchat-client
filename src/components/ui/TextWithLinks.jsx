@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 /* eslint-disable react/no-danger */
+/* eslint-disable no-nested-ternary */
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -21,6 +22,7 @@ import DOMPurify from 'dompurify';
 
 const emailPattern = /([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/i;
 const linkOrEmailPattern = /((?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+)|(([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+))/gi;
+const protocolPattern = /^https?:\/\//;
 
 const textToLinkComponents = (text) => {
   const comps = [];
@@ -33,10 +35,9 @@ const textToLinkComponents = (text) => {
     comps.push({ type: 'text', value: text.substr(currentIndex, match.index - currentIndex) });
     const str = text.substr(match.index, match[0].length);
     const isEmail = emailPattern.exec(str);
-
     comps.push({
       type: 'link',
-      href: isEmail ? `mailto:${str}` : str,
+      href: isEmail ? `mailto:${str}` : protocolPattern.exec(str) ? str : `http://${str}`,
       blank: !isEmail,
       value: str,
     });

@@ -300,6 +300,7 @@ WebChat.propTypes = {
   createTextMessageMutation: PropTypes.func.isRequired,
   createPostbackMessageMutation: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
+  markAsClicked: PropTypes.func.isRequired,
   websocketsSupported: PropTypes.bool.isRequired,
 };
 

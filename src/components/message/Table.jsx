@@ -69,5 +69,5 @@ MessageTable.propTypes = {
       schema: PropTypes.array.isRequired,
       rows: PropTypes.array.isRequired,
     }),
-  }),
+  }).isRequired,
 };

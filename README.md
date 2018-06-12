@@ -84,7 +84,16 @@ npm publish
 
 The script will automatically be available on jsdelivr.
 
-## Useful notes
+## Links in messages
+
+By default, webchat-client automatically parses links. Links such as https://www.botfuel.io will appear as clickable anchor tags in messages.
+
+## HTML
+
+It is possible to display HTML in messages by turning on the parseHTML option. By default it’s turned off.
+Dangerous HTML tags are filtered.
+
+## Useful development notes
 
 We use `Fragment` on the payload field in the Message query in the `WebChat/index.jsx` file because it can be of several types: Text, Table, Actions, Postback, Quickreplies, BotAction and Images. The type of payload define which fields are available on it. These types are defined server-side.
 

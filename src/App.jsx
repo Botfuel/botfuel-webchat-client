@@ -23,7 +23,7 @@ import { merge } from 'lodash';
 import uuidv4 from 'uuid/v4';
 import defaultTheme from 'theme/base';
 import Root from 'components/WebChat/Root';
-
+import EmbeddedContainerError from 'utils/Error';
 /* eslint-disable */
 injectGlobal`
 @font-face {
@@ -38,63 +38,69 @@ injectGlobal`
 
 class BotfuelWebChat {
   static init(param) {
-    if (!localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')) {
-      localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
-    }
+    function initialize() {
+      if (!localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')) {
+        localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
+      }
 
-    const updatedTheme = {
-      buttons: {
-        close: !!param.embeddedContainerId,
-      },
-      fixed: !!param.embeddedContainerId,
-    };
-    updatedTheme.buttons.close = !param.embeddedContainerId;
-    // updatedTheme.buttons.fullScreen = !param.embeddedContainerId;
-    updatedTheme.fixed = !param.embeddedContainerId;
+      const updatedTheme = {
+        buttons: {
+          close: !!param.embeddedContainerId,
+        },
+        fixed: !!param.embeddedContainerId,
+      };
+      updatedTheme.buttons.close = !param.embeddedContainerId;
+      // updatedTheme.buttons.fullScreen = !param.embeddedContainerId;
+      updatedTheme.fixed = !param.embeddedContainerId;
 
-    if (updatedTheme.fixed) {
-      document.body.innerHTML += '<div id="botfuel"></div>';
-    }
+      if (updatedTheme.fixed) {
+        document.body.innerHTML += '<div id="botfuel"></div>';
+      }
 
-    if (param.applicationId) {
-      /* eslint-disable no-console */
-      console.warn(
-        'Using applicationId in the Botfuel Webchat init script is deprecated. Please use appToken instead.',
+      if (param.applicationId) {
+        /* eslint-disable no-console */
+        console.warn(
+          'Using applicationId in the Botfuel Webchat init script is deprecated. Please use appToken instead.',
+        );
+      }
+
+      const mergedTheme = merge(defaultTheme, param.theme, updatedTheme);
+
+      if (typeof mergedTheme.layout.rounded === 'boolean') {
+        console.log(
+          'Using a boolean as theme layout rounded property is deprecated. Please use a border-radius css string value instead.',
+        );
+        mergedTheme.layout.rounded = mergedTheme.layout.rounded ? '20px' : '15px';
+        /* eslint-enable no-console */
+      }
+      const container = document.getElementById(param.embeddedContainerId || 'botfuel');
+      if (container === null) {
+        throw new EmbeddedContainerError();
+      }
+      ReactDOM.render(
+        <Root
+          botId={param.appToken || param.applicationId}
+          startButtonSize={param.startButtonSize || 90}
+          width={(param.size && param.size.width) || 400}
+          height={(param.size && param.size.height) || 500}
+          theme={mergedTheme}
+          initialState={{
+            chatStarted: !!param.embeddedContainerId || param.startOpen || false,
+            fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,
+          }}
+          customLabels={param.labels}
+          serverUrl={param.serverUrl}
+          extraAllowedOrigins={param.extraAllowedOrigins}
+          disableFullScreenButton={!!param.embeddedContainerId}
+          menuActions={param.menuActions || []}
+          voiceEnabled={param.voiceEnabled || false}
+          debug={param.debug || false}
+          parseHTML={param.parseHTML || false}
+        />,
+        container,
       );
     }
-
-    const mergedTheme = merge(defaultTheme, param.theme, updatedTheme);
-
-    if (typeof mergedTheme.layout.rounded === 'boolean') {
-      console.log(
-        'Using a boolean as theme layout rounded property is deprecated. Please use a border-radius css string value instead.',
-      );
-      mergedTheme.layout.rounded = mergedTheme.layout.rounded ? '20px' : '15px';
-      /* eslint-enable no-console */
-    }
-
-    ReactDOM.render(
-      <Root
-        botId={param.appToken || param.applicationId}
-        startButtonSize={param.startButtonSize || 90}
-        width={(param.size && param.size.width) || 400}
-        height={(param.size && param.size.height) || 500}
-        theme={mergedTheme}
-        initialState={{
-          chatStarted: !!param.embeddedContainerId || param.startOpen || false,
-          fullScreen: (!param.embeddedContainerId && param.startFullScreen) || false,
-        }}
-        customLabels={param.labels}
-        serverUrl={param.serverUrl}
-        extraAllowedOrigins={param.extraAllowedOrigins}
-        disableFullScreenButton={!!param.embeddedContainerId}
-        menuActions={param.menuActions || []}
-        voiceEnabled={param.voiceEnabled || false}
-        debug={param.debug || false}
-        parseHTML={param.parseHTML || false}
-      />,
-      document.getElementById(param.embeddedContainerId || 'botfuel'),
-    );
+    document.addEventListener('DOMContentLoaded', initialize);
   }
 }
 

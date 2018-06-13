@@ -80,16 +80,15 @@ const MessageList = ({
         ))}
       {!!labels.onboardingMessage &&
         typeof labels.onboardingMessage === 'string' && (
-          <Message
-            payload={{ textValue: labels.onboardingMessage }}
-            type="text"
-            sender="bot"
-            side="left"
-            key={0}
-            parseHTML={parseHTML}
-          />
-        )
-      }
+        <Message
+          payload={{ textValue: labels.onboardingMessage }}
+          type="text"
+          sender="bot"
+          side="left"
+          key={0}
+          parseHTML={parseHTML}
+        />
+      )}
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message

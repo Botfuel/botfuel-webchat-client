@@ -100,7 +100,12 @@ class BotfuelWebChat {
         container,
       );
     }
-    document.addEventListener('DOMContentLoaded', initialize);
+
+    if (document.readyState === 'complete') {
+      initialize();
+    } else {
+      document.addEventListener('DOMContentLoaded', initialize);
+    }
   }
 }
 

@@ -23,6 +23,7 @@ import TextMessage from './TextMessage';
 import Actions from './action/Actions';
 import Bubble from './Bubble';
 import Image from './Image';
+import Cards from './Cards';
 
 const componentsDict = {
   text: TextMessage,
@@ -31,6 +32,7 @@ const componentsDict = {
   postback: TextMessage,
   botAction: BotAction,
   image: Image,
+  cards: Cards,
 };
 
 const ClearDiv = styled.div`
@@ -64,7 +66,7 @@ export default class MessageContainer extends React.Component {
   render() {
     const { side, type, sender, ...props } = this.props;
     const Component = componentsDict[type];
-    const disableBubble = ['actions', 'botAction'].includes(type);
+    const disableBubble = ['actions', 'botAction', 'cards'].includes(type);
 
     return disableBubble ? (
       <Component type={type} {...props} />

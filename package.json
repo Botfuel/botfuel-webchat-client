@@ -58,6 +58,7 @@
     "react-flip-move": "^2.9.14",
     "react-hot-loader": "^3.0.0-beta.6",
     "react-onclickoutside": "^6.6.0",
+    "react-slick": "^0.23.1",
     "react-table": "^6.5.3",
     "react-textarea-autosize": "^5.1.0",
     "string-pixel-width": "^1.5.0",

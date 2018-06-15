@@ -74,6 +74,26 @@ const MessageFragment = gql`
       ... on Image {
         imageUrl: value
       }
+      ... on Cards {
+        cardsValues: value {
+          title
+          image_url
+          actionValue: buttons {
+            ... on LinkAction {
+              type
+              text
+              clicked
+              linkActionValue: value
+            }
+            ... on PostbackAction {
+              type
+              text
+              clicked
+              postbackActionValue: value
+            }
+          }
+        }
+      }
     }
   }
 `;

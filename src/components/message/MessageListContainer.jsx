@@ -56,6 +56,16 @@ export default class MessageListContainer extends React.Component {
     };
   };
 
+  markCardAsClicked = (messageId) => {
+    const func = this.props.markCardAsClicked(messageId);
+    return (cardIndex, actionIndex) => {
+      this.setState({
+        justClicked: this.state.justClicked + 1,
+      });
+      return func(cardIndex, actionIndex);
+    };
+  };
+
   render() {
     const messages = this.props.messages.filter(
       m => m.type !== 'quickreplies' && m.type !== 'postback' && m.type !== 'botAction',
@@ -87,6 +97,7 @@ export default class MessageListContainer extends React.Component {
         {...this.props}
         messages={filteredMessages}
         markAsClicked={this.markAsClicked}
+        markCardAsClicked={this.markCardAsClicked}
         setRef={(ref) => {
           this.innerRef = ref;
         }}
@@ -98,4 +109,5 @@ export default class MessageListContainer extends React.Component {
 MessageListContainer.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   markAsClicked: PropTypes.func.isRequired,
+  markCardAsClicked: PropTypes.func.isRequired,
 };

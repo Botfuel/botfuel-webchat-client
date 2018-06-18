@@ -29,6 +29,10 @@ const SliderContainer = styled.div`
   .slick-list {
     box-shadow: 0 0 20px 2px rgba(0,0,0,0.1);
   }
+  
+  .slick-slide div:focus {
+    outline: none;
+  }
 `;
 
 const Card = styled.div`
@@ -57,26 +61,23 @@ const sliderSettings = {
   slidesToScroll: 1,
 };
 
-const Cards = ({ payload, markAsClicked, sendAction }) => {
+const Cards = ({ payload, markCardAsClicked, sendAction }) => {
   const cards = payload.cardsValues;
-  console.log('cards', cards);
-  // @TODO HANDLE markAsClicked FOR CARDS
-  //  Need to pass card item so that markAsClicked can handle actionValue on the right message
   return (
     <SliderContainer>
       <Slider {...sliderSettings}>
-        {cards.map(card => (
+        {cards.map((card, cardIndex) => (
           <Card key={`card-${card.title}`}>
             <img src={card.image_url} alt={card.title} />
             <CardContent>
               <h4>{card.title}</h4>
               {!!card.actionValue.length &&
-                <Actions
-                  payload={card}
-                  sendAction={sendAction}
-                  markAsClicked={markAsClicked}
-                  width={100}
-                />
+              <Actions
+                payload={card}
+                sendAction={sendAction}
+                markAsClicked={actionIndex => markCardAsClicked(cardIndex, actionIndex)}
+                width={100}
+              />
               }
             </CardContent>
           </Card>
@@ -103,7 +104,7 @@ Cards.propTypes = {
     cardsValues: PropTypes.arrayOf(CardType).isRequired,
   }).isRequired,
   sendAction: PropTypes.func.isRequired,
-  markAsClicked: PropTypes.func.isRequired,
+  markCardAsClicked: PropTypes.func.isRequired,
 };
 
 export default Cards;

@@ -40,6 +40,7 @@ const MessageList = ({
   labels,
   quickreplies,
   markAsClicked,
+  markCardAsClicked,
   theme,
   width,
   debug,
@@ -78,18 +79,16 @@ const MessageList = ({
             parseHTML={parseHTML}
           />
         ))}
-      {!!labels.onboardingMessage &&
-        typeof labels.onboardingMessage === 'string' && (
-          <Message
-            payload={{ textValue: labels.onboardingMessage }}
-            type="text"
-            sender="bot"
-            side="left"
-            key={0}
-            parseHTML={parseHTML}
-          />
-        )
-      }
+      {!!labels.onboardingMessage && typeof labels.onboardingMessage === 'string' && (
+        <Message
+          payload={{ textValue: labels.onboardingMessage }}
+          type="text"
+          sender="bot"
+          side="left"
+          key={0}
+          parseHTML={parseHTML}
+        />
+      )}
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message
@@ -98,6 +97,7 @@ const MessageList = ({
             width={width}
             sendAction={sendAction}
             markAsClicked={markAsClicked(message)}
+            markCardAsClicked={markCardAsClicked(message)}
             key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
             parseHTML={parseHTML}
           />
@@ -114,6 +114,7 @@ MessageList.propTypes = {
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
+  markCardAsClicked: PropTypes.func.isRequired,
   labels: PropTypes.shape({
     helpMessage: PropTypes.string,
   }).isRequired,

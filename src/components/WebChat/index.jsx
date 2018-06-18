@@ -149,6 +149,15 @@ const MARK_ACTION_AS_CLICKED_MUTATION = gql`
   ${MessageFragment}
 `;
 
+const MARK_CARD_ACTION_AS_CLICKED_MUTATION = gql`
+  mutation markCardActionAsClicked($message: ID!, $cardIndex: Int!, $actionIndex: Int!) {
+    markCardActionAsClicked(message: $message, cardIndex: $cardIndex, actionIndex: $actionIndex) {
+      ...FullMessage
+    }
+  }
+  ${MessageFragment}
+`;
+
 class WebChat extends React.Component {
   constructor(props) {
     super(props);
@@ -164,6 +173,7 @@ class WebChat extends React.Component {
     this.sendMessage = this.sendMessage.bind(this);
     this.sendAction = this.sendAction.bind(this);
     this.markAsClicked = this.markAsClicked.bind(this);
+    this.markCardAsClicked = this.markCardAsClicked.bind(this);
     this.setTranscript = this.setTranscript.bind(this);
   }
 
@@ -275,6 +285,19 @@ class WebChat extends React.Component {
     };
   }
 
+  markCardAsClicked(message) {
+    return async (cardIndex, actionIndex) => {
+      console.log('markCardAsClicked MAIN: cardIndex', cardIndex, actionIndex);
+      await this.props.markCardAsClicked({
+        message,
+        cardIndex,
+        actionIndex,
+      });
+
+      this.props.refetch();
+    };
+  }
+
   render() {
     // Quickreplies are only displayed if they are the last message
     const lastMessage = last(this.props.messages);
@@ -291,6 +314,7 @@ class WebChat extends React.Component {
         quickreplies={quickreplies}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}
+        markCardAsClicked={this.markCardAsClicked}
         sendMessage={this.sendMessage}
         handleKeyPress={this.handleKeyPress}
         handleInputChange={this.handleInputChange}
@@ -321,6 +345,7 @@ WebChat.propTypes = {
   createPostbackMessageMutation: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
+  markCardAsClicked: PropTypes.func.isRequired,
   websocketsSupported: PropTypes.bool.isRequired,
 };
 
@@ -373,6 +398,7 @@ export default compose(
   graphql(MARK_ACTION_AS_CLICKED_MUTATION, {
     props: ({ ownProps, mutate }) => ({
       markAsClicked({ message, actionIndex }) {
+        console.log('MARK AS CLICKED', message, actionIndex);
         // Create a fictive message that is the same message
         // with the clicked action that is set to clicked: true
         const newMessage = {
@@ -411,6 +437,63 @@ export default compose(
             // Replace old message with clicked message in messages array
             const messageIndex = data.messages.findIndex(m => m.id === message.id);
             data.messages[messageIndex] = markActionAsClicked;
+
+            // Write our data back to the cache.
+            store.writeQuery({ query: MESSAGES_QUERY, data });
+          },
+        });
+      },
+    }),
+  }),
+  graphql(MARK_CARD_ACTION_AS_CLICKED_MUTATION, {
+    props: ({ ownProps, mutate }) => ({
+      markCardAsClicked({ message, cardIndex, actionIndex }) {
+        console.log('MARK CARD AS CLICKED', message, cardIndex, actionIndex);
+        // Create a fictive message that is the same message
+        // with the clicked action that is set to clicked: true
+        const newMessage = {
+          ...message,
+          payload: {
+            ...message.payload,
+            cardsValues: Object.assign([], message.payload.cardsValues, {
+              [cardIndex]: {
+                ...message.payload.cardsValues[cardIndex],
+                actionValue: Object.assign([], message.payload.cardsValues[cardIndex].actionValue, {
+                  [actionIndex]: {
+                    ...message.payload.cardsValues[cardIndex].actionValue[actionIndex],
+                    clicked: true,
+                  },
+                }),
+              },
+            }),
+          },
+        };
+
+        console.log('Updated message', newMessage);
+
+        // Set the fictive message as the mutation optimistic result
+        return mutate({
+          variables: { message: message.id, cardIndex, actionIndex },
+          optimisticResponse: {
+            __typename: 'Mutation',
+            markCardActionAsClicked: {
+              __typename: 'Message',
+              ...newMessage,
+            },
+          },
+          update: (store, { data: { markCardActionAsClicked } }) => {
+            // Read the data from our cache for this query.
+            const data = store.readQuery({
+              query: MESSAGES_QUERY,
+              variables: {
+                user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
+                bot: ownProps.botId,
+              },
+            });
+
+            // Replace old message with clicked message in messages array
+            const messageIndex = data.messages.findIndex(m => m.id === message.id);
+            data.messages[messageIndex] = markCardActionAsClicked;
 
             // Write our data back to the cache.
             store.writeQuery({ query: MESSAGES_QUERY, data });

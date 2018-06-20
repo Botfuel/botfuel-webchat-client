@@ -22,7 +22,6 @@ const ButtonStyles = {
   bubble: css`
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
     background-color: #fbfbfb;
-    background-size: 75%;
   `,
 };
 
@@ -36,7 +35,7 @@ const Button = styled.div`
   cursor: pointer;
   background-image: url("${props => props.theme.images.startButton}");
   background-position: center;
-  background-size: 100%;
+  background-size: 50%;
   background-repeat: no-repeat;
 
   ${props => ButtonStyles[props.theme.startButtonStyle]};

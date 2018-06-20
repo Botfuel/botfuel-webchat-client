@@ -40,7 +40,6 @@ const MessageList = ({
   labels,
   quickreplies,
   markAsClicked,
-  markCardAsClicked,
   theme,
   width,
   debug,
@@ -97,7 +96,6 @@ const MessageList = ({
             width={width}
             sendAction={sendAction}
             markAsClicked={markAsClicked(message)}
-            markCardAsClicked={markCardAsClicked(message)}
             key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
             parseHTML={parseHTML}
           />
@@ -114,7 +112,6 @@ MessageList.propTypes = {
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
-  markCardAsClicked: PropTypes.func.isRequired,
   labels: PropTypes.shape({
     helpMessage: PropTypes.string,
   }).isRequired,

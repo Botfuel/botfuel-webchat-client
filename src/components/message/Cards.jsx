@@ -21,6 +21,7 @@ import Slider from 'react-slick';
 import Actions from './action/Actions';
 
 const SliderContainer = styled.div`
+  max-width: 400px;
   padding: 30px;
   .slick-next:before, .slick-prev:before {
     color: black;
@@ -55,43 +56,49 @@ const CardContent = styled.div`
 `;
 
 const sliderSettings = {
-  dots: false,
-  infinite: false,
   slidesToShow: 1,
   slidesToScroll: 1,
+  dots: false,
+  infinite: false,
+  nextArrow: null,
+  prevArrow: null,
 };
 
-const Cards = ({ payload, markCardAsClicked, sendAction }) => {
-  const cards = payload.cardsValues;
-  return (
-    <SliderContainer>
-      <Slider {...sliderSettings}>
-        {cards.map((card, cardIndex) => (
-          <Card key={`card-${card.title}`}>
-            <img src={card.image_url} alt={card.title} />
-            <CardContent>
-              <h4>{card.title}</h4>
-              {!!card.actionValue.length &&
-              <Actions
-                payload={card}
-                sendAction={sendAction}
-                markAsClicked={actionIndex => markCardAsClicked(cardIndex, actionIndex)}
-                width={100}
-              />
-              }
-            </CardContent>
-          </Card>
-        ))}
-      </Slider>
-    </SliderContainer>
-  );
-};
+const Cards = ({ payload, markAsClicked, sendAction }) => (
+  <SliderContainer>
+    <Slider {...sliderSettings}>
+      {payload.cardsValues.map((card, cardIndex) => (
+        <Card key={`card-${card.title}`}>
+          <img src={card.image_url} alt={card.title} />
+          <CardContent>
+            <h4>{card.title}</h4>
+            {!!card.actionValue.length &&
+            <Actions
+              payload={card}
+              sendAction={sendAction}
+              markAsClicked={actionIndex => markAsClicked(actionIndex, cardIndex)}
+              width={100}
+            />
+            }
+          </CardContent>
+        </Card>
+      ))}
+    </Slider>
+  </SliderContainer>
+);
 
 const ButtonType = PropTypes.shape({
   type: PropTypes.oneOf(['text', 'postback', 'link']).isRequired,
   text: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  clicked: PropTypes.bool,
+  disabled: PropTypes.bool,
 });
+
+ButtonType.defaultProps = {
+  clicked: false,
+  disabled: false,
+};
 
 const CardType = PropTypes.shape({
   title: PropTypes.string.isRequired,
@@ -104,7 +111,7 @@ Cards.propTypes = {
     cardsValues: PropTypes.arrayOf(CardType).isRequired,
   }).isRequired,
   sendAction: PropTypes.func.isRequired,
-  markCardAsClicked: PropTypes.func.isRequired,
+  markAsClicked: PropTypes.func.isRequired,
 };
 
 export default Cards;

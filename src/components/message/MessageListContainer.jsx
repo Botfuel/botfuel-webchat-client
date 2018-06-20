@@ -46,24 +46,11 @@ export default class MessageListContainer extends React.Component {
     this.innerRef.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }
 
-  markAsClicked = (messageId) => {
-    const func = this.props.markAsClicked(messageId);
-    return (actionIndex) => {
-      this.setState({
-        justClicked: this.state.justClicked + 1,
-      });
-      return func(actionIndex);
-    };
-  };
-
-  markCardAsClicked = (messageId) => {
-    const func = this.props.markCardAsClicked(messageId);
-    return (cardIndex, actionIndex) => {
-      this.setState({
-        justClicked: this.state.justClicked + 1,
-      });
-      return func(cardIndex, actionIndex);
-    };
+  markAsClicked = messageId => (actionIndex, cardIndex = null) => {
+    this.setState({ justClicked: this.state.justClicked + 1 });
+    return cardIndex === null
+      ? this.props.markAsClicked(messageId)(actionIndex)
+      : this.props.markCardAsClicked(messageId)(cardIndex, actionIndex);
   };
 
   render() {
@@ -97,7 +84,6 @@ export default class MessageListContainer extends React.Component {
         {...this.props}
         messages={filteredMessages}
         markAsClicked={this.markAsClicked}
-        markCardAsClicked={this.markCardAsClicked}
         setRef={(ref) => {
           this.innerRef = ref;
         }}

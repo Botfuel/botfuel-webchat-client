@@ -287,7 +287,6 @@ class WebChat extends React.Component {
 
   markCardAsClicked(message) {
     return async (cardIndex, actionIndex) => {
-      console.log('markCardAsClicked MAIN: cardIndex', cardIndex, actionIndex);
       await this.props.markCardAsClicked({
         message,
         cardIndex,
@@ -398,7 +397,6 @@ export default compose(
   graphql(MARK_ACTION_AS_CLICKED_MUTATION, {
     props: ({ ownProps, mutate }) => ({
       markAsClicked({ message, actionIndex }) {
-        console.log('MARK AS CLICKED', message, actionIndex);
         // Create a fictive message that is the same message
         // with the clicked action that is set to clicked: true
         const newMessage = {
@@ -448,7 +446,6 @@ export default compose(
   graphql(MARK_CARD_ACTION_AS_CLICKED_MUTATION, {
     props: ({ ownProps, mutate }) => ({
       markCardAsClicked({ message, cardIndex, actionIndex }) {
-        console.log('MARK CARD AS CLICKED', message, cardIndex, actionIndex);
         // Create a fictive message that is the same message
         // with the clicked action that is set to clicked: true
         const newMessage = {
@@ -468,8 +465,6 @@ export default compose(
             }),
           },
         };
-
-        console.log('Updated message', newMessage);
 
         // Set the fictive message as the mutation optimistic result
         return mutate({

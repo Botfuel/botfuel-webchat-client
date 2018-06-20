@@ -60,7 +60,7 @@ const Avatar = styled.div`
 
 export default class MessageContainer extends React.Component {
   shouldComponentUpdate() {
-    return this.props.type === 'actions';
+    return ['actions', 'cards'].includes(this.props.type);
   }
 
   render() {

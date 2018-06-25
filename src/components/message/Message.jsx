@@ -23,7 +23,7 @@ import TextMessage from './TextMessage';
 import Actions from './action/Actions';
 import Bubble from './Bubble';
 import Image from './Image';
-import Cards from './Cards';
+import Cards from './NewCards';
 
 const componentsDict = {
   text: TextMessage,

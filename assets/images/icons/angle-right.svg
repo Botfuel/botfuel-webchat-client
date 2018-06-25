@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 14 24 36" aria-labelledby="title"
+aria-describedby="desc" role="img" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <title>Angle Right</title>
+  <desc>A line styled icon from Orion Icon Library.</desc>
+  <path data-name="layer1"
+  fill="none" stroke="#333333" stroke-miterlimit="10" stroke-width="5" d="M26 20.006L40 32 26 44.006"
+  stroke-linejoin="round" stroke-linecap="round"></path>
+</svg>

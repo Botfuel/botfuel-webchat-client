@@ -19,7 +19,7 @@ import ButtonList from './ButtonList';
 import Message from './Message';
 import Table from './Table';
 import MessageList from './MessageList';
-import Cards from './Cards';
+import Cards from './NewCards';
 
 export default {
   Button,

@@ -19,7 +19,8 @@ import 'whatwg-fetch';
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
-import { graphql, gql } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import StartButton from 'components/StartButton';
 import WebChat from 'components/WebChat';
 

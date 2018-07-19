@@ -9,14 +9,14 @@ import nextArrowIcon from '../../../assets/images/icons/angle-right.svg';
 const Wrapper = styled.div`
   position: relative;
   padding: 30px;
-  overflow-y: scroll;
+  overflow: hidden;
 `;
 
 // Container - where carousel items are displayed
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  overflow-y: scroll;
+  overflow: hidden;
 `;
 
 // Item - when an item go
@@ -59,7 +59,7 @@ class Carousel extends Component {
     super(props);
     this.state = {
       currentIndex: 0,
-      maxIndex: null,
+      arrowsDisabled: false,
     };
     // carousel random id
     this.id = Math.random();
@@ -68,32 +68,80 @@ class Carousel extends Component {
     this.items = [];
   }
 
+  componentDidMount = () => {
+    window.addEventListener('resize', this.handleResize);
+    // trigger handleSize a first time to initiate
+    this.handleResize();
+  };
+
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', this.handleResize);
+  };
+
   setItemRef = (node, index) => {
     this.items[index] = node;
   };
 
+  setContainerRef = (node) => {
+    console.log('setContainerRef', node);
+    this.container = node;
+  };
+
+  handleResize = () => {
+    console.log('Resize event', this.container.scrollLeft, this.container.offsetWidth, this.container.scrollWidth);
+    this.setState({ arrowsDisabled: this.container.offsetWidth === this.container.scrollWidth });
+  };
+
+  smoothScroll = (scrollGoal) => {
+    const isRightScroll = this.container.scrollLeft < scrollGoal;
+    const stepAmount = 10;
+    if (isRightScroll) {
+      window.requestAnimationFrame(this.scrollStepRight(scrollGoal, stepAmount));
+    } else {
+      window.requestAnimationFrame(this.scrollStepLeft(scrollGoal, stepAmount));
+    }
+  };
+
+  scrollStepRight = (scrollGoal, stepAmount) => () => {
+    const actualScroll = this.container.scrollLeft;
+    const newScroll = actualScroll + stepAmount;
+    this.container.scrollLeft = newScroll;
+    if (newScroll !== scrollGoal && (newScroll + this.container.offsetWidth) <= this.container.scrollWidth) {
+      window.requestAnimationFrame(this.scrollStepRight(scrollGoal, stepAmount));
+    }
+  };
+
+  scrollStepLeft = (scrollGoal, stepAmount) => () => {
+    const actualScroll = this.container.scrollLeft;
+    const newScroll = actualScroll - stepAmount;
+    this.container.scrollLeft = newScroll;
+    if (newScroll !== scrollGoal && newScroll > 0) {
+      window.requestAnimationFrame(this.scrollStepLeft(scrollGoal, stepAmount));
+    }
+  };
+
   handlePrevious = () => {
     console.log('Go previous', this.state);
-    this.setState({ currentIndex: this.state.currentIndex - 1 });
-    scrollIntoView(this.items[this.state.currentIndex], {
-      time: 1000,
-      align: {
-        left: 0,
-      },
-      validTarget: (target, parentsScrolled) => (parentsScrolled < 1 && target !== window),
-    });
+    const currentIndex = this.state.currentIndex;
+    const currentItemWidth = this.items[currentIndex].offsetWidth;
+    // this.container.scrollLeft = this.container.scrollLeft - currentItemWidth;
+    this.smoothScroll(this.container.scrollLeft - currentItemWidth);
+    if (currentIndex > 0) {
+      this.setState({ currentIndex: currentIndex - 1 });
+      console.log('Current index decremented');
+    }
   };
 
   handleNext = () => {
     console.log('Go next', this.state);
-    this.setState({ currentIndex: this.state.currentIndex + 1 });
-    scrollIntoView(this.items[this.state.currentIndex], {
-      time: 1000,
-      align: {
-        right: 0,
-      },
-      validTarget: (target, parentsScrolled) => (parentsScrolled < 1 && target !== window),
-    });
+    const currentIndex = this.state.currentIndex;
+    const currentItemWidth = this.items[currentIndex].offsetWidth;
+    // this.container.scrollLeft = this.container.scrollLeft + currentItemWidth;
+    this.smoothScroll(this.container.scrollLeft + currentItemWidth);
+    if (currentIndex < (this.items.length + 1)) {
+      this.setState({ currentIndex: currentIndex + 1 });
+      console.log('Current index incremented');
+    }
   };
 
   render() {
@@ -101,12 +149,12 @@ class Carousel extends Component {
       <Wrapper>
         <ArrowButton
           onClick={this.handlePrevious}
-          disabled={this.state.currentIndex === 0}
+          disabled={this.state.currentIndex === 0 || this.state.arrowsDisabled}
           isPrevious
         >
           <img src={prevArrowIcon} alt="previous" />
         </ArrowButton>
-        <Container>
+        <Container innerRef={this.setContainerRef} onChange={() => console.log('changed!')}>
           {this.props.children.map((item, index) => (
             <Item
               innerRef={node => this.setItemRef(node, index)}
@@ -116,7 +164,7 @@ class Carousel extends Component {
         </Container>
         <ArrowButton
           onClick={this.handleNext}
-          disabled={this.state.currentIndex === (this.items.length - 1)}
+          disabled={this.state.currentIndex === (this.items.length - 1) || this.state.arrowsDisabled}
           isNext
         >
           <img src={nextArrowIcon} alt="next" />

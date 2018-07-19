@@ -88,8 +88,7 @@ const MessageList = ({
           key={0}
           parseHTML={parseHTML}
         />
-        )
-      }
+      )}
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message

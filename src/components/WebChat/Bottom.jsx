@@ -66,9 +66,15 @@ const WideTextarea = styled(Textarea)`
   color: dimgray;
   font-size: 13px;
   margin: 10px;
+  
+  &:focus {
+    outline: none;
+  }
 
   &::placeholder {
     color: lightgray;
+    font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
+    Arial, sans-serif;
   }
 `;
 

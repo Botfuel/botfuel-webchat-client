@@ -38,17 +38,30 @@ export default class Voice extends React.Component {
     setIsRecording: PropTypes.func.isRequired,
   };
 
-  componentDidMount() {
-    annyang.setLanguage('fr-FR');
-    annyang.addCallback('result', ([userText]) => {
-      this.props.setTranscript(userText);
+  state = {
+    isAvailable: false,
+  };
+
+  componentWillMount() {
+    this.setState({
+      isAvailable: annyang !== null, // speech recognition is not available on each browsers
     });
+  }
+
+  componentDidMount() {
+    // need to check if speech recognition is available on the browser
+    if (this.state.isAvailable) {
+      annyang.setLanguage('fr-FR');
+      annyang.addCallback('result', ([userText]) => {
+        this.props.setTranscript(userText);
+      });
+    }
   }
 
   toggleRecording = () => {
     const isRecording = !this.props.isRecording;
 
-    if (isRecording) {
+    if (isRecording && this.state.isAvailable) {
       const audio = new Audio(
         'https://s3.eu-west-3.amazonaws.com/botfuel-webchat-client/start-recording.wav',
       );
@@ -65,7 +78,7 @@ export default class Voice extends React.Component {
   render() {
     const { isRecording } = this.props;
 
-    return (
+    return this.state.isAvailable && (
       <div>
         <Button active={isRecording} onClick={this.toggleRecording} />
       </div>

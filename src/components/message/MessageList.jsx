@@ -78,7 +78,8 @@ const MessageList = ({
             parseHTML={parseHTML}
           />
         ))}
-      {!!labels.onboardingMessage && typeof labels.onboardingMessage === 'string' && (
+      {!!labels.onboardingMessage &&
+        typeof labels.onboardingMessage === 'string' && (
         <Message
           payload={{ textValue: labels.onboardingMessage }}
           type="text"
@@ -87,7 +88,8 @@ const MessageList = ({
           key={0}
           parseHTML={parseHTML}
         />
-      )}
+        )
+      }
       <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message

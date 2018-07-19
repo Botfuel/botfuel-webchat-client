@@ -47,7 +47,7 @@ module.exports = {
         },
       },
       {
-        test: /\.(png|jpg|gif)$/,
+        test: /\.(png|jpg|gif|svg)$/,
         use: [
           {
             loader: 'url-loader',
@@ -76,7 +76,7 @@ module.exports = {
     extensions: ['.js', '.jsx'],
   },
 
-  devtool: 'cheap-module-source-map',
+  devtool: 'inline-cheap-module-source-map',
 
   plugins: [
     new webpack.DefinePlugin({

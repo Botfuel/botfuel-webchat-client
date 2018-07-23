@@ -17,8 +17,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Carousel from '../ui/Carousel';
-import Actions from './action/Actions';
+import Carousel from '../../ui/Carousel';
+import CardActions from './CardActions';
 
 const Card = styled.div`
   background-color: white;
@@ -67,15 +67,15 @@ const Cards = ({ payload, markAsClicked, sendAction }) => (
           <div>
             <h4>{card.title}</h4>
           </div>
-          {!!card.actionValue.length &&
-          <Actions
-            payload={card}
-            sendAction={sendAction}
-            markAsClicked={actionIndex => markAsClicked(actionIndex, cardIndex)}
-            width={100}
-          />
-          }
         </CardContent>
+        {!!card.actionValue.length &&
+        <CardActions
+          payload={card}
+          sendAction={sendAction}
+          markAsClicked={actionIndex => markAsClicked(actionIndex, cardIndex)}
+          width={100}
+        />
+        }
       </Card>
     ))}
   </Carousel>

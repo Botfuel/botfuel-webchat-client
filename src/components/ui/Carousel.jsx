@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import scrollIntoView from 'scroll-into-view';
 import prevArrowIcon from '../../../assets/images/icons/angle-left.svg';
 import nextArrowIcon from '../../../assets/images/icons/angle-right.svg';
 
@@ -21,8 +20,8 @@ const Container = styled.div`
 
 // Item - when an item go
 const Item = styled.div`
-  margin-right: 10px;
-  max-width: 300px;
+  margin: 0 ${props => props.itemMargin}px;
+  width: ${props => props.itemSize}px;
 `;
 
 // Arrows - prev and next controls buttons
@@ -58,113 +57,149 @@ class Carousel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentIndex: 0,
-      arrowsDisabled: false,
+      containerWidth: 0,
+      scrollPosition: 0,
+      scrollWidth: 0,
+      itemToScroll: 1,
     };
+    // is scrolling flag
+    this.isScrolling = false;
     // carousel random id
     this.id = Math.random();
-    // container ref
+    // container reference
     this.container = null;
-    this.items = [];
   }
 
   componentDidMount = () => {
+    // add resize event listener
     window.addEventListener('resize', this.handleResize);
-    // trigger handleSize a first time to initiate
-    this.handleResize();
+    // trigger handleSize a first time to initiate state properties
+    // Use setTimeout to prevent issue with offsetWidth and scrollWidth of the container
+    setTimeout(() => {
+      this.handleResize();
+    }, 500);
   };
 
   componentWillUnmount = () => {
+    // remove event listener
     window.removeEventListener('resize', this.handleResize);
   };
 
-  setItemRef = (node, index) => {
-    this.items[index] = node;
-  };
-
+  /**
+   * Set container reference
+   * @param node - the container reference node
+   */
   setContainerRef = (node) => {
-    console.log('setContainerRef', node);
     this.container = node;
   };
 
+  /**
+   * Compute scroll amount when user click on prev/next arrow
+   * @returns {number} - the scroll amount
+   */
+  getScrollAmount = () => (this.props.itemSize + 10) * this.state.itemToScroll;
+
+  /**
+   * Handle previous arrow click
+   */
+  handlePrevious = () => this.scrollTo(this.container.scrollLeft - this.getScrollAmount());
+
+  /**
+   * Handle next arrow click
+   */
+  handleNext = () => this.scrollTo(this.container.scrollLeft + this.getScrollAmount());
+
+  /**
+   * Handle resize event on the container and update state properties
+   */
   handleResize = () => {
-    console.log('Resize event', this.container.scrollLeft, this.container.offsetWidth, this.container.scrollWidth);
-    this.setState({ arrowsDisabled: this.container.offsetWidth === this.container.scrollWidth });
+    this.setState({
+      containerWidth: this.container.offsetWidth,
+      scrollWidth: this.container.scrollWidth,
+      scrollPosition: this.container.scrollLeft,
+      itemToScroll: Math.floor(this.container.offsetWidth / this.props.itemSize),
+    });
   };
 
-  smoothScroll = (scrollGoal) => {
-    const isRightScroll = this.container.scrollLeft < scrollGoal;
-    const stepAmount = 10;
-    if (isRightScroll) {
-      window.requestAnimationFrame(this.scrollStepRight(scrollGoal, stepAmount));
+  /**
+   * Scroll from actual container.scrollLeft to next scroll position
+   * @param {number} nextScrollPosition
+   */
+  scrollTo = (nextScrollPosition) => {
+    const isRightScroll = this.container.scrollLeft < nextScrollPosition;
+    if (!this.isScrolling) {
+      this.isScrolling = true;
+      const stepAmount = 10;
+      if (isRightScroll) {
+        window.requestAnimationFrame(this.scrollStepRight(nextScrollPosition, stepAmount));
+      } else {
+        window.requestAnimationFrame(this.scrollStepLeft(nextScrollPosition, stepAmount));
+      }
+      this.setState({
+        scrollPosition: nextScrollPosition >= 0 ? nextScrollPosition : 0,
+      });
+    }
+  };
+
+  /**
+   * Recursive function used to animate right scrolling
+   * @param {number} nextScrollPosition
+   * @param {number} stepAmount
+   * @returns {Function}
+   */
+  scrollStepRight = (nextScrollPosition, stepAmount) => () => {
+    const newScroll = this.container.scrollLeft + stepAmount;
+    this.container.scrollLeft = newScroll;
+    if (
+      newScroll !== nextScrollPosition
+      && (newScroll + this.container.offsetWidth) <= this.container.scrollWidth
+    ) {
+      window.requestAnimationFrame(this.scrollStepRight(nextScrollPosition, stepAmount));
     } else {
-      window.requestAnimationFrame(this.scrollStepLeft(scrollGoal, stepAmount));
+      this.isScrolling = false;
     }
   };
 
-  scrollStepRight = (scrollGoal, stepAmount) => () => {
-    const actualScroll = this.container.scrollLeft;
-    const newScroll = actualScroll + stepAmount;
+  /**
+   * Recursive function used to animate left scrolling
+   * @param nextScrollPosition
+   * @param stepAmount
+   * @returns {Function}
+   */
+  scrollStepLeft = (nextScrollPosition, stepAmount) => () => {
+    const newScroll = this.container.scrollLeft - stepAmount;
     this.container.scrollLeft = newScroll;
-    if (newScroll !== scrollGoal && (newScroll + this.container.offsetWidth) <= this.container.scrollWidth) {
-      window.requestAnimationFrame(this.scrollStepRight(scrollGoal, stepAmount));
-    }
-  };
-
-  scrollStepLeft = (scrollGoal, stepAmount) => () => {
-    const actualScroll = this.container.scrollLeft;
-    const newScroll = actualScroll - stepAmount;
-    this.container.scrollLeft = newScroll;
-    if (newScroll !== scrollGoal && newScroll > 0) {
-      window.requestAnimationFrame(this.scrollStepLeft(scrollGoal, stepAmount));
-    }
-  };
-
-  handlePrevious = () => {
-    console.log('Go previous', this.state);
-    const currentIndex = this.state.currentIndex;
-    const currentItemWidth = this.items[currentIndex].offsetWidth;
-    // this.container.scrollLeft = this.container.scrollLeft - currentItemWidth;
-    this.smoothScroll(this.container.scrollLeft - currentItemWidth);
-    if (currentIndex > 0) {
-      this.setState({ currentIndex: currentIndex - 1 });
-      console.log('Current index decremented');
-    }
-  };
-
-  handleNext = () => {
-    console.log('Go next', this.state);
-    const currentIndex = this.state.currentIndex;
-    const currentItemWidth = this.items[currentIndex].offsetWidth;
-    // this.container.scrollLeft = this.container.scrollLeft + currentItemWidth;
-    this.smoothScroll(this.container.scrollLeft + currentItemWidth);
-    if (currentIndex < (this.items.length + 1)) {
-      this.setState({ currentIndex: currentIndex + 1 });
-      console.log('Current index incremented');
+    if (newScroll !== nextScrollPosition && newScroll > 0) {
+      window.requestAnimationFrame(this.scrollStepLeft(nextScrollPosition, stepAmount));
+    } else {
+      this.isScrolling = false;
     }
   };
 
   render() {
+    const { scrollPosition, scrollWidth, containerWidth, itemToScroll } = this.state;
+    const { itemSize, itemMargin } = this.props;
+    const isNotScrollable = scrollWidth === containerWidth;
     return (
       <Wrapper>
         <ArrowButton
           onClick={this.handlePrevious}
-          disabled={this.state.currentIndex === 0 || this.state.arrowsDisabled}
+          disabled={scrollPosition === 0 || isNotScrollable}
           isPrevious
         >
           <img src={prevArrowIcon} alt="previous" />
         </ArrowButton>
-        <Container innerRef={this.setContainerRef} onChange={() => console.log('changed!')}>
-          {this.props.children.map((item, index) => (
-            <Item
-              innerRef={node => this.setItemRef(node, index)}
-              key={`carousel-${this.id}-${index}`}
-            >{item}</Item>
+        <Container innerRef={this.setContainerRef}>
+          {this.props.children.map(item => (
+            <Item key={`carousel-${this.id}-${Math.random()}`} {...this.props}>{item}</Item>
           ))}
         </Container>
         <ArrowButton
           onClick={this.handleNext}
-          disabled={this.state.currentIndex === (this.items.length - 1) || this.state.arrowsDisabled}
+          disabled={
+            scrollPosition >= (scrollWidth - ((itemSize + (2 * itemMargin)) * itemToScroll))
+            || isNotScrollable
+          }
           isNext
         >
           <img src={nextArrowIcon} alt="next" />
@@ -176,6 +211,13 @@ class Carousel extends Component {
 
 Carousel.propTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
+  itemSize: PropTypes.number,
+  itemMargin: PropTypes.number,
+};
+
+Carousel.defaultProps = {
+  itemSize: 300,
+  itemMargin: 5,
 };
 
 export default Carousel;

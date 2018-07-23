@@ -17,34 +17,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Slider from 'react-slick';
-import prevArrowIcon from '../../../assets/images/icons/angle-left.svg';
-import nextArrowIcon from '../../../assets/images/icons/angle-right.svg';
+import Carousel from '../ui/Carousel';
 import Actions from './action/Actions';
-
-const SliderContainer = styled.div`
-  max-width: 360px;
-  padding: 30px;
-  .slick-next:before, .slick-prev:before {
-    color: black;
-  }
-  
-  .slick-list {
-    box-shadow: 0 0 20px 2px rgba(0,0,0,0.1);
-  }
-  
-  .slick-slide div:focus {
-    outline: none;
-  }
-`;
 
 const Card = styled.div`
   background-color: white;
   border-radius: 2px;
-  margin-right: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 `;
 
 const CardContent = styled.div`
+  flex: 1;
   padding: 10px;
   display: flex;
   flex-direction: column;
@@ -71,71 +56,29 @@ const Crop = styled.div`
   }
 `;
 
-// carousel arrows
-const ArrowButton = styled.button`
-  &::before {
-    content: '';
-  }
-  
-  opacity: 0.75;
-  
-  &:hover {
-    opacity: 1;
-  }
-  
-  &.slick-disabled {
-    opacity: 0.25;
-  }
-`;
-
-const SliderArrow = ({ className, onClick, type }) => (
-  <ArrowButton className={className} onClick={onClick}>
-    <img
-      src={type === 'prev' ? prevArrowIcon : nextArrowIcon}
-      alt={type === 'prev' ? 'previous' : 'next'}
-    />
-  </ArrowButton>
-);
-
-SliderArrow.propTypes = {
-  onClick: PropTypes.func,
-  type: PropTypes.oneOf(['prev', 'next']).isRequired,
-};
-
-const sliderSettings = {
-  slidesToShow: 1,
-  slidesToScroll: 1,
-  dots: false,
-  infinite: false,
-  nextArrow: <SliderArrow type="next" />,
-  prevArrow: <SliderArrow type="prev" />,
-};
-
 const Cards = ({ payload, markAsClicked, sendAction }) => (
-  <SliderContainer>
-    <Slider {...sliderSettings}>
-      {payload.cardsValues.map((card, cardIndex) => (
-        <Card key={`card-${card.title}`}>
-          <Crop>
-            <img src={card.image_url} alt={card.title} />
-          </Crop>
-          <CardContent>
-            <div>
-              <h4>{card.title}</h4>
-            </div>
-            {!!card.actionValue.length &&
-            <Actions
-              payload={card}
-              sendAction={sendAction}
-              markAsClicked={actionIndex => markAsClicked(actionIndex, cardIndex)}
-              width={100}
-            />
-            }
-          </CardContent>
-        </Card>
-      ))}
-    </Slider>
-  </SliderContainer>
+  <Carousel>
+    {payload.cardsValues.map((card, cardIndex) => (
+      <Card key={`card-${card.title}`}>
+        <Crop>
+          <img src={card.image_url} alt={card.title} />
+        </Crop>
+        <CardContent>
+          <div>
+            <h4>{card.title}</h4>
+          </div>
+          {!!card.actionValue.length &&
+          <Actions
+            payload={card}
+            sendAction={sendAction}
+            markAsClicked={actionIndex => markAsClicked(actionIndex, cardIndex)}
+            width={100}
+          />
+          }
+        </CardContent>
+      </Card>
+    ))}
+  </Carousel>
 );
 
 const ButtonType = PropTypes.shape({

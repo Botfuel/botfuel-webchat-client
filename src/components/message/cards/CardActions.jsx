@@ -26,7 +26,7 @@ const Container = styled.div`
   overflow: hidden;
   display: flex;
   justify-content: flex-end;
-  flex-direction: ${props => (props.actions.length <= 2 ? 'row' : 'column')};
+  flex-direction: column;
   
   > * {
     flex: 1;
@@ -35,8 +35,6 @@ const Container = styled.div`
   a, div {
     border-top: 1px solid #f5f5f5;
   }
-  
-  ${props => props.actions.length <= 2 && 'a ~ a, a ~ div, div ~ a, div ~ div { border-left: 1px solid #f5f5f5; }'}
 `;
 
 const CardActions = ({ payload, sendAction, markAsClicked, width }) => {

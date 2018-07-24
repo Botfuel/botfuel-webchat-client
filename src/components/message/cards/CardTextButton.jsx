@@ -28,7 +28,7 @@ const getStatusBackgroundColor = (props) => {
     return props.theme.colors.primary;
   }
 
-  return props.theme.colors.secondary;
+  return 'transparent';
 };
 
 const getStatusColor = (props) => {
@@ -45,18 +45,11 @@ const getStatusColor = (props) => {
 
 const Button = styled.div`
   font-size: 15px;
-  font-weight: 300;
-  overflow: hidden;
-  float: ${props => props.side};
-  display: inline-block;
   padding: 10px;
   text-align: center;
   background-color: ${props => getStatusBackgroundColor(props)};
   color: ${props => getStatusColor(props)};
   cursor: ${props => (props.disabled || props.clicked ? 'default' : 'pointer')};
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: all 400ms ease; 
 
   &:hover {

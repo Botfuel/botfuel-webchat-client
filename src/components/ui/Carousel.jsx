@@ -7,7 +7,7 @@ import nextArrowIcon from '../../../assets/images/icons/angle-right.svg';
 // Wrapper - where buttons and carousel content are displayed
 const Wrapper = styled.div`
   position: relative;
-  padding: 30px;
+  padding: 30px 0;
   overflow: hidden;
 `;
 
@@ -20,23 +20,26 @@ const Container = styled.div`
 
 // Item - when an item go
 const Item = styled.div`
-  margin: 0 ${props => props.itemMargin}px;
+  margin: 0;
   width: ${props => props.itemSize}px;
+  ~ div {
+    margin-left: ${props => props.itemMargin * 2}px
+  }
 `;
 
 // Arrows - prev and next controls buttons
 const ArrowButton = styled.button`
   position: absolute;
-  top: 50%;
-  opacity: 0.75;
-  height: 40px;
-  width: 25px;
+  top: 45%;
+  height: 70px;
+  width: 40px;
   padding: 0;
   background: none;
   border: none;
+  background-color: rgba(255,255,255,0.6);
   
   &:hover {
-    opacity: 1;
+    background-color: rgba(255,255,255,0.8);
     cursor: pointer;
   }
   
@@ -44,13 +47,15 @@ const ArrowButton = styled.button`
     outline: none;
   }
   
-  &:disabled {
-    opacity: 0.25;
-    cursor: default;
+  img {
+    height: 30px;
+    position: relative;
+    ${props => props.isPrevious && 'right: 5px;'}
+    ${props => props.isNext && 'left: 5px;'}
   }
   
-  ${props => props.isPrevious && 'left: 0;'}
-  ${props => props.isNext && 'right: 0;'}
+  ${props => props.isPrevious && 'left: 0; border-top-right-radius: 50px; border-bottom-right-radius: 50px;'}
+  ${props => props.isNext && 'right: 0; border-top-left-radius: 50px; border-bottom-left-radius: 50px;'}
 `;
 
 class Carousel extends Component {
@@ -179,31 +184,32 @@ class Carousel extends Component {
   render() {
     const { scrollPosition, scrollWidth, containerWidth, itemToScroll } = this.state;
     const { itemSize, itemMargin } = this.props;
-    const isNotScrollable = scrollWidth === containerWidth;
+    const isScrollable = scrollWidth > containerWidth;
     return (
       <Wrapper>
+        {scrollPosition > 0 &&
+        isScrollable &&
         <ArrowButton
           onClick={this.handlePrevious}
-          disabled={scrollPosition === 0 || isNotScrollable}
           isPrevious
         >
           <img src={prevArrowIcon} alt="previous" />
         </ArrowButton>
+        }
         <Container innerRef={this.setContainerRef}>
           {this.props.children.map(item => (
             <Item key={`carousel-${this.id}-${Math.random()}`} {...this.props}>{item}</Item>
           ))}
         </Container>
+        {isScrollable &&
+        !(scrollPosition >= (scrollWidth - ((itemSize + (2 * itemMargin)) * itemToScroll))) &&
         <ArrowButton
           onClick={this.handleNext}
-          disabled={
-            scrollPosition >= (scrollWidth - ((itemSize + (2 * itemMargin)) * itemToScroll))
-            || isNotScrollable
-          }
           isNext
         >
           <img src={nextArrowIcon} alt="next" />
         </ArrowButton>
+        }
       </Wrapper>
     );
   }

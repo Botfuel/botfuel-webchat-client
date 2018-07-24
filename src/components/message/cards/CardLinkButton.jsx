@@ -19,13 +19,25 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
+const getStatusBackgroundColor = (props) => {
+  if (props.disabled) {
+    return 'transparent';
+  }
+
+  if (props.clicked) {
+    return props.theme.colors.primary;
+  }
+
+  return 'transparent';
+};
+
 const getStatusColor = (props) => {
   if (props.disabled) {
     return 'lightgrey';
   }
 
   if (props.clicked) {
-    return '#609';
+    return props.theme.colors.primaryText;
   }
 
   return props.theme.colors.primary;
@@ -34,18 +46,11 @@ const getStatusColor = (props) => {
 const Link = styled.a`
   font-size: 15px;
   font-weight: 300;
-  overflow: hidden;
-  float: ${props => props.side};
-  display: inline-block;
   padding: 10px;
-  position: relative;
+  background-color: ${props => getStatusBackgroundColor(props)};
   color: ${props => getStatusColor(props)};
   text-align: center;
-  background-color: transparent;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   transition: all 400ms ease;
 
   &:hover {

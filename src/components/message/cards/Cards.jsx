@@ -26,6 +26,7 @@ const Card = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+  border: 1px solid #f5f5f5;
 `;
 
 const CardContent = styled.div`
@@ -37,7 +38,8 @@ const CardContent = styled.div`
   
   h4 {
     margin: 5px 0 10px;
-    font-size: 20px;
+    font-size: 16px;
+    font-weight: 500;
   }
 `;
 

@@ -74,7 +74,6 @@ const Main = ({
   toggleFullScreen,
   sendAction,
   markAsClicked,
-  markCardAsClicked,
   sendMessage,
   handleKeyPress,
   handleInputChange,
@@ -108,7 +107,6 @@ const Main = ({
     <MessageListContainer
       sendAction={sendAction}
       markAsClicked={markAsClicked}
-      markCardAsClicked={markCardAsClicked}
       messages={messages}
       quickreplies={quickreplies}
       theme={theme}
@@ -158,7 +156,6 @@ Main.propTypes = {
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
-  markCardAsClicked: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
   handleKeyPress: PropTypes.func.isRequired,
   handleInputChange: PropTypes.func.isRequired,

@@ -46,11 +46,9 @@ export default class MessageListContainer extends React.Component {
     this.innerRef.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }
 
-  markAsClicked = messageId => (actionIndex, cardIndex = null) => {
+  markAsClicked = messageId => (actionIndex) => {
     this.setState({ justClicked: this.state.justClicked + 1 });
-    return cardIndex === null
-      ? this.props.markAsClicked(messageId)(actionIndex)
-      : this.props.markCardAsClicked(messageId)(cardIndex, actionIndex);
+    return this.props.markAsClicked(messageId)(actionIndex);
   };
 
   render() {
@@ -95,5 +93,4 @@ export default class MessageListContainer extends React.Component {
 MessageListContainer.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   markAsClicked: PropTypes.func.isRequired,
-  markCardAsClicked: PropTypes.func.isRequired,
 };

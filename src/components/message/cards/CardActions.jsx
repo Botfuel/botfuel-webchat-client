@@ -21,8 +21,8 @@ import CardTextButton from './CardTextButton';
 import CardLinkButton from './CardLinkButton';
 
 const Container = styled.div`
-  border-bottom-left-radius: 2px;
-  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
   overflow: hidden;
   display: flex;
   justify-content: flex-end;

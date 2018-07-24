@@ -30,16 +30,17 @@ const Item = styled.div`
 // Arrows - prev and next controls buttons
 const ArrowButton = styled.button`
   position: absolute;
-  top: 45%;
-  height: 70px;
+  top: 220px;
+  height: 50px;
   width: 40px;
   padding: 0;
   background: none;
   border: none;
-  background-color: rgba(255,255,255,0.6);
+  background-color: rgba(255,255,255,0.4);
+  transition: background 200ms ease;
   
   &:hover {
-    background-color: rgba(255,255,255,0.8);
+    background-color: rgba(255,255,255,0.9);
     cursor: pointer;
   }
   

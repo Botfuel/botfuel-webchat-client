@@ -21,50 +21,42 @@ import Carousel from '../../ui/Carousel';
 import CardActions from './CardActions';
 
 const Card = styled.div`
+  width: ${props => props.size}px;
   background-color: white;
-  border-radius: 2px;
+  border-radius: 4px;
   height: 100%;
   display: flex;
   flex-direction: column;
-  border: 1px solid #f5f5f5;
 `;
 
 const CardContent = styled.div`
   flex: 1;
-  padding: 10px;
+  padding: 10px 10px 20px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  border-top: 1px solid #f5f5f5;
   
   h4 {
     margin: 5px 0 10px;
     font-size: 16px;
-    font-weight: 500;
+    font-weight: 400;
   }
 `;
 
-const Crop = styled.div`
-  height: 300px;
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-top-left-radius: 2px;
-  border-top-right-radius: 2px;
-  
-  img {
-    height: 100%;
-    width: auto;
-  }
+const CardImage = styled.div`
+  height: 250px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background: ${props => props.theme.colors.main} url(${props => props.imageUrl}) no-repeat center center;
+  background-size: cover;
 `;
 
-const Cards = ({ payload, markAsClicked, sendAction }) => (
-  <Carousel>
+const Cards = ({ payload, markAsClicked, sendAction, cardSize }) => (
+  <Carousel itemSize={cardSize}>
     {payload.cardsValues.map((card, cardIndex) => (
-      <Card key={`card-${card.title}`}>
-        <Crop>
-          <img src={card.image_url} alt={card.title} />
-        </Crop>
+      <Card key={`card-${card.title}`} size={cardSize}>
+        <CardImage imageUrl={card.image_url} />
         <CardContent>
           <div>
             <h4>{card.title}</h4>
@@ -108,6 +100,11 @@ Cards.propTypes = {
   }).isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
+  cardSize: PropTypes.number,
+};
+
+Cards.defaultProps = {
+  cardSize: 300,
 };
 
 export default Cards;

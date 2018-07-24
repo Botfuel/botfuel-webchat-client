@@ -39,8 +39,8 @@ const CardContent = styled.div`
   
   h4 {
     margin: 5px 0 10px;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: 15px;
+    font-weight: 500;
   }
 `;
 
@@ -48,15 +48,15 @@ const CardImage = styled.div`
   height: 250px;
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
-  background: ${props => props.theme.colors.main} url(${props => props.imageUrl}) no-repeat center center;
+  background: #fff url(${props => props.url}) no-repeat center center;
   background-size: cover;
 `;
 
-const Cards = ({ payload, markAsClicked, sendAction, cardSize }) => (
+const Cards = ({ payload, sendAction, cardSize }) => (
   <Carousel itemSize={cardSize}>
-    {payload.cardsValues.map((card, cardIndex) => (
+    {payload.cardsValues.map(card => (
       <Card key={`card-${card.title}`} size={cardSize}>
-        <CardImage imageUrl={card.image_url} />
+        <CardImage url={card.image_url} />
         <CardContent>
           <div>
             <h4>{card.title}</h4>
@@ -66,7 +66,6 @@ const Cards = ({ payload, markAsClicked, sendAction, cardSize }) => (
         <CardActions
           payload={card}
           sendAction={sendAction}
-          markAsClicked={actionIndex => markAsClicked(actionIndex, cardIndex)}
           width={100}
         />
         }
@@ -99,7 +98,6 @@ Cards.propTypes = {
     cardsValues: PropTypes.arrayOf(CardType).isRequired,
   }).isRequired,
   sendAction: PropTypes.func.isRequired,
-  markAsClicked: PropTypes.func.isRequired,
   cardSize: PropTypes.number,
 };
 

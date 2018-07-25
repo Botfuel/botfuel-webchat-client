@@ -29,21 +29,6 @@ const Card = styled.div`
   flex-direction: column;
 `;
 
-const CardContent = styled.div`
-  flex: 1;
-  padding: 10px 10px 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border-top: 1px solid #f5f5f5;
-  
-  h4 {
-    margin: 5px 0 10px;
-    font-size: 15px;
-    font-weight: 500;
-  }
-`;
-
 const CardImage = styled.div`
   height: 250px;
   border-top-left-radius: 4px;
@@ -52,16 +37,20 @@ const CardImage = styled.div`
   background-size: cover;
 `;
 
+const CardTitle = styled.h4`
+  border-top: 1px solid #f5f5f5;
+  padding: 10px;
+  font-size: 15px;
+  font-weight: 500;
+  margin: 0;
+`;
+
 const Cards = ({ payload, sendAction, cardSize }) => (
   <Carousel itemSize={cardSize}>
     {payload.cardsValues.map(card => (
       <Card key={`card-${card.title}`} size={cardSize}>
         <CardImage url={card.image_url} />
-        <CardContent>
-          <div>
-            <h4>{card.title}</h4>
-          </div>
-        </CardContent>
+        <CardTitle>{card.title}</CardTitle>
         {!!card.actionValue.length &&
         <CardActions
           payload={card}
@@ -78,14 +67,7 @@ const ButtonType = PropTypes.shape({
   type: PropTypes.oneOf(['text', 'postback', 'link']).isRequired,
   text: PropTypes.string,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  clicked: PropTypes.bool,
-  disabled: PropTypes.bool,
 });
-
-ButtonType.defaultProps = {
-  clicked: false,
-  disabled: false,
-};
 
 const CardType = PropTypes.shape({
   title: PropTypes.string.isRequired,

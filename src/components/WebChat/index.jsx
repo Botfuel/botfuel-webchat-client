@@ -83,13 +83,11 @@ const MessageFragment = gql`
             ... on LinkAction {
               type
               text
-              clicked
               linkActionValue: value
             }
             ... on PostbackAction {
               type
               text
-              clicked
               postbackActionValue: value
             }
           }

@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 // CardLink action
-const Link = styled.a`
+const CardLink = styled.a`
   font-size: 15px;
   font-weight: 300;
   padding: 10px;
@@ -40,60 +40,27 @@ const Link = styled.a`
   }
 `;
 
-const CardLink = ({ label, link, disabled, clicked }) => (
-  <Link href={link} target="_blank" disabled={disabled} clicked={clicked}>
-    {label}
-  </Link>
-);
-
-CardLink.propTypes = {
-  label: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
-  disabled: PropTypes.bool.isRequired,
-  clicked: PropTypes.bool.isRequired,
-};
-
 // CardButton action
-const Button = styled.div`
+const CardButton = styled.button`
   font-size: 15px;
   padding: 10px;
   text-align: center;
   background-color: transparent;
   color: ${props => props.theme.colors.primary};
-  cursor: ${props => (props.disabled || props.clicked ? 'default' : 'pointer')};
-  transition: all 400ms ease; 
+  cursor: pointer;
+  transition: all 400ms ease;
+  border: none;
 
   &:hover {
-    ${props => !props.disabled && !props.clicked && `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
+    background-color: ${props => darken(0.03, props.theme.colors.secondary)};
   }
+
   &:focus {
     outline: none;
   }
 `;
 
-const CardButton = ({ handleClick, label, disabled, clicked }) => (
-  <Button
-    onClick={disabled || clicked ? () => null : handleClick}
-    disabled={disabled}
-    clicked={clicked}
-  >
-    {label}
-  </Button>
-);
-
-CardButton.propTypes = {
-  handleClick: PropTypes.func.isRequired,
-  label: PropTypes.string.isRequired,
-  disabled: PropTypes.bool,
-  clicked: PropTypes.bool,
-};
-
-CardButton.defaultProps = {
-  disabled: false,
-  clicked: false,
-};
-
-// CardActions component
+// CardActions Container component
 const Container = styled.div`
   border-bottom-left-radius: 4px;
   border-bottom-right-radius: 4px;
@@ -106,63 +73,48 @@ const Container = styled.div`
     flex: 1;
   }
   
-  a, div {
+  a, button {
     border-top: 1px solid #f5f5f5;
   }
 `;
 
-const CardActions = ({ payload, sendAction, width }) => {
-  const hasAClickedAction = payload.actionValue.some(a => !!a.clicked);
-  const actions = payload.actionValue.map(a => ({
-    ...a,
-    ...{
-      disabled: !a.clicked && hasAClickedAction,
-      clicked: !!a.clicked,
-    },
-  }));
-
-  return (
-    <Container actions={actions} width={width}>
-      {actions &&
-      actions.map((action, index) => {
-        switch (action.type) {
-          case 'link':
-            return (
-              <CardLink
-                index={index}
-                key={`${action.text}${action.linkActionValue}`}
-                link={action.linkActionValue}
-                label={action.text || action.linkActionValue}
-                disabled={action.disabled}
-                clicked={action.clicked}
-                side="left"
-              />
-            );
-          case 'postback':
-            return (
-              <CardButton
-                index={index}
-                key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
-                handleClick={() => {
-                  sendAction({
-                    type: 'postback',
-                    value: action.postbackActionValue,
-                    text: action.text,
-                  })();
-                }}
-                label={action.text || action.postbackActionValue}
-                disabled={action.disabled}
-                clicked={action.clicked}
-                side="left"
-              />
-            );
-          default:
-            return null;
-        }
-      })}
-    </Container>
-  );
-};
+// CardActions component
+const CardActions = ({ payload, sendAction }) => (
+  <Container>
+    {payload.actionValue &&
+    payload.actionValue.map((action) => {
+      switch (action.type) {
+        case 'link':
+          return (
+            <CardLink
+              key={`${action.text}${action.linkActionValue}`}
+              href={action.linkActionValue}
+              target="_blank"
+            >
+              {action.text || action.linkActionValue}
+            </CardLink>
+          );
+        case 'postback':
+          return (
+            <CardButton
+              key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
+              onClick={() => {
+                sendAction({
+                  type: 'postback',
+                  value: action.postbackActionValue,
+                  text: action.text,
+                })();
+              }}
+            >
+              {action.text || action.postbackActionValue}
+            </CardButton>
+          );
+        default:
+          return null;
+      }
+    })}
+  </Container>
+);
 
 CardActions.propTypes = {
   payload: PropTypes.shape({
@@ -175,7 +127,6 @@ CardActions.propTypes = {
     ),
   }).isRequired,
   sendAction: PropTypes.func,
-  width: PropTypes.number.isRequired,
 };
 
 CardActions.defaultProps = {

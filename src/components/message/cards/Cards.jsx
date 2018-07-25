@@ -45,12 +45,20 @@ const CardTitle = styled.h4`
   margin: 0;
 `;
 
+const CardDescription = styled.p`
+  padding: 0 10px 20px;
+  font-size: 14px;
+  font-weight: 300;
+  margin: 0;
+`;
+
 const Cards = ({ payload, sendAction, cardSize }) => (
   <Carousel itemSize={cardSize}>
     {payload.cardsValues.map(card => (
       <Card key={`card-${card.title}`} size={cardSize}>
         <CardImage url={card.image_url} />
         <CardTitle>{card.title}</CardTitle>
+        <CardDescription>{(card.options && card.options.description) || ''}</CardDescription>
         {!!card.actionValue.length &&
         <CardActions
           payload={card}

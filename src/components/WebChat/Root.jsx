@@ -33,13 +33,13 @@ export default class Root extends React.Component {
     serverUrl: PropTypes.string,
   };
 
+  static childContextTypes = {
+    customLabels: PropTypes.object,
+  };
+
   static defaultProps = {
     customLabels: {},
     serverUrl: undefined,
-  };
-
-  static childContextTypes = {
-    customLabels: PropTypes.object,
   };
 
   constructor(props) {

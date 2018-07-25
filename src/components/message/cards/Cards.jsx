@@ -81,7 +81,12 @@ const CardType = PropTypes.shape({
   title: PropTypes.string.isRequired,
   image_url: PropTypes.string.isRequired,
   actionValue: PropTypes.arrayOf(ButtonType),
+  options: PropTypes.object,
 });
+
+CardType.defaultProps = {
+  options: {},
+};
 
 Cards.propTypes = {
   payload: PropTypes.shape({

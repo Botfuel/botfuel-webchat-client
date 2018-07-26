@@ -29,7 +29,7 @@ export default {
     mainLight: '#f1f0f2',
     mainText: '#fff',
     primary: '#2BB573',
-    secondary: '#f1f0f0',
+    secondary: '#fff',
     primaryText: '#fff',
     secondaryText: '#000',
     background: 'rgba(255,255,255,0)',

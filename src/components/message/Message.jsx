@@ -73,7 +73,7 @@ export default class MessageContainer extends React.Component {
     ) : (
       <ClearDiv component={Component}>
         {side === 'left' && <Avatar sender={sender} />}
-        <Bubble side={side}>
+        <Bubble side={side} isImage={type === 'image'}>
           <Component {...this.props} />
         </Bubble>
       </ClearDiv>

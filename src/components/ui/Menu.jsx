@@ -41,7 +41,7 @@ const List = styled.ul`
   left: 10px;
   z-index: 1000;
   margin: 2px 0 0;
-  font-size: 15px;
+  font-size: 14px;
   text-align: left;
   background-color: ${props => props.theme.colors.menuBackground};
   background-clip: padding-box;

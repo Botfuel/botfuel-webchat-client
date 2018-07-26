@@ -12,7 +12,8 @@
           "/webpack.config.js"
         ]
       }
-    ]
+    ],
+    "no-nested-ternary": "off"
   },
   "env": {
     "browser": true

@@ -40,7 +40,7 @@ const CardImage = styled.div`
 const CardTitle = styled.h4`
   border-top: 1px solid #f5f5f5;
   padding: 10px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   margin: 0;
 `;

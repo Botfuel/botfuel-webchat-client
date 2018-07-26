@@ -7,7 +7,7 @@ import nextArrowIcon from '../../../assets/images/icons/angle-right.svg';
 // Wrapper - where buttons and carousel content are displayed
 const Wrapper = styled.div`
   position: relative;
-  padding: 30px 0;
+  padding: ${props => (props.theme.layout.compact ? '10px' : '20px')} 0;
   overflow: hidden;
 `;
 
@@ -30,7 +30,7 @@ const Item = styled.div`
 // Arrows - prev and next controls buttons
 const ArrowButton = styled.button`
   position: absolute;
-  top: 220px;
+  top: 200px;
   height: 50px;
   width: 40px;
   padding: 0;

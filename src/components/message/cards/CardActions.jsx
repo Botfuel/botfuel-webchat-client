@@ -21,8 +21,7 @@ import { darken } from 'polished';
 
 // CardLink action
 const CardLink = styled.a`
-  font-size: 15px;
-  font-weight: 300;
+  font-size: 14px;
   padding: 10px;
   background-color: transparent;
   color: ${props => props.theme.colors.primary};
@@ -42,7 +41,7 @@ const CardLink = styled.a`
 
 // CardButton action
 const CardButton = styled.button`
-  font-size: 15px;
+  font-size: 14px;
   padding: 10px;
   text-align: center;
   background-color: transparent;

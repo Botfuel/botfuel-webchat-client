@@ -17,6 +17,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { darken } from 'polished';
 
 const LinkButton = ({ label, link, handleClick, disabled, clicked }) => (
   <Link href={link} onClick={handleClick} target="_blank" disabled={disabled} clicked={clicked}>
@@ -32,13 +33,25 @@ LinkButton.propTypes = {
   clicked: PropTypes.bool.isRequired,
 };
 
+function getStatusBackgroundColor(props) {
+  if (props.disabled) {
+    return 'transparent';
+  }
+
+  if (props.clicked) {
+    return props.theme.colors.primary;
+  }
+
+  return props.theme.colors.secondary;
+}
+
 function getStatusColor(props) {
   if (props.disabled) {
     return 'lightgrey';
   }
 
   if (props.clicked) {
-    return '#609';
+    return props.theme.colors.primaryText;
   }
 
   return props.theme.colors.primary;
@@ -47,8 +60,7 @@ function getStatusColor(props) {
 export default LinkButton;
 
 const Link = styled.a`
-  font-size: 15px;
-  font-weight: 300;
+  font-size: 14px;
   overflow: hidden;
   margin-bottom: 10px;
   float: ${props => props.side};
@@ -57,17 +69,25 @@ const Link = styled.a`
   border-radius: 14px;
   position: relative;
   max-width: calc(100% - 75px);
-  color: ${props => getStatusColor(props)};
   text-align: center;
-  background-color: transparent;
-  cursor: pointer;
+  background-color: ${props => getStatusBackgroundColor(props)};
+  color: ${props => getStatusColor(props)};
+  border: 1px solid ${props => (props.disabled ? 'lightgrey' : props.theme.colors.primary)};
+  cursor: ${props => (props.disabled || props.clicked ? 'default' : 'pointer')};
   width: 30%;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: all 400ms ease;
+  text-decoration: none;
+
   &:hover {
-    background-color: ${props => props.theme.colors.secondaryLight};
+    ${props =>
+    !props.disabled &&
+    !props.clicked &&
+    `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
   }
+
   &:focus {
     outline: none;
   }

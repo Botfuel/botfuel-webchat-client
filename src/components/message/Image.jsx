@@ -7,6 +7,7 @@ const Image = styled.img`
   width: auto;
   height: auto;
   max-height: 300px;
+  border-radius: calc(${props => props.theme.layout.rounded} - 5px);
 `;
 
 export default function ImageMessage({ payload }) {

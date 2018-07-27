@@ -20,16 +20,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import DOMPurify from 'dompurify';
 
-const emailPattern = /([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/i;
-const linkOrEmailPattern = /((?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!$&'()*+,;=.]+)|(([a-zA-Z0-9._+-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+))/gi;
+const emailPattern = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)/;
+const linkOrEmailPattern = /((^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?))|^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9]))/gi;
 const protocolPattern = /^https?:\/\//;
-
 const textToLinkComponents = (text) => {
   const comps = [];
   let match = linkOrEmailPattern.exec(text);
-
   if (!match) return [];
-
   let currentIndex = 0;
   while (match) {
     comps.push({ type: 'text', value: text.substr(currentIndex, match.index - currentIndex) });

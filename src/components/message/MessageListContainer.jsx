@@ -46,14 +46,9 @@ export default class MessageListContainer extends React.Component {
     this.innerRef.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
   }
 
-  markAsClicked = (messageId) => {
-    const func = this.props.markAsClicked(messageId);
-    return (actionIndex) => {
-      this.setState({
-        justClicked: this.state.justClicked + 1,
-      });
-      return func(actionIndex);
-    };
+  markAsClicked = messageId => (actionIndex) => {
+    this.setState({ justClicked: this.state.justClicked + 1 });
+    return this.props.markAsClicked(messageId)(actionIndex);
   };
 
   render() {

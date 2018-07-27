@@ -18,13 +18,13 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 export default styled.div`
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 300;
   overflow: hidden;
-  margin-bottom: ${props => (props.theme.layout.compact ? '10px' : '25px')};
+  margin-bottom: ${props => (props.theme.layout.compact ? '10px' : '20px')};
   float: ${props => props.side};
   display: inline-block;
-  padding: ${props => (props.theme.layout.compact ? '8px 10px' : '10px 25px')};
+  padding: ${props => (props.isImage ? '0' : (props.theme.layout.compact ? '8px 10px' : '10px 25px'))};
   border-radius: ${props => props.theme.layout.rounded};
   box-shadow: ${props =>
     (props.theme.layout.shadowed
@@ -32,10 +32,8 @@ export default styled.div`
       : null)};
   position: relative;
   max-width: calc(100% - 75px);
-  color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
-  background-color: ${props =>
-    (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary)};
+  color: ${props => (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};
+  background-color: ${props => (props.isImage ? 'transparent' : (props.side === 'left' ? props.theme.colors.secondary : props.theme.colors.primary))};
 
   a {
     text-decoration: underline;

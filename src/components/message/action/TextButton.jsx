@@ -66,8 +66,7 @@ function getStatusColor(props) {
 }
 
 const Button = styled.div`
-  font-size: 15px;
-  font-weight: 300;
+  font-size: 14px;
   overflow: hidden;
   margin-bottom: 10px;
   float: ${props => props.side};
@@ -79,7 +78,7 @@ const Button = styled.div`
   text-align: center;
   background-color: ${props => getStatusBackgroundColor(props)};
   color: ${props => getStatusColor(props)};
-  border: 2px solid ${props => (props.disabled ? 'lightgrey' : props.theme.colors.primary)};
+  border: 1px solid ${props => (props.disabled ? 'lightgrey' : props.theme.colors.primary)};
   cursor: ${props => (props.disabled || props.clicked ? 'default' : 'pointer')};
   box-shadow: ${props =>
     (props.theme.layout.shadowed && !props.disabled && !props.clicked
@@ -89,7 +88,6 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition: all 400ms ease;
 
   &:hover {
@@ -98,6 +96,7 @@ const Button = styled.div`
       !props.clicked &&
       `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
   }
+
   &:focus {
     outline: none;
   }

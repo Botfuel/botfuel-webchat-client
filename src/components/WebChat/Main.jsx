@@ -89,6 +89,7 @@ const Main = ({
   parseHTML,
 }) => (
   <Container
+    className="bf-webchat-container"
     width={width || width}
     height={height || height}
     isVisible={isVisible}

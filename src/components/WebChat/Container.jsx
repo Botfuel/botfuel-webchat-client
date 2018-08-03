@@ -107,8 +107,8 @@ const Container = ({
 
   return (
     <ThemeProvider theme={theme}>
-      <MainContainer>
-        <StyledContainer fullScreen={fullScreen} width={width} height={height}>
+      <MainContainer className="bf-webchat">
+        <StyledContainer className="bf-webchat-wrapper" fullScreen={fullScreen} width={width} height={height}>
           <WebChat
             botId={botId}
             fullScreen={fullScreen}
@@ -127,7 +127,7 @@ const Container = ({
           />
         </StyledContainer>
         {theme.fixed && (
-          <StyledContainer noEvents={chatStarted}>
+          <StyledContainer className="bf-webchat-start-button" noEvents={chatStarted}>
             <StartButton
               fullScreen={fullScreen}
               isVisible={!chatStarted}

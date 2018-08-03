@@ -55,9 +55,9 @@ const CardDescription = styled.p`
 const Cards = ({ payload, sendAction, cardSize }) => (
   <Carousel itemSize={cardSize}>
     {payload.cardsValues.map(card => (
-      <Card key={`card-${card.title}`} size={cardSize}>
-        <CardImage url={card.image_url} />
-        <CardTitle>{card.title}</CardTitle>
+      <Card className="bf-card" key={`card-${card.title}`} size={cardSize}>
+        <CardImage className="bf-card-image" url={card.image_url} />
+        <CardTitle className="bf-card-title">{card.title}</CardTitle>
         <CardDescription>{(card.options && card.options.description) || ''}</CardDescription>
         {!!card.actionValue.length &&
         <CardActions

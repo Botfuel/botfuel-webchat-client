@@ -64,16 +64,16 @@ export default class MessageContainer extends React.Component {
   }
 
   render() {
-    const { side, type, sender, ...props } = this.props;
+    const { side, type, sender, className, ...props } = this.props;
     const Component = componentsDict[type];
     const disableBubble = ['actions', 'botAction', 'cards'].includes(type);
 
     return disableBubble ? (
       <Component type={type} {...props} />
     ) : (
-      <ClearDiv component={Component}>
-        {side === 'left' && <Avatar sender={sender} />}
-        <Bubble side={side} isImage={type === 'image'}>
+      <ClearDiv className={`bf-message-container ${sender} ${className}`} component={Component}>
+        {side === 'left' && <Avatar className="bf-user-avatar" sender={sender} />}
+        <Bubble className={`bf-${type}-message`} side={side} isImage={type === 'image'}>
           <Component {...this.props} />
         </Bubble>
       </ClearDiv>
@@ -103,4 +103,9 @@ MessageContainer.propTypes = {
     postbackValue: PropTypes.object,
     quickrepliesValue: PropTypes.arrayOf(PropTypes.string),
   }).isRequired,
+  className: PropTypes.string,
+};
+
+MessageContainer.defaultProps = {
+  className: '',
 };

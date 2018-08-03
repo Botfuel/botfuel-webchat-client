@@ -32,7 +32,7 @@ export default {
     secondary: '#fff',
     primaryText: '#fff',
     secondaryText: '#000',
-    background: 'rgba(255,255,255,0)',
+    background: '#f5f5f5',
     menuIcon: '#ddd',
     menuBackground: '#fff',
     menuLink: '#949494',

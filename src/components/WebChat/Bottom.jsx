@@ -84,12 +84,13 @@ const VoiceWrapper = styled.div`
 
 function Bottom(props) {
   return (
-    <BottomWrapper>
-      <InputWrapper>
+    <BottomWrapper className="bf-input-wrapper">
+      <InputWrapper className="bf-input-container">
         {!!props.menuActions.length && (
           <Menu sendAction={props.sendAction} menuActions={props.menuActions} />
         )}
         <WideTextarea
+          className="bf-input-textarea"
           tabIndex={-1}
           maxRows={4}
           maxLength={400}
@@ -99,7 +100,7 @@ function Bottom(props) {
           onKeyPress={props.onKeyPress}
         />
         {!!props.voiceEnabled && (
-          <VoiceWrapper>
+          <VoiceWrapper className="bf-input-voice-wrapper">
             <Voice
               setTranscript={props.setTranscript}
               setIsRecording={props.setIsRecording}
@@ -107,7 +108,7 @@ function Bottom(props) {
             />
           </VoiceWrapper>
         )}
-        <SendButton onClick={() => props.sendMessage()}>{props.labels.sendButtonLabel}</SendButton>
+        <SendButton className="bf-input-send-button" onClick={() => props.sendMessage()}>{props.labels.sendButtonLabel}</SendButton>
       </InputWrapper>
     </BottomWrapper>
   );

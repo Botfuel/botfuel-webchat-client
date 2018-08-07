@@ -50,11 +50,11 @@ function generateTable(value) {
     <tr key={uuidv4()}>{value.schema.map(h => <td key={h.key}>{row[h.key]}</td>)}</tr>
   ));
   return (
-    <Table>
-      <Thead>
+    <Table className="bf-table">
+      <Thead className="bf-table-head">
         <tr>{header}</tr>
       </Thead>
-      <tbody id="tbody">{rows}</tbody>
+      <tbody className="bf-table-body" id="tbody">{rows}</tbody>
     </Table>
   );
 }

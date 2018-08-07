@@ -84,7 +84,7 @@ const MenuLink = styled.a`
 `;
 
 const MenuButton = ({ onClick }) => (
-  <MenuButtonContainer onClick={onClick}>
+  <MenuButtonContainer className="bf-input-menu-button" onClick={onClick}>
     <Bars />
   </MenuButtonContainer>
 );
@@ -94,9 +94,10 @@ MenuButton.propTypes = {
 };
 
 const MenuPanel = ({ open, menuActions, sendAction, onLinkClick }) => (
-  <List open={open}>
+  <List className="bf-input-menu-list" open={open}>
     {menuActions.map(action => (
       <ListItem
+        className="bf-input-menu-list-item"
         key={action.label}
         onClick={() => {
           sendAction({
@@ -159,7 +160,7 @@ class Menu extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="bf-input-menu">
         <MenuButton onClick={this.toggleMenu} />
         <MenuPanel open={this.state.isOpen} onLinkClick={this.handleLinkClick} {...this.props} />
       </div>

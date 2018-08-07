@@ -84,7 +84,7 @@ const Actions = ({ payload, sendAction, markAsClicked, width }) => {
   }));
 
   return (
-    <div>
+    <div className="bf-actions-container">
       {!!payload.text && <Message type="text" side="left" sender="bot" payload={payload} />}
       <Container actions={actions} width={width}>
         {actions &&

@@ -33,7 +33,7 @@ const Container = styled.div`
 
 function Quickreplies({ quickreplies, sendAction }) {
   return (
-    <Container size={quickreplies.length}>
+    <Container className="bf-quickreplies" size={quickreplies.length}>
       {quickreplies.map(q => (
         <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
       ))}

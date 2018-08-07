@@ -79,13 +79,14 @@ const Container = styled.div`
 
 // CardActions component
 const CardActions = ({ payload, sendAction }) => (
-  <Container>
+  <Container className="bf-card-actions">
     {payload.actionValue &&
     payload.actionValue.map((action) => {
       switch (action.type) {
         case 'link':
           return (
             <CardLink
+              className="bf-card-action-link"
               key={`${action.text}${action.linkActionValue}`}
               href={action.linkActionValue}
               target="_blank"
@@ -96,6 +97,7 @@ const CardActions = ({ payload, sendAction }) => (
         case 'postback':
           return (
             <CardButton
+              className="bf-card-action-button"
               key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
               onClick={() => {
                 sendAction({

@@ -21,6 +21,7 @@ import { darken } from 'polished';
 
 const TextButton = ({ handleClick, label, disabled, clicked }) => (
   <Button
+    className="bf-action-button"
     onClick={disabled || clicked ? () => null : handleClick}
     disabled={disabled}
     clicked={clicked}

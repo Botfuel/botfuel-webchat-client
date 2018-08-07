@@ -40,15 +40,20 @@ const Text = styled.div`
   line-height: 1.3;
 `;
 
-export default function TextMessage({ value }) {
+export default function Block({ value, className }) {
   return (
-    <Container top={value.top}>
+    <Container className={className} top={value.top}>
       {value.title && <Title>{value.title}</Title>}
       {value.text && <Text>{value.text}</Text>}
     </Container>
   );
 }
 
-TextMessage.propTypes = {
+Block.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
+  className: PropTypes.string,
+};
+
+Block.defaultProps = {
+  className: '',
 };

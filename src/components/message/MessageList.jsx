@@ -50,9 +50,10 @@ const MessageList = ({
   );
 
   return (
-    <Messages innerRef={setRef}>
+    <Messages className="bf-message-list-container" innerRef={setRef}>
       {debug && (
         <Block
+          className="bf-debug-message"
           value={{
             text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
             top: true,
@@ -61,6 +62,7 @@ const MessageList = ({
       )}
       {!theme.layout.noHelpMessage && (
         <Block
+          className="bf-help-message"
           value={{
             text: labels.helpMessage,
             top: true,
@@ -70,6 +72,7 @@ const MessageList = ({
       {isArray(labels.onboardingMessage) &&
         labels.onboardingMessage.map(textValue => (
           <Message
+            className="bf-onboarding-message"
             payload={{ textValue }}
             type="text"
             sender="bot"
@@ -81,6 +84,7 @@ const MessageList = ({
       {!!labels.onboardingMessage &&
         typeof labels.onboardingMessage === 'string' && (
         <Message
+          className="bf-onboarding-message"
           payload={{ textValue: labels.onboardingMessage }}
           type="text"
           sender="bot"
@@ -89,7 +93,7 @@ const MessageList = ({
           parseHTML={parseHTML}
         />
       )}
-      <FlipMove appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
+      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message
             {...message}

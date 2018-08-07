@@ -20,7 +20,7 @@ import styled from 'styled-components';
 import { darken } from 'polished';
 
 const LinkButton = ({ label, link, handleClick, disabled, clicked }) => (
-  <Link href={link} onClick={handleClick} target="_blank" disabled={disabled} clicked={clicked}>
+  <Link className="bf-action-link" href={link} onClick={handleClick} target="_blank" disabled={disabled} clicked={clicked}>
     {label}
   </Link>
 );

@@ -66,16 +66,20 @@ const TopMenu = styled.div`
 
 function Top(props) {
   return (
-    <TopMenu>
+    <TopMenu className="bf-webchat-header">
       {!props.disableFullScreenButton && (
         <FullScreen
+          className="bf-webchat-expand-button"
           width={props.width}
           height={props.height}
           fullScreen={props.fullScreen}
           onClick={props.switchSize}
         />
       )}
-      <Cross onClick={props.switchMode} />
+      <Cross
+        className="bf-webchat-close-button"
+        onClick={props.switchMode}
+      />
       {props.labels.webchatHeaderTitle}
     </TopMenu>
   );

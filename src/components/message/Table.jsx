@@ -32,7 +32,7 @@ const Table = styled.table`
   max-width: 100%;
   display: block;
   overflow-x: auto;
-  overflow-y: scroll;
+  overflow-y: hidden;
 
   td,
   th {

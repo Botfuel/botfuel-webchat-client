@@ -66,6 +66,7 @@ const WideTextarea = styled(Textarea)`
   color: dimgray;
   font-size: 13px;
   margin: 10px;
+  overflow: hidden;
   
   &:focus {
     outline: none;

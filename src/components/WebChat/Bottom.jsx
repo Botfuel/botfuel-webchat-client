@@ -67,15 +67,34 @@ const WideTextarea = styled(Textarea)`
   font-size: 13px;
   margin: 10px;
   overflow: hidden;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   
   &:focus {
     outline: none;
   }
+  
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: lightgray;
+  }
+  
+  &::-ms-input-placeholder { /* Microsoft Edge */
+    color: lightgray;
+  }
 
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: lightgray;
+  }
+  
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: lightgray;
+  }
+  
+  &::-webkit-input-placeholder { /* WebKit browsers */
+    color: lightgray;
+  }
+  
   &::placeholder {
     color: lightgray;
-    font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
-    Arial, sans-serif;
   }
 `;
 

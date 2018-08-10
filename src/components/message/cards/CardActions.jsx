@@ -68,10 +68,6 @@ const Container = styled.div`
   justify-content: flex-end;
   flex-direction: column;
   
-  > * {
-    flex: 1;
-  }
-  
   a, button {
     border-top: 1px solid #f5f5f5;
   }

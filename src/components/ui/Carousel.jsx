@@ -20,6 +20,7 @@ const Container = styled.div`
 
 // Item - when an item go
 const Item = styled.div`
+  flex: 0 0 auto;
   margin: 0;
   width: ${props => props.itemSize}px;
   ~ div {

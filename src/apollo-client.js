@@ -20,6 +20,7 @@ import { getMainDefinition } from 'apollo-utilities';
 import { split } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
+import { SubscriptionClient } from 'subscriptions-transport-ws';
 
 // Fragment matcher so we can use inline fragments on type Value in GraphQL queries
 const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -49,13 +50,14 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
   });
 
   if (websocketsSupported) {
-    const wsLink = new WebSocketLink({
-      uri: SERVER_ENDPOINT_WEBSOCKET,
+    const subscriptionClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
       timeout: 30000,
-      options: {
-        reconnect: true,
-      },
+      reconnect: true,
+      lazy: true,
     });
+    subscriptionClient.maxConnectTimeGenerator.duration = () =>
+      subscriptionClient.maxConnectTimeGenerator.max;
+    const wsLink = new WebSocketLink(subscriptionClient);
 
     const splitLink = split(
       ({ query }) => {

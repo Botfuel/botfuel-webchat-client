@@ -26,6 +26,7 @@ const ButtonStyles = {
 };
 
 const Button = styled.div`
+  pointer-events: all;
   opacity: ${props => (props.isVisible ? 1 : 0)};
   visibility: ${props => (props.isVisible ? 'visible' : 'hidden')};
   height: ${props => props.size}px;

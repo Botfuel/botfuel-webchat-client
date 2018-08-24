@@ -111,7 +111,7 @@ const Container = ({
     <ThemeProvider theme={theme}>
       <MainContainer className="bf-webchat">
         <StyledContainer
-          className="bf-webchat-wrapper"
+          className={`bf-webchat-wrapper${chatStarted ? ' open' : ''}`}
           isVisible={chatStarted}
           fullScreen={fullScreen}
           width={width}

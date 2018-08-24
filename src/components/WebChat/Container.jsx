@@ -42,6 +42,8 @@ const StyledContainer = styled.div`
   position: ${props => (props.theme.fixed ? 'fixed' : 'static')};
   bottom: 20px;
   right: 20px;
+  pointer-events: ${props => (props.isVisible ? 'auto' : 'none')};
+
   ${props => props.noEvents && 'pointer-events: none'};
   font-family: -apple-system, system-ui, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue',
     Arial, sans-serif;
@@ -108,7 +110,13 @@ const Container = ({
   return (
     <ThemeProvider theme={theme}>
       <MainContainer className="bf-webchat">
-        <StyledContainer className="bf-webchat-wrapper" fullScreen={fullScreen} width={width} height={height}>
+        <StyledContainer
+          className="bf-webchat-wrapper"
+          isVisible={chatStarted}
+          fullScreen={fullScreen}
+          width={width}
+          height={height}
+        >
           <WebChat
             botId={botId}
             fullScreen={fullScreen}

@@ -55,6 +55,8 @@ const StyledContainer = styled.div`
     ${props => props.fullScreen && 'all'} {
     bottom: 0;
     right: 0;
+    top: 0;
+    bottom: 0;
   }
 `;
 
@@ -111,7 +113,7 @@ const Container = ({
     <ThemeProvider theme={theme}>
       <MainContainer className="bf-webchat">
         <StyledContainer
-          className={`bf-webchat-wrapper${chatStarted ? ' open' : ''}`}
+          className={`bf-webchat-wrapper ${chatStarted ? 'open' : ''}`}
           isVisible={chatStarted}
           fullScreen={fullScreen}
           width={width}

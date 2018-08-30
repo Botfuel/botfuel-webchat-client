@@ -24,7 +24,7 @@ import Bottom from './Bottom';
 
 const fullScreenMode = css`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   border-radius: 0;
   border: 0;
 `;

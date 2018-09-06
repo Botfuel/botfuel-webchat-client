@@ -44,6 +44,7 @@ const MessageList = ({
   width,
   debug,
   parseHTML,
+  sanitizeDOM,
 }) => {
   const fMessages = messages.filter(
     (m, index) => m.type !== 'botAction' || index === messages.length - 1,
@@ -79,6 +80,7 @@ const MessageList = ({
             side="left"
             key={`onboarding-${textValue}`}
             parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
           />
         ))}
       {!!labels.onboardingMessage &&
@@ -91,6 +93,7 @@ const MessageList = ({
           side="left"
           key={0}
           parseHTML={parseHTML}
+          sanitizeDOM={sanitizeDOM}
         />
       )}
       <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
@@ -103,6 +106,7 @@ const MessageList = ({
             markAsClicked={markAsClicked(message)}
             key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
             parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
           />
         ))}
       </FlipMove>
@@ -126,6 +130,7 @@ MessageList.propTypes = {
   width: PropTypes.number.isRequired,
   debug: PropTypes.bool.isRequired,
   parseHTML: PropTypes.bool.isRequired,
+  sanitizeDOM: PropTypes.bool.isRequired,
 };
 
 export default WithLabels(MessageList);

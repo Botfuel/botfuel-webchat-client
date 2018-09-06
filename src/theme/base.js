@@ -49,4 +49,5 @@ export default {
   },
   startButtonStyle: 'bubble',
   dialogStyle: 'hover',
+  sanitizeDOM: true,
 };

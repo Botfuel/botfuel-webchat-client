@@ -65,18 +65,27 @@ DOMPurify.addHook('afterSanitizeAttributes', (node) => {
 export default class TextWithLinks extends React.PureComponent {
   static propTypes = {
     text: PropTypes.string,
+    sanitizeDOM: PropTypes.bool,
     parseHTML: PropTypes.bool.isRequired,
   };
 
   static defaultProps = {
     text: '',
+    sanitizeDOM: true,
   };
 
   render() {
-    const { text, parseHTML } = this.props;
+    const { text, parseHTML, sanitizeDOM } = this.props;
+    console.log('sanitizeDOM', sanitizeDOM);
 
     if (parseHTML) {
-      return <span dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(text) }} />;
+      return (
+        <span
+          dangerouslySetInnerHTML={{
+            __html: sanitizeDOM ? DOMPurify.sanitize(text) : text,
+          }}
+        />
+      );
     }
 
     if (!parseHTML) {
@@ -90,7 +99,11 @@ export default class TextWithLinks extends React.PureComponent {
               return component.type === 'text' ? (
                 <span
                   key={key}
-                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(component.value) }}
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeDOM
+                      ? DOMPurify.sanitize(component.value)
+                      : component.value,
+                  }}
                 />
               ) : (
                 <a key={key} target={component.blank ? '_blank' : ''} href={component.href}>

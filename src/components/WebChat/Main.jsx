@@ -87,6 +87,7 @@ const Main = ({
   isRecording,
   voiceEnabled,
   parseHTML,
+  sanitizeDOM,
 }) => (
   <Container
     className="bf-webchat-container"
@@ -114,6 +115,7 @@ const Main = ({
       width={width}
       debug={debug}
       parseHTML={parseHTML}
+      sanitizeDOM={sanitizeDOM}
     />
     {isRecording && (
       <div>
@@ -178,6 +180,7 @@ Main.propTypes = {
   isRecording: PropTypes.bool.isRequired,
   voiceEnabled: PropTypes.bool.isRequired,
   parseHTML: PropTypes.bool.isRequired,
+  sanitizeDOM: PropTypes.bool.isRequired,
 };
 
 Main.defaultProps = {

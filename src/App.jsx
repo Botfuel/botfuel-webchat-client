@@ -96,6 +96,7 @@ class BotfuelWebChat {
           voiceEnabled={param.voiceEnabled || false}
           debug={param.debug || false}
           parseHTML={param.parseHTML || false}
+          sanitizeDOM={param.sanitizeDOM}
         />,
         container,
       );

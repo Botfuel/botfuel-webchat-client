@@ -77,6 +77,7 @@ const Container = ({
   debug,
   voiceEnabled,
   parseHTML,
+  sanitizeDOM,
   data: { bot = {}, loading },
 }) => {
   if (loading) {
@@ -134,6 +135,7 @@ const Container = ({
             theme={theme}
             voiceEnabled={voiceEnabled}
             parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -188,6 +190,7 @@ Container.propTypes = {
   debug: PropTypes.bool.isRequired,
   voiceEnabled: PropTypes.bool.isRequired,
   parseHTML: PropTypes.bool.isRequired,
+  sanitizeDOM: PropTypes.bool.isRequired,
 };
 
 Container.defaultProps = {

@@ -81,6 +81,7 @@ export default class Root extends React.Component {
     if (this.state.websocketsSupported === null || !this.client) {
       return null;
     }
+
     return (
       <ApolloProvider client={this.client}>
         <ContainerWithData

@@ -76,7 +76,6 @@ export default class TextWithLinks extends React.PureComponent {
 
   render() {
     const { text, parseHTML, sanitizeDOM } = this.props;
-    console.log('sanitizeDOM', sanitizeDOM);
 
     if (parseHTML) {
       return (

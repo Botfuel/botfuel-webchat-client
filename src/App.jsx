@@ -54,7 +54,10 @@ class BotfuelWebChat {
       updatedTheme.fixed = !param.embeddedContainerId;
 
       if (updatedTheme.fixed) {
-        document.body.innerHTML += '<div id="botfuel"></div>';
+        const botfuelContainer = document.createElement('div');
+        botfuelContainer.setAttribute('id', 'botfuel');
+
+        document.body.appendChild(botfuelContainer);
       }
 
       if (param.applicationId) {

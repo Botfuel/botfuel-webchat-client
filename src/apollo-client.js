@@ -50,7 +50,9 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
   });
 
   if (websocketsSupported) {
-    const subscriptionClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET);
+    const subscriptionClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
+      reconnect: true,
+    });
     subscriptionClient.maxConnectTimeGenerator.duration = () =>
       subscriptionClient.maxConnectTimeGenerator.max;
     const wsLink = new WebSocketLink(subscriptionClient);

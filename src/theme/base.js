@@ -52,7 +52,6 @@ export default {
     noHelpMessage: false,
     rounded: '15px',
     shadowed: false,
-    verticalButtons: false,
   },
   sanitizeDOM: true,
   startButtonStyle: 'bubble',

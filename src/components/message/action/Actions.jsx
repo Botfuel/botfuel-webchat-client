@@ -18,7 +18,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import pixelWidth from 'string-pixel-width';
-import Message from '../Message';
 import TextButton from './TextButton';
 import LinkButton from './LinkButton';
 
@@ -85,7 +84,6 @@ const Actions = ({ payload, sendAction, markAsClicked, width }) => {
 
   return (
     <div className="bf-actions-container">
-      {!!payload.text && <Message type="text" side="left" sender="bot" payload={payload} />}
       <Container actions={actions} width={width}>
         {actions &&
           actions.map((action, index) => {

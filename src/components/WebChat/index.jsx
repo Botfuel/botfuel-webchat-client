@@ -106,6 +106,15 @@ const MESSAGES_QUERY = gql`
   ${MessageFragment}
 `;
 
+const MESSAGES_QUERY_SKIP = gql`
+  query messages($user: ID!, $bot: ID!, $skip: Boolean!) {
+    messages(user: $user, bot: $bot) @skip(if: $skip) {
+      ...FullMessage
+    }
+  }
+  ${MessageFragment}
+`;
+
 const MESSAGES_SUBSCRIPTION = gql`
   subscription onMessageAdded($user: ID!, $bot: ID!) {
     messageAdded(user: $user, bot: $bot) {
@@ -329,16 +338,17 @@ WebChat.defaultProps = {
 };
 
 export default compose(
-  graphql(MESSAGES_QUERY, {
+  graphql(MESSAGES_QUERY_SKIP, {
     options: (props) => {
       const options = {};
 
       options.variables = {
         user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
         bot: props.botId,
+        skip: !props.isVisible,
       };
 
-      // Poll regulary if websockets are not enabled
+      // Poll every 5 seconds if WebSockets are not enabled
       if (!props.websocketsSupported) {
         options.pollInterval = 5000;
       }

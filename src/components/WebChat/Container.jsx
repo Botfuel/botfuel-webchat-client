@@ -139,7 +139,7 @@ const Container = ({
           />
         </StyledContainer>
         {theme.fixed && (
-          <StyledContainer className="bf-webchat-start-button" noEvents={chatStarted}>
+          <StyledContainer id="start-button" className="bf-webchat-start-button" noEvents={chatStarted}>
             <StartButton
               fullScreen={fullScreen}
               isVisible={!chatStarted}

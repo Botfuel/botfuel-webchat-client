@@ -35,6 +35,7 @@ const Messages = styled.div`
 
 const MessageList = ({
   messages,
+  localMessages,
   setRef,
   sendAction,
   labels,
@@ -110,6 +111,18 @@ const MessageList = ({
           />
         ))}
       </FlipMove>
+      {localMessages.map(message => (
+        <Message
+          {...message}
+          side={'right'}
+          width={width}
+          sendAction={sendAction}
+          markAsClicked={() => null}
+          key={message.id}
+          parseHTML={parseHTML}
+          sanitizeDOM={sanitizeDOM}
+        />
+      ))}
       <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
     </Messages>
   );
@@ -117,6 +130,7 @@ const MessageList = ({
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  localMessages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,

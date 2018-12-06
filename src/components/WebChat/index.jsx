@@ -22,6 +22,14 @@ import last from 'lodash/last';
 import uuidv4 from 'uuid/v4';
 import Main from './Main';
 
+// Local messages
+const LOCAL_TEXT_MESSAGE_MUTATION = gql`
+  mutation createLocalTextMessage($user: String!, $bot: String!, $value: String!, $sender: String!) {
+    createLocalTextMessage(user: $user, bot: $bot, value: $value, sender: $sender) @client
+  }
+`;
+
+// Remote messages
 const MessageFragment = gql`
   fragment FullMessage on Message {
     id
@@ -99,6 +107,7 @@ const MessageFragment = gql`
 
 const MESSAGES_QUERY = gql`
   query messages($user: ID!, $bot: ID!) {
+    localMessages @client
     messages(user: $user, bot: $bot) {
       ...FullMessage
     }
@@ -108,6 +117,7 @@ const MESSAGES_QUERY = gql`
 
 const MESSAGES_QUERY_SKIP = gql`
   query messages($user: ID!, $bot: ID!, $skip: Boolean!) {
+    localMessages @client
     messages(user: $user, bot: $bot) @skip(if: $skip) {
       ...FullMessage
     }
@@ -231,14 +241,17 @@ class WebChat extends React.Component {
     const text = input || this.state.input;
     if (text) {
       this.resetInput();
-      await this.props.createTextMessageMutation({
-        variables: {
-          user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
-          bot: this.props.botId,
-          value: text,
-          sender: 'user',
-        },
-      });
+      // New text message variables
+      const variables = {
+        user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
+        bot: this.props.botId,
+        value: text,
+        sender: 'user',
+      };
+      // Add local message
+      await this.props.createLocalTextMessageMutation({ variables });
+      // Add remote message
+      await this.props.createTextMessageMutation({ variables });
       // If subscriptions are not used, we need to refetch manually the message that was just
       // sent by the user so he gets immediate success feedback on his own message
       if (!this.props.websocketsSupported) {
@@ -296,6 +309,7 @@ class WebChat extends React.Component {
         {...this.props}
         {...this.state}
         messages={this.props.messages}
+        localMessages={this.props.localMessages}
         quickreplies={quickreplies}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}
@@ -324,8 +338,17 @@ WebChat.propTypes = {
       type: PropTypes.string,
     }),
   ),
+  localMessages: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      user: PropTypes.string,
+      bot: PropTypes.string,
+      value: PropTypes.string,
+    }),
+  ),
   subscribeToNewMessages: PropTypes.func.isRequired,
   createTextMessageMutation: PropTypes.func.isRequired,
+  createLocalTextMessageMutation: PropTypes.func.isRequired,
   createPostbackMessageMutation: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
@@ -334,6 +357,7 @@ WebChat.propTypes = {
 
 WebChat.defaultProps = {
   messages: [],
+  localMessages: [],
   error: {},
 };
 
@@ -358,6 +382,7 @@ export default compose(
     props: props => ({
       error: props.data.error,
       messages: props.data.messages,
+      localMessages: props.data.localMessages,
       refetch: props.data.refetch,
       subscribeToNewMessages: params =>
         (props.ownProps.websocketsSupported
@@ -369,8 +394,13 @@ export default compose(
                 return prev;
               }
               const newMessage = subscriptionData.data.messageAdded;
+              console.log('REMOTE new message from server', newMessage);
+              const filter = m => (m.payload.textValue !== newMessage.payload.textValue);
+              const localMessages = prev.localMessages.filter(filter);
+              console.log('New local messages', localMessages);
               return {
                 messages: [...prev.messages, { ...newMessage }],
+                localMessages,
               };
             },
           })
@@ -378,6 +408,7 @@ export default compose(
     }),
   }),
   graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),
+  graphql(LOCAL_TEXT_MESSAGE_MUTATION, { name: 'createLocalTextMessageMutation' }),
   graphql(POSTBACK_MESSAGE_MUTATION, { name: 'createPostbackMessageMutation' }),
   graphql(MARK_ACTION_AS_CLICKED_MUTATION, {
     props: ({ ownProps, mutate }) => ({

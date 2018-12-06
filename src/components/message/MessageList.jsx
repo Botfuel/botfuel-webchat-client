@@ -97,7 +97,7 @@ const MessageList = ({
           sanitizeDOM={sanitizeDOM}
         />
       )}
-      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
+      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation={false} leaveAnimation="fade">
         {fMessages.map(message => (
           <Message
             {...message}
@@ -111,18 +111,20 @@ const MessageList = ({
           />
         ))}
       </FlipMove>
-      {localMessages.map(message => (
-        <Message
-          {...message}
-          side={'right'}
-          width={width}
-          sendAction={sendAction}
-          markAsClicked={() => null}
-          key={message.id}
-          parseHTML={parseHTML}
-          sanitizeDOM={sanitizeDOM}
-        />
-      ))}
+      <FlipMove className="bf-local-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation={false}>
+        {localMessages.map(message => (
+          <Message
+            {...message}
+            side={'right'}
+            width={width}
+            sendAction={sendAction}
+            markAsClicked={() => null}
+            key={message.id}
+            parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
+          />
+        ))}
+      </FlipMove>
       <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
     </Messages>
   );

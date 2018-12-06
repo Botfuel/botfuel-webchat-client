@@ -30,6 +30,7 @@ export default class MessageListContainer extends React.Component {
   shouldComponentUpdate(nextProps, nextState) {
     return (
       this.props.messages.length !== nextProps.messages.length ||
+      this.props.localMessages.length !== nextProps.localMessages.length ||
       this.state.justClicked !== nextState.justClicked
     );
   }

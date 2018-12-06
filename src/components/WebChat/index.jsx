@@ -24,14 +24,14 @@ import Main from './Main';
 
 // Local messages
 const LOCAL_TEXT_MESSAGE_MUTATION = gql`
-  mutation createLocalTextMessage($user: String!, $bot: String!, $value: String!, $sender: String!) {
-    createLocalTextMessage(user: $user, bot: $bot, value: $value, sender: $sender) @client
+  mutation createLocalTextMessage($user: String!, $bot: String!, $value: String!, $sender: String!, $localMessageId: String!) {
+    createLocalTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, localMessageId: $localMessageId) @client
   }
 `;
 
 // Remote messages
 const MessageFragment = gql`
-  fragment FullMessage on Message {
+  fragment FullMessage on Message { 
     id
     type
     user
@@ -102,6 +102,7 @@ const MessageFragment = gql`
         }
       }
     }
+    localMessageId
   }
 `;
 
@@ -135,8 +136,8 @@ const MESSAGES_SUBSCRIPTION = gql`
 `;
 
 const TEXT_MESSAGE_MUTATION = gql`
-  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!) {
-    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender) {
+  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!, $localMessageId: String) {
+    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, localMessageId: $localMessageId) {
       ...FullMessage
     }
   }
@@ -247,6 +248,7 @@ class WebChat extends React.Component {
         bot: this.props.botId,
         value: text,
         sender: 'user',
+        localMessageId: uuidv4(),
       };
       // Add local message
       await this.props.createLocalTextMessageMutation({ variables });
@@ -394,10 +396,13 @@ export default compose(
                 return prev;
               }
               const newMessage = subscriptionData.data.messageAdded;
-              console.log('REMOTE new message from server', newMessage);
-              const filter = m => (m.payload.textValue !== newMessage.payload.textValue);
-              const localMessages = prev.localMessages.filter(filter);
-              console.log('New local messages', localMessages);
+
+              // Remove new message from localMessages
+              const localMessages = newMessage.sender === 'user' && newMessage.localMessageId
+                ? prev.localMessages.filter(m => m.id !== newMessage.localMessageId)
+                : prev.localMessages;
+
+              // Update the store
               return {
                 messages: [...prev.messages, { ...newMessage }],
                 localMessages,

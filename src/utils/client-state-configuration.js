@@ -1,4 +1,3 @@
-import uuidv4 from 'uuid/v4';
 import gql from 'graphql-tag';
 
 const GET_LOCAL_MESSAGES = gql`
@@ -13,11 +12,11 @@ module.exports = {
   },
   resolvers: {
     Mutation: {
-      createLocalTextMessage: (_, { user, bot, value }, { cache }) => {
+      createLocalTextMessage: (_, { user, bot, value, localMessageId }, { cache }) => {
         const query = GET_LOCAL_MESSAGES;
-        const localMessages = cache.readQuery({ query });
+        const cacheData = cache.readQuery({ query });
         const textMessage = {
-          id: uuidv4(),
+          id: localMessageId,
           bot,
           user,
           payload: {
@@ -26,7 +25,7 @@ module.exports = {
           type: 'text',
           sender: 'user',
         };
-        const data = { localMessages: [...localMessages, textMessage] };
+        const data = { localMessages: [...cacheData.localMessages, textMessage] };
         cache.writeQuery({ query, data });
         return null;
       },

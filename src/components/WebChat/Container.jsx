@@ -17,12 +17,23 @@
 import 'babel-polyfill';
 import 'whatwg-fetch';
 import React from 'react';
-import styled, { ThemeProvider } from 'styled-components';
+import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import StartButton from 'components/StartButton';
 import WebChat from 'components/WebChat';
+
+/* eslint-disable */
+const GlobalStyle = createGlobalStyle`
+  @font-face {
+    font-family: 'font-awesome';
+    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
+`;
+/* eslint-enable */
 
 const BOT_QUERY = gql`
   query bot($botId: ID!) {
@@ -113,6 +124,7 @@ const Container = ({
   return (
     <ThemeProvider theme={theme}>
       <MainContainer className="bf-webchat">
+        <GlobalStyle />
         <StyledContainer
           className={`bf-webchat-wrapper ${chatStarted ? 'open' : ''}`}
           isVisible={chatStarted}

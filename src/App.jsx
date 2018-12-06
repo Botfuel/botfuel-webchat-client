@@ -18,23 +18,11 @@ import 'babel-polyfill';
 import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { injectGlobal } from 'styled-components';
 import { merge } from 'lodash';
 import uuidv4 from 'uuid/v4';
 import defaultTheme from 'theme/base';
 import Root from 'components/WebChat/Root';
 import EmbeddedContainerError from 'utils/Error';
-/* eslint-disable */
-injectGlobal`
-@font-face {
-  font-family: 'font-awesome';
-  src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/fonts/fontawesome-webfont.woff')
-  format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-`;
-/* eslint-enable */
 
 class BotfuelWebChat {
   static init(param) {

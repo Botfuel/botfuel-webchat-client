@@ -52,7 +52,7 @@ const MessageList = ({
   );
 
   return (
-    <Messages className="bf-message-list-container" innerRef={setRef}>
+    <Messages className="bf-message-list-container" ref={setRef}>
       {debug && (
         <Block
           className="bf-debug-message"
@@ -97,7 +97,7 @@ const MessageList = ({
           sanitizeDOM={sanitizeDOM}
         />
       )}
-      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation={false} leaveAnimation="fade">
+      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
         {fMessages.map(message => (
           <Message
             {...message}

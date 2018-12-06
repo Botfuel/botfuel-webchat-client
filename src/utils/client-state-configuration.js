@@ -6,7 +6,7 @@ const GET_LOCAL_MESSAGES = gql`
   }
 `;
 
-module.exports = {
+export default {
   defaults: {
     localMessages: [],
   },

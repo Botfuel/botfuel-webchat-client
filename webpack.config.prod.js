@@ -1,21 +1,25 @@
 const path = require('path');
-// const BabiliPlugin = require('babili-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
+  mode: 'production',
   entry: './src/App.jsx',
   externals: [
     {
       BotfuelWeb: true,
     },
   ],
-  // plugins: [new BabiliPlugin()],
   output: {
     path: path.join(__dirname, './dist'),
     filename: 'botfuel-webchat-client.js',
   },
   module: {
     rules: [
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      },
       {
         test: /\.jsx?$/,
         exclude: /(node_modules\/(?!react-voice-components)|bower_components)/,
@@ -90,16 +94,13 @@ module.exports = {
         ),
       },
     }),
-
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'common',
-      children: true,
-      minChunks: 2,
-      async: true,
-    }),
-
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: true,
-    }),
   ],
+
+  optimization: {
+    splitChunks: {
+      chunks: 'async',
+      minChunks: 2,
+      name: true,
+    },
+  },
 };

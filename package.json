@@ -16,19 +16,6 @@
     "prepublish": "npm run build:production"
   },
   "main": "dist/botfuel-webchat-client.js",
-  "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-module-resolver": "^2.7.1",
-    "eslint": "^4.4.0",
-    "eslint-config-airbnb": "^15.1.0",
-    "eslint-import-resolver-babel-module": "^3.0.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.1.0",
-    "husky": "^0.14.3",
-    "webpack-dev-server": "^2.8.1"
-  },
   "dependencies": {
     "annyang": "^2.6.0",
     "apollo-boost": "^0.1.10",
@@ -57,7 +44,7 @@
     "file-loader": "^1.1.6",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
-    "html-webpack-plugin": "^2.30.1",
+    "html-webpack-plugin": "^3.2.0",
     "lodash": "^4.17.4",
     "polished": "^1.8.0",
     "prop-types": "^15.5.10",
@@ -70,12 +57,26 @@
     "react-table": "^6.5.3",
     "react-textarea-autosize": "^5.1.0",
     "string-pixel-width": "^1.5.0",
-    "styled-components": "1.4.6",
+    "styled-components": "^4.1.2",
     "subscriptions-transport-ws": "^0.9.12",
-    "url-loader": "^0.5.9",
+    "url-loader": "^1.1.2",
     "uuid": "^3.1.0",
-    "webpack": "^3.5.1",
+    "webpack": "^4.27.1",
     "whatwg-fetch": "^2.0.3"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-module-resolver": "^2.7.1",
+    "eslint": "^4.4.0",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-import-resolver-babel-module": "^3.0.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.1.0",
+    "husky": "^0.14.3",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   },
   "engines": {
     "node": "8.x"

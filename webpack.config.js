@@ -3,6 +3,7 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+  mode: 'development',
   entry: [
     // 'react-hot-loader/patch',
     // `webpack-dev-server/client?http://localhost:${process.env.PORT || 7000}`,
@@ -24,6 +25,11 @@ module.exports = {
 
   module: {
     rules: [
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto',
+      },
       {
         test: /\.jsx?$/,
         exclude: /(node_modules\/(?!react-voice-components)|bower_components)/,

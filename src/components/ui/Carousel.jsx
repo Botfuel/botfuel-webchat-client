@@ -199,7 +199,7 @@ class Carousel extends Component {
           <img src={prevArrowIcon} alt="previous" />
         </ArrowButton>
         }
-        <Container className="bf-carousel-item-list" innerRef={this.setContainerRef}>
+        <Container className="bf-carousel-item-list" ref={this.setContainerRef}>
           {this.props.children.map(item => (
             <Item className="bf-carousel-item" key={`carousel-${this.id}-${Math.random()}`} {...this.props}>{item}</Item>
           ))}

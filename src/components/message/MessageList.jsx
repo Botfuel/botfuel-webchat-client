@@ -35,6 +35,7 @@ const Messages = styled.div`
 
 const MessageList = ({
   messages,
+  localMessages,
   setRef,
   sendAction,
   labels,
@@ -51,7 +52,7 @@ const MessageList = ({
   );
 
   return (
-    <Messages className="bf-message-list-container" innerRef={setRef}>
+    <Messages className="bf-message-list-container" ref={setRef}>
       {debug && (
         <Block
           className="bf-debug-message"
@@ -110,6 +111,20 @@ const MessageList = ({
           />
         ))}
       </FlipMove>
+      <FlipMove className="bf-local-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation={false}>
+        {localMessages.map(message => (
+          <Message
+            {...message}
+            side={'right'}
+            width={width}
+            sendAction={sendAction}
+            markAsClicked={() => null}
+            key={message.id}
+            parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
+          />
+        ))}
+      </FlipMove>
       <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
     </Messages>
   );
@@ -117,6 +132,7 @@ const MessageList = ({
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  localMessages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,

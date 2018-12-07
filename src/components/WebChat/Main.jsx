@@ -65,6 +65,7 @@ const SpeakingIndicator = styled.div`
 
 const Main = ({
   messages,
+  localMessages,
   quickreplies,
   width,
   height,
@@ -110,6 +111,7 @@ const Main = ({
       sendAction={sendAction}
       markAsClicked={markAsClicked}
       messages={messages}
+      localMessages={localMessages}
       quickreplies={quickreplies}
       theme={theme}
       width={width}
@@ -156,6 +158,14 @@ Main.propTypes = {
       type: PropTypes.string,
     }),
   ),
+  localMessages: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+      user: PropTypes.string,
+      bot: PropTypes.string,
+      value: PropTypes.string,
+    }),
+  ),
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
@@ -185,6 +195,7 @@ Main.propTypes = {
 
 Main.defaultProps = {
   messages: [],
+  localMessages: [],
   input: '',
 };
 

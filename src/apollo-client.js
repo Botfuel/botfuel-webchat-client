@@ -15,12 +15,14 @@
  */
 
 import { ApolloClient } from 'apollo-boost';
+import { split, from } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
-import { getMainDefinition } from 'apollo-utilities';
-import { split } from 'apollo-link';
 import { createHttpLink } from 'apollo-link-http';
+import { withClientState } from 'apollo-link-state';
+import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
+import clientState from './utils/client-state-configuration';
 
 // Fragment matcher so we can use inline fragments on type Value in GraphQL queries
 const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -49,14 +51,24 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
     fragmentMatcher,
   });
 
+  // Set up Local State
+  const stateLink = withClientState({
+    cache,
+    ...clientState,
+  });
+
   if (websocketsSupported) {
+    // Setup subscription client
     const subscriptionClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
       reconnect: true,
     });
     subscriptionClient.maxConnectTimeGenerator.duration = () =>
       subscriptionClient.maxConnectTimeGenerator.max;
+
+    // Setup WS link
     const wsLink = new WebSocketLink(subscriptionClient);
 
+    // Setup split link between WS link and HTTP link
     const splitLink = split(
       ({ query }) => {
         const { kind, operation } = getMainDefinition(query);
@@ -66,16 +78,17 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
       httpLink,
     );
 
+    // Create apollo client from previous setup
     return new ApolloClient({
-      link: splitLink,
       cache,
+      link: from([stateLink, splitLink]),
     });
   }
 
   // Fallback to HTTP only network interface if web sockets are not supported
   return new ApolloClient({
-    link: httpLink,
     cache,
+    link: from([stateLink, httpLink]),
   });
 }
 

@@ -23,6 +23,7 @@ const Container = styled.div`
   text-align: right;
   display: flex;
   justify-content: flex-end;
+  padding 0 10px;
 
   > * {
     margin-left: ${props => 5 / props.size}%;

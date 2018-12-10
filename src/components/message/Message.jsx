@@ -36,6 +36,7 @@ const componentsDict = {
 };
 
 const ClearDiv = styled.div`
+  padding: 0 10px;
   &::after {
     clear: both;
     content: '';

@@ -50,7 +50,7 @@ class BotAction extends React.Component {
     switch (botActionValue.action) {
       case 'THINKING_ON':
         return (
-          <div>
+          <div style={{ padding: '0 10px' }}>
             <Avatar sender="bot" />
             <Bubble side="left">
               <ThinkingIndicator />

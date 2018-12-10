@@ -253,7 +253,9 @@ class WebChat extends React.Component {
       // Add local message
       await this.props.createLocalTextMessageMutation({ variables });
       // Add remote message
-      await this.props.createTextMessageMutation({ variables });
+      setTimeout(async () => {
+        await this.props.createTextMessageMutation({ variables });
+      }, 2000);
       // If subscriptions are not used, we need to refetch manually the message that was just
       // sent by the user so he gets immediate success feedback on his own message
       if (!this.props.websocketsSupported) {

@@ -29,7 +29,7 @@ const isOneLine = (props) => {
   const joinedText = props.actions.map(action => action.text).join(' ');
   const textWidth = pixelWidth(joinedText, { size: 15 });
   const actionsWidth = (props.actions.length * 20) + textWidth;
-  return actionsWidth < (props.width * 0.9);
+  return actionsWidth < (props.width * 0.8);
 };
 
 const verticalStyles = props => `
@@ -70,7 +70,10 @@ const getContainerStyle = (props) => {
   }
 };
 
-const Container = styled.div`${props => getContainerStyle(props)}`;
+const Container = styled.div`
+  padding: 0 10px;
+  ${props => getContainerStyle(props)}
+`;
 
 const Actions = ({ payload, sendAction, markAsClicked, width }) => {
   const hasAClickedAction = payload.actionValue.some(a => !!a.clicked);
@@ -83,49 +86,47 @@ const Actions = ({ payload, sendAction, markAsClicked, width }) => {
   }));
 
   return (
-    <div className="bf-actions-container">
-      <Container actions={actions} width={width}>
-        {actions &&
-          actions.map((action, index) => {
-            switch (action.type) {
-              case 'link':
-                return (
-                  <LinkButton
-                    index={index}
-                    key={`${action.text}${action.linkActionValue}`}
-                    link={action.linkActionValue}
-                    label={action.text || action.linkActionValue}
-                    handleClick={() => markAsClicked(index)}
-                    disabled={action.disabled}
-                    clicked={action.clicked}
-                    side="left"
-                  />
-                );
-              case 'postback':
-                return (
-                  <TextButton
-                    index={index}
-                    key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
-                    handleClick={() => {
-                      sendAction({
-                        type: 'postback',
-                        value: action.postbackActionValue,
-                        text: action.text,
-                      })();
-                      markAsClicked(index);
-                    }}
-                    label={action.text || action.postbackActionValue}
-                    disabled={action.disabled}
-                    clicked={action.clicked}
-                    side="left"
-                  />
-                );
-              default:
-                return null;
-            }
-          })}
-      </Container>
-    </div>
+    <Container className="bf-actions-container" actions={actions} width={width}>
+      {actions &&
+      actions.map((action, index) => {
+        switch (action.type) {
+          case 'link':
+            return (
+              <LinkButton
+                index={index}
+                key={`${action.text}${action.linkActionValue}`}
+                link={action.linkActionValue}
+                label={action.text || action.linkActionValue}
+                handleClick={() => markAsClicked(index)}
+                disabled={action.disabled}
+                clicked={action.clicked}
+                side="left"
+              />
+            );
+          case 'postback':
+            return (
+              <TextButton
+                index={index}
+                key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
+                handleClick={() => {
+                  sendAction({
+                    type: 'postback',
+                    value: action.postbackActionValue,
+                    text: action.text,
+                  })();
+                  markAsClicked(index);
+                }}
+                label={action.text || action.postbackActionValue}
+                disabled={action.disabled}
+                clicked={action.clicked}
+                side="left"
+              />
+            );
+          default:
+            return null;
+        }
+      })}
+    </Container>
   );
 };
 

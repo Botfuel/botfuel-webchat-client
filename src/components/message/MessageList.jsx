@@ -17,7 +17,6 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import FlipMove from 'react-flip-move';
 import isArray from 'lodash/isArray';
 import WithLabels from 'components/utils/WithLabels';
 import Message from './Message';
@@ -72,20 +71,20 @@ const MessageList = ({
         />
       )}
       {isArray(labels.onboardingMessage) &&
-        labels.onboardingMessage.map(textValue => (
-          <Message
-            className="bf-onboarding-message"
-            payload={{ textValue }}
-            type="text"
-            sender="bot"
-            side="left"
-            key={`onboarding-${textValue}`}
-            parseHTML={parseHTML}
-            sanitizeDOM={sanitizeDOM}
-          />
-        ))}
+      labels.onboardingMessage.map(textValue => (
+        <Message
+          className="bf-onboarding-message"
+          payload={{ textValue }}
+          type="text"
+          sender="bot"
+          side="left"
+          key={`onboarding-${textValue}`}
+          parseHTML={parseHTML}
+          sanitizeDOM={sanitizeDOM}
+        />
+      ))}
       {!!labels.onboardingMessage &&
-        typeof labels.onboardingMessage === 'string' && (
+      typeof labels.onboardingMessage === 'string' && (
         <Message
           className="bf-onboarding-message"
           payload={{ textValue: labels.onboardingMessage }}
@@ -97,7 +96,7 @@ const MessageList = ({
           sanitizeDOM={sanitizeDOM}
         />
       )}
-      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation={false}>
+      <div className="bf-message-list">
         {fMessages.map(message => (
           <Message
             {...message}
@@ -110,7 +109,7 @@ const MessageList = ({
             sanitizeDOM={sanitizeDOM}
           />
         ))}
-      </FlipMove>
+      </div>
       <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
     </Messages>
   );

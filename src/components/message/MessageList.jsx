@@ -47,9 +47,9 @@ const MessageList = ({
   parseHTML,
   sanitizeDOM,
 }) => {
-  const fMessages = messages.filter(
-    (m, index) => m.type !== 'botAction' || index === messages.length - 1,
-  ).concat(localMessages);
+  const fMessages = messages
+    .filter((m, idx) => m.type !== 'botAction' || idx === messages.length - 1)
+    .concat(localMessages);
 
   return (
     <Messages className="bf-message-list-container" ref={setRef}>

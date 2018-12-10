@@ -49,7 +49,7 @@ const MessageList = ({
 }) => {
   const fMessages = messages.filter(
     (m, index) => m.type !== 'botAction' || index === messages.length - 1,
-  );
+  ).concat(localMessages);
 
   return (
     <Messages className="bf-message-list-container" ref={setRef}>
@@ -97,7 +97,7 @@ const MessageList = ({
           sanitizeDOM={sanitizeDOM}
         />
       )}
-      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation="fade">
+      <FlipMove className="bf-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation={false}>
         {fMessages.map(message => (
           <Message
             {...message}
@@ -106,20 +106,6 @@ const MessageList = ({
             sendAction={sendAction}
             markAsClicked={markAsClicked(message)}
             key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
-            parseHTML={parseHTML}
-            sanitizeDOM={sanitizeDOM}
-          />
-        ))}
-      </FlipMove>
-      <FlipMove className="bf-local-message-list" appearAnimation="accordionVertical" enterAnimation="fade" leaveAnimation={false}>
-        {localMessages.map(message => (
-          <Message
-            {...message}
-            side={'right'}
-            width={width}
-            sendAction={sendAction}
-            markAsClicked={() => null}
-            key={message.id}
             parseHTML={parseHTML}
             sanitizeDOM={sanitizeDOM}
           />

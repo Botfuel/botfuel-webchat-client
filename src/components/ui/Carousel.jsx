@@ -7,7 +7,7 @@ import nextArrowIcon from '../../../assets/images/icons/angle-right.svg';
 // Wrapper - where buttons and carousel content are displayed
 const Wrapper = styled.div`
   position: relative;
-  padding: ${props => (props.theme.layout.compact ? '10px' : '20px')} 0;
+  padding: ${props => (props.theme.layout.compact ? '10px' : '20px')} 10px;
   overflow: hidden;
 `;
 
@@ -56,8 +56,8 @@ const ArrowButton = styled.button`
     ${props => props.isNext && 'left: 5px;'}
   }
   
-  ${props => props.isPrevious && 'left: 0; border-top-right-radius: 50px; border-bottom-right-radius: 50px;'}
-  ${props => props.isNext && 'right: 0; border-top-left-radius: 50px; border-bottom-left-radius: 50px;'}
+  ${props => props.isPrevious && 'left: 10px; border-top-right-radius: 50px; border-bottom-right-radius: 50px;'}
+  ${props => props.isNext && 'right: 10px; border-top-left-radius: 50px; border-bottom-left-radius: 50px;'}
 `;
 
 class Carousel extends Component {

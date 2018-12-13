@@ -45,7 +45,7 @@ const CardTitle = styled.h4`
   margin: 0;
 `;
 
-const CardDescription = styled.p`
+const CardSubTitle = styled.p`
   padding: 0 10px 20px;
   font-size: 14px;
   font-weight: 300;
@@ -58,7 +58,7 @@ const Cards = ({ payload, sendAction, cardSize }) => (
       <Card className="bf-card" key={`card-${card.title}`} size={cardSize}>
         <CardImage className="bf-card-image" url={card.image_url} />
         <CardTitle className="bf-card-title">{card.title}</CardTitle>
-        <CardDescription>{card.subtitle || ''}</CardDescription>
+        <CardSubTitle className="bf-card-sub-title">{card.subtitle || ''}</CardSubTitle>
         {!!card.actionValue.length &&
         <CardActions
           payload={card}

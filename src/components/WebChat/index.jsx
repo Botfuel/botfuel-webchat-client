@@ -99,6 +99,7 @@ const MessageFragment = gql`
               postbackActionValue: value
             }
           }
+          subtitle
         }
       }
     }

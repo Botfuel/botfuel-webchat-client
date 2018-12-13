@@ -58,7 +58,7 @@ const Cards = ({ payload, sendAction, cardSize }) => (
       <Card className="bf-card" key={`card-${card.title}`} size={cardSize}>
         <CardImage className="bf-card-image" url={card.image_url} />
         <CardTitle className="bf-card-title">{card.title}</CardTitle>
-        <CardDescription>{(card.options && card.options.description) || ''}</CardDescription>
+        <CardDescription>{card.subtitle || ''}</CardDescription>
         {!!card.actionValue.length &&
         <CardActions
           payload={card}

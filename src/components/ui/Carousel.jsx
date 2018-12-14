@@ -23,6 +23,8 @@ const Item = styled.div`
   flex: 0 0 auto;
   margin: 0;
   width: ${props => props.itemSize}px;
+  max-width: 300px;
+
   ~ div {
     margin-left: ${props => props.itemMargin * 2}px
   }

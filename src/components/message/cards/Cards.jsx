@@ -21,7 +21,8 @@ import Carousel from '../../ui/Carousel';
 import CardActions from './CardActions';
 
 const Card = styled.div`
-  width: ${props => props.size}px;
+  width: 100%;
+  max-width: 300px;
   background-color: white;
   border-radius: 4px;
   height: 100%;
@@ -52,24 +53,29 @@ const CardSubTitle = styled.p`
   margin: 0;
 `;
 
-const Cards = ({ payload, sendAction, cardSize }) => (
-  <Carousel itemSize={cardSize}>
-    {payload.cardsValues.map(card => (
-      <Card className="bf-card" key={`card-${card.title}`} size={cardSize}>
-        <CardImage className="bf-card-image" url={card.image_url} />
-        <CardTitle className="bf-card-title">{card.title}</CardTitle>
-        <CardSubTitle className="bf-card-sub-title">{card.subtitle || ''}</CardSubTitle>
-        {!!card.actionValue.length &&
-        <CardActions
-          payload={card}
-          sendAction={sendAction}
-          width={100}
-        />
-        }
-      </Card>
-    ))}
-  </Carousel>
-);
+const Cards = ({ payload, sendAction, size, cardSize }) => {
+  // if (size - total padding) < cardSize then use the max available size
+  // else use cardSize
+  const itemSize = (size - 40) < 300 ? (10 * Math.floor((size - 40) / 10)) : cardSize;
+  return (
+    <Carousel itemSize={itemSize}>
+      {payload.cardsValues.map(card => (
+        <Card className="bf-card" key={`card-${card.title}`} size={itemSize}>
+          <CardImage className="bf-card-image" url={card.image_url} />
+          <CardTitle className="bf-card-title">{card.title}</CardTitle>
+          <CardSubTitle className="bf-card-sub-title">{card.subtitle || ''}</CardSubTitle>
+          {!!card.actionValue.length &&
+          <CardActions
+            payload={card}
+            sendAction={sendAction}
+            width={100}
+          />
+          }
+        </Card>
+      ))}
+    </Carousel>
+  );
+};
 
 const ButtonType = PropTypes.shape({
   type: PropTypes.oneOf(['text', 'postback', 'link']).isRequired,
@@ -93,6 +99,7 @@ Cards.propTypes = {
     cardsValues: PropTypes.arrayOf(CardType).isRequired,
   }).isRequired,
   sendAction: PropTypes.func.isRequired,
+  size: PropTypes.number.isRequired,
   cardSize: PropTypes.number,
 };
 

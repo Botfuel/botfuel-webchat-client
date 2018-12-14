@@ -70,7 +70,7 @@ export default class MessageContainer extends React.Component {
     const disableBubble = ['actions', 'botAction', 'cards'].includes(type);
 
     return disableBubble ? (
-      <Component type={type} {...props} />
+      <Component type={type} size={props.width} {...props} />
     ) : (
       <ClearDiv className={`bf-message-container bf-${sender} ${className}`} component={Component}>
         {side === 'left' && <Avatar className="bf-user-avatar" sender={sender} />}

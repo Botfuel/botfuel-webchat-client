@@ -249,7 +249,7 @@ class WebChat extends React.Component {
         bot: this.props.botId,
         value: text,
         sender: 'user',
-        referrer: window.location.href,
+        referrer: window.location.href || null,
         localMessageId: uuidv4(),
       };
       // Add local message

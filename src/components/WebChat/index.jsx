@@ -137,8 +137,8 @@ const MESSAGES_SUBSCRIPTION = gql`
 `;
 
 const TEXT_MESSAGE_MUTATION = gql`
-  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!, $localMessageId: String) {
-    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, localMessageId: $localMessageId) {
+  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!, $referrer: String, $localMessageId: String) {
+    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, referrer: $referrer, localMessageId: $localMessageId) {
       ...FullMessage
     }
   }
@@ -249,6 +249,7 @@ class WebChat extends React.Component {
         bot: this.props.botId,
         value: text,
         sender: 'user',
+        referrer: window.location.href,
         localMessageId: uuidv4(),
       };
       // Add local message

@@ -22,13 +22,6 @@ import last from 'lodash/last';
 import uuidv4 from 'uuid/v4';
 import Main from './Main';
 
-// Local messages
-const LOCAL_TEXT_MESSAGE_MUTATION = gql`
-  mutation createLocalTextMessage($user: String!, $bot: String!, $value: String!, $sender: String!, $localMessageId: String!) {
-    createLocalTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, localMessageId: $localMessageId) @client
-  }
-`;
-
 // Remote messages
 const MessageFragment = gql`
   fragment FullMessage on Message { 
@@ -103,13 +96,11 @@ const MessageFragment = gql`
         }
       }
     }
-    localMessageId
   }
 `;
 
 const MESSAGES_QUERY = gql`
   query messages($user: ID!, $bot: ID!) {
-    localMessages @client
     messages(user: $user, bot: $bot) {
       ...FullMessage
     }
@@ -119,7 +110,6 @@ const MESSAGES_QUERY = gql`
 
 const MESSAGES_QUERY_SKIP = gql`
   query messages($user: ID!, $bot: ID!, $skip: Boolean!) {
-    localMessages @client
     messages(user: $user, bot: $bot) @skip(if: $skip) {
       ...FullMessage
     }
@@ -137,8 +127,8 @@ const MESSAGES_SUBSCRIPTION = gql`
 `;
 
 const TEXT_MESSAGE_MUTATION = gql`
-  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!, $referrer: String, $localMessageId: String) {
-    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, referrer: $referrer, localMessageId: $localMessageId) {
+  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!, $referrer: String) {
+    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, referrer: $referrer) {
       ...FullMessage
     }
   }
@@ -251,11 +241,8 @@ class WebChat extends React.Component {
         value: text,
         sender: 'user',
         referrer: window.location.href || null,
-        localMessageId: uuidv4(),
       };
-      // Add local message
-      await this.props.createLocalTextMessageMutation({ variables });
-      // Add remote message
+      // Add remote message with optimistic response
       await this.props.createTextMessageMutation({ variables });
       // If subscriptions are not used, we need to refetch manually the message that was just
       // sent by the user so he gets immediate success feedback on his own message
@@ -315,7 +302,6 @@ class WebChat extends React.Component {
         {...this.props}
         {...this.state}
         messages={this.props.messages}
-        localMessages={this.props.localMessages}
         quickreplies={quickreplies}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}
@@ -344,17 +330,8 @@ WebChat.propTypes = {
       type: PropTypes.string,
     }),
   ),
-  localMessages: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-      user: PropTypes.string,
-      bot: PropTypes.string,
-      value: PropTypes.string,
-    }),
-  ),
   subscribeToNewMessages: PropTypes.func.isRequired,
   createTextMessageMutation: PropTypes.func.isRequired,
-  createLocalTextMessageMutation: PropTypes.func.isRequired,
   createPostbackMessageMutation: PropTypes.func.isRequired,
   refetch: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
@@ -363,7 +340,6 @@ WebChat.propTypes = {
 
 WebChat.defaultProps = {
   messages: [],
-  localMessages: [],
   error: {},
 };
 
@@ -388,7 +364,6 @@ export default compose(
     props: props => ({
       error: props.data.error,
       messages: props.data.messages,
-      localMessages: props.data.localMessages,
       refetch: props.data.refetch,
       subscribeToNewMessages: params =>
         (props.ownProps.websocketsSupported
@@ -401,23 +376,77 @@ export default compose(
               }
               const newMessage = subscriptionData.data.messageAdded;
 
-              // Remove new message from localMessages
-              const localMessages = newMessage.sender === 'user' && newMessage.localMessageId
-                ? prev.localMessages.filter(m => m.id !== newMessage.localMessageId)
-                : prev.localMessages;
+              // If the new message is a user text message we do not update the store here
+              // So there is no conflict with the optimistic response in the textMessageMutation
+              // That already update the store/cache
+              if (newMessage.sender === 'user' && newMessage.type === 'text') {
+                return prev;
+              }
 
               // Update the store
               return {
                 messages: [...prev.messages, { ...newMessage }],
-                localMessages,
               };
             },
           })
           : null),
     }),
   }),
-  graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),
-  graphql(LOCAL_TEXT_MESSAGE_MUTATION, { name: 'createLocalTextMessageMutation' }),
+  graphql(TEXT_MESSAGE_MUTATION, {
+    props: ({ ownProps, mutate }) => ({
+      createTextMessageMutation({ variables }) {
+        const textMessage = {
+          id: uuidv4(),
+          type: 'text',
+          user: variables.user,
+          bot: variables.bot,
+          payload: {
+            __typename: 'Text',
+            textValue: variables.value,
+          },
+          sender: variables.sender,
+          referrer: variables.referrer,
+          createdAt: new Date(),
+        };
+
+        return mutate({
+          variables,
+          optimisticResponse: {
+            __typename: 'Mutation',
+            createTextMessage: {
+              __typename: 'Message',
+              ...textMessage,
+            },
+          },
+          update: (store, { data: { createTextMessage } }) => {
+            console.log('createTextMessage', createTextMessage);
+            console.log('ownProps', ownProps);
+            // Read the data from our cache for this query.
+            const data = store.readQuery({
+              query: MESSAGES_QUERY,
+              variables: {
+                user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
+                bot: ownProps.botId,
+              },
+            });
+
+            // Add the new message to messages
+            data.messages.push(createTextMessage);
+
+            // Write our data back to the cache.
+            store.writeQuery({
+              query: MESSAGES_QUERY,
+              variables: {
+                user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
+                bot: ownProps.botId,
+              },
+              data,
+            });
+          },
+        });
+      },
+    }),
+  }),
   graphql(POSTBACK_MESSAGE_MUTATION, { name: 'createPostbackMessageMutation' }),
   graphql(MARK_ACTION_AS_CLICKED_MUTATION, {
     props: ({ ownProps, mutate }) => ({

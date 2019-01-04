@@ -15,14 +15,12 @@
  */
 
 import { ApolloClient } from 'apollo-boost';
-import { split, from } from 'apollo-link';
+import { split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { createHttpLink } from 'apollo-link-http';
-import { withClientState } from 'apollo-link-state';
 import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
-import clientState from './utils/client-state-configuration';
 
 // Fragment matcher so we can use inline fragments on type Value in GraphQL queries
 const fragmentMatcher = new IntrospectionFragmentMatcher({
@@ -51,12 +49,6 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
     fragmentMatcher,
   });
 
-  // Set up Local State
-  const stateLink = withClientState({
-    cache,
-    ...clientState,
-  });
-
   if (websocketsSupported) {
     // Setup subscription client
     const subscriptionClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
@@ -81,14 +73,14 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
     // Create apollo client from previous setup
     return new ApolloClient({
       cache,
-      link: from([stateLink, splitLink]),
+      link: splitLink,
     });
   }
 
   // Fallback to HTTP only network interface if web sockets are not supported
   return new ApolloClient({
     cache,
-    link: from([stateLink, httpLink]),
+    link: httpLink,
   });
 }
 

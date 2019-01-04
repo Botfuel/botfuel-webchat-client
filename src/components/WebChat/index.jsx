@@ -419,8 +419,6 @@ export default compose(
             },
           },
           update: (store, { data: { createTextMessage } }) => {
-            console.log('createTextMessage', createTextMessage);
-            console.log('ownProps', ownProps);
             // Read the data from our cache for this query.
             const data = store.readQuery({
               query: MESSAGES_QUERY,

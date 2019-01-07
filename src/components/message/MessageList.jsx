@@ -34,7 +34,6 @@ const Messages = styled.div`
 
 const MessageList = ({
   messages,
-  localMessages,
   setRef,
   sendAction,
   labels,
@@ -47,8 +46,7 @@ const MessageList = ({
   sanitizeDOM,
 }) => {
   const fMessages = messages
-    .filter((m, idx) => m.type !== 'botAction' || idx === messages.length - 1)
-    .concat(localMessages);
+    .filter((m, idx) => m.type !== 'botAction' || idx === messages.length - 1);
 
   return (
     <Messages className="bf-message-list-container" ref={setRef}>
@@ -117,7 +115,6 @@ const MessageList = ({
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  localMessages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,

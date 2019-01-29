@@ -17,14 +17,15 @@
 /* eslint-disable no-console */
 export default function websocketsCheck(setWebsocket) {
   if (window.WebSocket) {
-    const websocket = new WebSocket('wss://echo.websocket.org/');
+    const ws = new WebSocket('wss://webchat.botfuel.io/graphql');
 
-    websocket.onopen = () => {
+    ws.onopen = () => {
       console.log('Websockets supported');
+      ws.close();
       setWebsocket(true);
     };
 
-    websocket.onerror = () => {
+    ws.onerror = () => {
       console.log('Websockets not supported');
       setWebsocket(false);
     };

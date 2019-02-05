@@ -18,6 +18,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
+import TextWithLinks from 'components/ui/TextWithLinks';
 
 const Thead = styled.thead`
   tr {
@@ -44,11 +45,23 @@ const Table = styled.table`
   }
 `;
 
-function generateTable(value) {
-  const header = value.schema.map(h => <th key={h.key}>{h.label}</th>);
-  const rows = value.rows.map(row => (
-    <tr key={uuidv4()}>{value.schema.map(h => <td key={h.key}>{row[h.key]}</td>)}</tr>
+const MessageTable = ({ payload, parseHTML, sanitizeDOM }) => {
+  const table = payload.tableValue;
+  const header = table.schema.map(h => <th key={h.key}>{h.label}</th>);
+  const rows = table.rows.map(row => (
+    <tr key={uuidv4()}>
+      {table.schema.map(h => (
+        <td key={h.key}>
+          <TextWithLinks
+            text={row[h.key]}
+            parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
+          />
+        </td>
+      ))}
+    </tr>
   ));
+
   return (
     <Table className="bf-table">
       <Thead className="bf-table-head">
@@ -57,11 +70,7 @@ function generateTable(value) {
       <tbody className="bf-table-body" id="tbody">{rows}</tbody>
     </Table>
   );
-}
-
-export default function MessageTable({ payload }) {
-  return <div>{generateTable(payload.tableValue)}</div>;
-}
+};
 
 MessageTable.propTypes = {
   payload: PropTypes.shape({
@@ -70,4 +79,13 @@ MessageTable.propTypes = {
       rows: PropTypes.array.isRequired,
     }),
   }).isRequired,
+  parseHTML: PropTypes.bool,
+  sanitizeDOM: PropTypes.bool,
 };
+
+MessageTable.defaultProps = {
+  parseHTML: false,
+  sanitizeDOM: true,
+};
+
+export default MessageTable;

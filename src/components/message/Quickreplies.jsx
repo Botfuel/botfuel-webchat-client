@@ -23,7 +23,7 @@ const Container = styled.div`
   text-align: right;
   display: flex;
   justify-content: flex-end;
-  padding 0 10px;
+  padding 10px;
 
   > * {
     margin-left: ${props => 5 / props.size}%;
@@ -34,11 +34,13 @@ const Container = styled.div`
 
 function Quickreplies({ quickreplies, sendAction }) {
   return (
-    <Container className="bf-quickreplies" size={quickreplies.length}>
-      {quickreplies.map(q => (
-        <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
-      ))}
-    </Container>
+    <div>
+      <Container className="bf-quickreplies" size={quickreplies.length}>
+        {quickreplies.map(q => (
+          <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
+        ))}
+      </Container>
+    </div>
   );
 }
 

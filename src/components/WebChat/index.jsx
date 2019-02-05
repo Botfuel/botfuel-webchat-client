@@ -374,18 +374,19 @@ export default compose(
               if (!subscriptionData.data) {
                 return prev;
               }
+
               const newMessage = subscriptionData.data.messageAdded;
 
               // If the new message is a user text message we do not update the store here
               // So there is no conflict with the optimistic response in the textMessageMutation
               // That already update the store/cache
-              if (newMessage.sender === 'user' && newMessage.type === 'text') {
+              if (!newMessage || (newMessage.sender === 'user' && newMessage.type === 'text')) {
                 return prev;
               }
 
               // Update the store
               return {
-                messages: [...prev.messages, { ...newMessage }],
+                messages: [...prev.messages, newMessage],
               };
             },
           })

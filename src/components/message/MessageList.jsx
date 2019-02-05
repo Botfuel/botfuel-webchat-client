@@ -24,7 +24,8 @@ import Block from './Block';
 import Quickreplies from './Quickreplies';
 
 const Messages = styled.div`
-  list-style: none;
+  display: flex;
+  flex-direction: column-reverse;
   padding: 10px 10px 20px 10px;
   margin: 0;
   height: calc(100% - 45px - ${props => (props.theme.layout.noHeader ? '0px' : '40px')});
@@ -32,9 +33,12 @@ const Messages = styled.div`
   overflow-y: auto;
 `;
 
+const FlexContainer = styled.div`
+  flex: 1;
+`;
+
 const MessageList = ({
   messages,
-  setRef,
   sendAction,
   labels,
   quickreplies,
@@ -48,24 +52,37 @@ const MessageList = ({
   const fMessages = messages
     .filter((m, idx) => m.type !== 'botAction' || idx === messages.length - 1);
 
+  // Components order is reversed so that the auto scroll to bottom on new message
+  // Can be handled using css instead of JS
+  // By doing this we avoid reference to another component and programmatic scroll
   return (
-    <Messages className="bf-message-list-container" ref={setRef}>
-      {debug && (
-        <Block
-          className="bf-debug-message"
-          value={{
-            text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
-            top: true,
-          }}
-        />
-      )}
-      {!theme.layout.noHelpMessage && (
-        <Block
-          className="bf-help-message"
-          value={{
-            text: labels.helpMessage,
-            top: true,
-          }}
+    <Messages className="bf-message-list-container">
+      <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
+      <FlexContainer className="bf-message-list">
+        {fMessages.map(message => (
+          <Message
+            {...message}
+            side={message.sender === 'user' ? 'right' : 'left'}
+            width={width}
+            sendAction={sendAction}
+            markAsClicked={markAsClicked(message)}
+            key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
+            parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
+          />
+        ))}
+      </FlexContainer>
+      {!!labels.onboardingMessage &&
+      typeof labels.onboardingMessage === 'string' && (
+        <Message
+          className="bf-onboarding-message"
+          payload={{ textValue: labels.onboardingMessage }}
+          type="text"
+          sender="bot"
+          side="left"
+          key={0}
+          parseHTML={parseHTML}
+          sanitizeDOM={sanitizeDOM}
         />
       )}
       {isArray(labels.onboardingMessage) &&
@@ -81,34 +98,24 @@ const MessageList = ({
           sanitizeDOM={sanitizeDOM}
         />
       ))}
-      {!!labels.onboardingMessage &&
-      typeof labels.onboardingMessage === 'string' && (
-        <Message
-          className="bf-onboarding-message"
-          payload={{ textValue: labels.onboardingMessage }}
-          type="text"
-          sender="bot"
-          side="left"
-          key={0}
-          parseHTML={parseHTML}
-          sanitizeDOM={sanitizeDOM}
+      {!theme.layout.noHelpMessage && (
+        <Block
+          className="bf-help-message"
+          value={{
+            text: labels.helpMessage,
+            top: true,
+          }}
         />
       )}
-      <div className="bf-message-list">
-        {fMessages.map(message => (
-          <Message
-            {...message}
-            side={message.sender === 'user' ? 'right' : 'left'}
-            width={width}
-            sendAction={sendAction}
-            markAsClicked={markAsClicked(message)}
-            key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
-            parseHTML={parseHTML}
-            sanitizeDOM={sanitizeDOM}
-          />
-        ))}
-      </div>
-      <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
+      {debug && (
+        <Block
+          className="bf-debug-message"
+          value={{
+            text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
+            top: true,
+          }}
+        />
+      )}
     </Messages>
   );
 };
@@ -116,7 +123,6 @@ const MessageList = ({
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  setRef: PropTypes.func.isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
   labels: PropTypes.shape({

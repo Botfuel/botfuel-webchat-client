@@ -19,10 +19,13 @@ import startButton from '../../assets/images/icons/botfuel.png';
 
 export default {
   layout: {
+    noHeader: false,
+    noHelpMessage: false,
+    noBorder: false,
     compact: true,
     rounded: '15px',
     shadowed: false,
-    verticalButtons: false,
+    buttonsDisplay: 'horizontal', // vertical or auto
   },
   colors: {
     main: '#5B468F',
@@ -47,6 +50,7 @@ export default {
     userAvatar,
     startButton,
   },
+  fluid: false,
   startButtonStyle: 'bubble',
   dialogStyle: 'hover',
   sanitizeDOM: true,

@@ -29,10 +29,20 @@ export default class MessageListContainer extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      (this.props.messages.length !== nextProps.messages.length)
-      || (this.state.justClicked !== nextState.justClicked)
+      this.props.messages.length !== nextProps.messages.length
+      || this.state.justClicked !== nextState.justClicked
     );
   }
+
+  componentDidUpdate() {
+    this.scrollToBottom();
+  }
+
+  scrollToBottom = () => {
+    const { scrollHeight, clientHeight } = this.innerRef;
+    const maxScrollTop = scrollHeight - clientHeight;
+    this.innerRef.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
+  };
 
   markAsClicked = messageId => (actionIndex) => {
     this.setState(state => ({ justClicked: state.justClicked + 1 }));
@@ -70,6 +80,9 @@ export default class MessageListContainer extends React.Component {
         {...this.props}
         messages={filteredMessages}
         markAsClicked={this.markAsClicked}
+        setRef={(ref) => {
+          this.innerRef = ref;
+        }}
       />
     );
   }

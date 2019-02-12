@@ -112,7 +112,8 @@ const Container = ({
     }`;
   }
 
-  if (!cleanUrls.includes('*') && !cleanUrls.includes(window.location.origin) && !loading) {
+  // Use Array.indexOf instead of Array.includes because it's supported on IE (IE is devil)
+  if (cleanUrls.indexOf('*') === -1 && cleanUrls.indexOf(window.location.origin) === -1 && !loading) {
     /* eslint-disable no-console */
     console.log(
       'Your website is not allowed to use this webchat. Please check that this website’s url is among the allowed origins of the bot on https://app.botfuel.io.',

@@ -23,6 +23,7 @@ import uuidv4 from 'uuid/v4';
 import defaultTheme from 'theme/base';
 import Root from 'components/WebChat/Root';
 import EmbeddedContainerError from 'utils/Error';
+import DOMLoaded from 'utils/dom-loaded';
 
 class BotfuelWebChat {
   static init(param) {
@@ -93,11 +94,9 @@ class BotfuelWebChat {
       );
     }
 
-    if (document.readyState === 'complete') {
-      initialize();
-    } else {
-      document.addEventListener('DOMContentLoaded', initialize);
-    }
+    // Wait for DOM to be ready (cross browsers handling)
+    // Then initialize the webchat
+    DOMLoaded(window, initialize);
   }
 }
 

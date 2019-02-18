@@ -377,10 +377,8 @@ export default compose(
 
               const newMessage = subscriptionData.data.messageAdded;
 
-              // If the new message is a user text message we do not update the store here
-              // So there is no conflict with the optimistic response in the textMessageMutation
-              // That already update the store/cache
-              if (!newMessage || (newMessage.sender === 'user' && newMessage.type === 'text')) {
+              // If the new message is not valid then return previous messages list
+              if (!newMessage) {
                 return prev;
               }
 
@@ -393,59 +391,7 @@ export default compose(
           : null),
     }),
   }),
-  graphql(TEXT_MESSAGE_MUTATION, {
-    props: ({ ownProps, mutate }) => ({
-      createTextMessageMutation({ variables }) {
-        const textMessage = {
-          id: uuidv4(),
-          type: 'text',
-          user: variables.user,
-          bot: variables.bot,
-          payload: {
-            __typename: 'Text',
-            textValue: variables.value,
-          },
-          sender: variables.sender,
-          referrer: variables.referrer,
-          createdAt: new Date(),
-        };
-
-        return mutate({
-          variables,
-          optimisticResponse: {
-            __typename: 'Mutation',
-            createTextMessage: {
-              __typename: 'Message',
-              ...textMessage,
-            },
-          },
-          update: (store, { data: { createTextMessage } }) => {
-            // Read the data from our cache for this query.
-            const data = store.readQuery({
-              query: MESSAGES_QUERY,
-              variables: {
-                user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
-                bot: ownProps.botId,
-              },
-            });
-
-            // Add the new message to messages
-            data.messages.push(createTextMessage);
-
-            // Write our data back to the cache.
-            store.writeQuery({
-              query: MESSAGES_QUERY,
-              variables: {
-                user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
-                bot: ownProps.botId,
-              },
-              data,
-            });
-          },
-        });
-      },
-    }),
-  }),
+  graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),
   graphql(POSTBACK_MESSAGE_MUTATION, { name: 'createPostbackMessageMutation' }),
   graphql(MARK_ACTION_AS_CLICKED_MUTATION, {
     props: ({ ownProps, mutate }) => ({

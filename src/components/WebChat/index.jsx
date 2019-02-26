@@ -371,18 +371,23 @@ export default compose(
             document: MESSAGES_SUBSCRIPTION,
             variables: params,
             updateQuery: (prev, { subscriptionData }) => {
+              console.log('updateQuery: new message', subscriptionData);
               if (!subscriptionData.data) {
+                console.log('updateQuery: new message is not valid (no data)');
                 return prev;
               }
 
               const newMessage = subscriptionData.data.messageAdded;
+              console.log('updateQuery: new message', newMessage);
 
               // If the new message is not valid then return previous messages list
               if (!newMessage) {
+                console.log('updateQuery: new message is not valid (no message added)');
                 return prev;
               }
 
               // Update the store
+              console.log('updateQuery: new message valid, update the store');
               return {
                 messages: [...prev.messages, newMessage],
               };

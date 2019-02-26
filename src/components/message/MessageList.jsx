@@ -46,11 +46,9 @@ const MessageList = ({
   sanitizeDOM,
 }) => {
   const fMessages = messages
-    .filter((m, idx) => m.type !== 'botAction' || idx === messages.length - 1);
+    .filter((m, idx) => m.type !== 'botAction' || (m.type === 'botAction' && idx === messages.length - 1));
+  console.log('MessageList.render: filtered messages', fMessages);
 
-  // Components order is reversed so that the auto scroll to bottom on new message
-  // Can be handled using css instead of JS
-  // By doing this we avoid reference to another component and programmatic scroll
   return (
     <Messages className="bf-message-list-container" ref={setRef}>
       {debug && (

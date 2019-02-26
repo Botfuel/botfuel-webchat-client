@@ -28,6 +28,19 @@ export default class MessageListContainer extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    console.log(
+      'MessageListContainer.shouldComponentUpdate',
+      'messages length',
+      this.props.messages.length,
+      nextProps.messages.length,
+      'just clicked',
+      this.state.justClicked,
+      nextState.justClicked,
+      'cond1',
+      this.props.messages.length !== nextProps.messages.length,
+      'cond2',
+      this.state.justClicked !== nextState.justClicked,
+    );
     return (
       this.props.messages.length !== nextProps.messages.length
       || this.state.justClicked !== nextState.justClicked
@@ -50,6 +63,7 @@ export default class MessageListContainer extends React.Component {
   };
 
   render() {
+    console.log('MessageListContainer.render', this.props.messages);
     const messages = this.props.messages.filter(
       m => m.type !== 'quickreplies' && m.type !== 'postback' && m.type !== 'botAction',
     );

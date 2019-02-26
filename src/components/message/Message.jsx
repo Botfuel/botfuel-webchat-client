@@ -61,6 +61,7 @@ const Avatar = styled.div`
 
 export default class MessageContainer extends React.Component {
   shouldComponentUpdate() {
+    console.log('Message.shouldComponentUpdate', this.props.type === 'actions');
     return this.props.type === 'actions';
   }
 
@@ -68,7 +69,7 @@ export default class MessageContainer extends React.Component {
     const { side, type, sender, className, ...props } = this.props;
     const Component = componentsDict[type];
     const disableBubble = ['actions', 'botAction', 'cards'].includes(type);
-
+    console.log('Message.render', props.payload);
     return disableBubble ? (
       <Component type={type} size={props.width} {...props} />
     ) : (

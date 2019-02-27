@@ -16,7 +16,6 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import last from 'lodash/last';
 import MessageList from './MessageList';
 
 export default class MessageListContainer extends React.Component {
@@ -28,21 +27,10 @@ export default class MessageListContainer extends React.Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log(
-      'MessageListContainer.shouldComponentUpdate',
-      'messages length',
-      this.props.messages.length,
-      nextProps.messages.length,
-      'just clicked',
-      this.state.justClicked,
-      nextState.justClicked,
-      'cond1',
-      this.props.messages.length !== nextProps.messages.length,
-      'cond2',
-      this.state.justClicked !== nextState.justClicked,
-    );
     return (
       this.props.messages.length !== nextProps.messages.length
+      || this.props.quickreplies !== nextProps.quickreplies
+      || this.props.isThinking !== nextProps.isThinking
       || this.state.justClicked !== nextState.justClicked
     );
   }
@@ -63,36 +51,9 @@ export default class MessageListContainer extends React.Component {
   };
 
   render() {
-    console.log('MessageListContainer.render', this.props.messages);
-    const messages = this.props.messages.filter(
-      m => m.type !== 'quickreplies' && m.type !== 'postback' && m.type !== 'botAction',
-    );
-    const botActions = this.props.messages.filter(
-      m =>
-        m.type === 'botAction' &&
-        ['THINKING_ON', 'THINKING_OFF'].includes(m.payload.botActionValue.action),
-    );
-    const lastAction = last(botActions);
-    const displayThinkingIndicator =
-      !!lastAction && lastAction.payload.botActionValue.action === 'THINKING_ON';
-    const filteredMessages = displayThinkingIndicator
-      ? [
-        ...messages,
-        {
-          ...lastAction,
-          payload: {
-            botActionValue: {
-              action: 'THINKING_ON',
-            },
-          },
-        },
-      ]
-      : messages;
-
     return (
       <MessageList
         {...this.props}
-        messages={filteredMessages}
         markAsClicked={this.markAsClicked}
         setRef={(ref) => {
           this.innerRef = ref;
@@ -104,5 +65,7 @@ export default class MessageListContainer extends React.Component {
 
 MessageListContainer.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
+  quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isThinking: PropTypes.bool.isRequired,
   markAsClicked: PropTypes.func.isRequired,
 };

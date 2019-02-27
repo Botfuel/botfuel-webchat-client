@@ -18,8 +18,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-import last from 'lodash/last';
 import uuidv4 from 'uuid/v4';
+import last from 'lodash/last';
 import Main from './Main';
 
 // Remote messages
@@ -164,14 +164,12 @@ class WebChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: '',
       isRecording: false,
       transcript: '',
+      isThinking: false,
+      quickreplies: [],
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.resetInput = this.resetInput.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.sendAction = this.sendAction.bind(this);
     this.markAsClicked = this.markAsClicked.bind(this);
@@ -186,11 +184,41 @@ class WebChat extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // handle graphql errors
     if (nextProps.error && nextProps.error.graphQLErrors) {
       /* eslint-disable no-console */
       console.log('Error while fetching messages. Assuming message format has changed.');
       /* eslint-enable no-console */
       localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
+    }
+    // Handle quickreplies and isThinking
+    if (this.props.messages !== nextProps.messages && nextProps.messages.length > 0) {
+      // extract last message
+      const lastMessage = last(nextProps.messages);
+      if (lastMessage.type === 'botAction') {
+        // handle if bot is thinking
+        const isThinking = lastMessage.payload.botActionValue.action === 'THINKING_ON';
+        if (this.state.isThinking !== isThinking) {
+          // handle bot is thinking actions
+          this.setState({ isThinking });
+        }
+      } else if (lastMessage.type === 'quickreplies') {
+        // handle quickreplies message
+        const { payload: { quickrepliesValue } } = lastMessage;
+        if (quickrepliesValue && quickrepliesValue !== this.state.quickreplies) {
+          this.setState({ quickreplies: quickrepliesValue });
+        }
+      } else {
+        // reset quickreplies if necessary
+        if (this.state.quickreplies.length > 0) {
+          this.setState({ quickreplies: [] });
+        }
+
+        // reset is thinking if necessary
+        if (this.state.isThinking) {
+          this.setState({ isThinking: false });
+        }
+      }
     }
   }
 
@@ -209,46 +237,21 @@ class WebChat extends React.Component {
     }
   }
 
-  handleInputChange(e) {
-    if (!e.target.value || (e.target.value && e.target.value.length < 500)) {
-      this.setState({
-        input: e.target.value,
-      });
-    }
-  }
-
-  resetInput() {
-    this.setState({
-      input: undefined,
-    });
-  }
-
-  handleKeyPress(e) {
-    if (e && e.nativeEvent.keyCode === 13) {
-      this.sendMessage();
-      e.preventDefault();
-    }
-  }
-
   async sendMessage(input) {
-    const text = input || this.state.input;
-    if (text) {
-      this.resetInput();
-      // New text message variables
-      const variables = {
-        user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
-        bot: this.props.botId,
-        value: text,
-        sender: 'user',
-        referrer: window.location.href || null,
-      };
-      // Add remote message with optimistic response
-      await this.props.createTextMessageMutation({ variables });
-      // If subscriptions are not used, we need to refetch manually the message that was just
-      // sent by the user so he gets immediate success feedback on his own message
-      if (!this.props.websocketsSupported) {
-        this.props.refetch();
-      }
+    // New text message variables
+    const variables = {
+      user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
+      bot: this.props.botId,
+      value: input,
+      sender: 'user',
+      referrer: window.location.href || null,
+    };
+    // Add remote message with optimistic response
+    await this.props.createTextMessageMutation({ variables });
+    // If subscriptions are not used, we need to refetch manually the message that was just
+    // sent by the user so he gets immediate success feedback on his own message
+    if (!this.props.websocketsSupported) {
+      this.props.refetch();
     }
   }
 
@@ -290,24 +293,15 @@ class WebChat extends React.Component {
   }
 
   render() {
-    // Quickreplies are only displayed if they are the last message
-    const lastMessage = last(this.props.messages);
-    const quickreplies =
-      (!!lastMessage &&
-        lastMessage.type === 'quickreplies' &&
-        lastMessage.payload.quickrepliesValue) ||
-      [];
+    const filteredMessages = this.props.messages.filter(m => !['botAction', 'quickreplies', 'postback'].includes(m.type));
     return (
       <Main
         {...this.props}
         {...this.state}
-        messages={this.props.messages}
-        quickreplies={quickreplies}
+        messages={filteredMessages}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}
         sendMessage={this.sendMessage}
-        handleKeyPress={this.handleKeyPress}
-        handleInputChange={this.handleInputChange}
         setTranscript={this.setTranscript}
         setIsRecording={this.setIsRecording}
       />
@@ -370,26 +364,21 @@ export default compose(
           ? props.data.subscribeToMore({
             document: MESSAGES_SUBSCRIPTION,
             variables: params,
-            updateQuery: (prev, { subscriptionData }) => {
-              console.log('updateQuery: new message', subscriptionData);
+            updateQuery: (store, { subscriptionData }) => {
               if (!subscriptionData.data) {
-                console.log('updateQuery: new message is not valid (no data)');
-                return prev;
+                return store;
               }
 
               const newMessage = subscriptionData.data.messageAdded;
-              console.log('updateQuery: new message', newMessage);
 
               // If the new message is not valid then return previous messages list
               if (!newMessage) {
-                console.log('updateQuery: new message is not valid (no message added)');
-                return prev;
+                return store;
               }
 
-              // Update the store
-              console.log('updateQuery: new message valid, update the store');
+              // Return updated store
               return {
-                messages: [...prev.messages, newMessage],
+                messages: [...store.messages, newMessage],
               };
             },
           })

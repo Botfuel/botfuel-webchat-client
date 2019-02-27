@@ -22,6 +22,7 @@ import WithLabels from 'components/utils/WithLabels';
 import Message from './Message';
 import Block from './Block';
 import Quickreplies from './Quickreplies';
+import BotAction from './BotAction';
 
 const Messages = styled.div`
   list-style: none;
@@ -34,90 +35,91 @@ const Messages = styled.div`
 
 const MessageList = ({
   messages,
+  quickreplies,
+  isThinking,
   setRef,
   sendAction,
   labels,
-  quickreplies,
   markAsClicked,
   theme,
   width,
   debug,
   parseHTML,
   sanitizeDOM,
-}) => {
-  const fMessages = messages
-    .filter((m, idx) => m.type !== 'botAction' || (m.type === 'botAction' && idx === messages.length - 1));
-  console.log('MessageList.render: filtered messages', fMessages);
-
-  return (
-    <Messages className="bf-message-list-container" ref={setRef}>
-      {debug && (
-        <Block
-          className="bf-debug-message"
-          value={{
-            text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
-            top: true,
-          }}
-        />
-      )}
-      {!theme.layout.noHelpMessage && (
-        <Block
-          className="bf-help-message"
-          value={{
-            text: labels.helpMessage,
-            top: true,
-          }}
-        />
-      )}
-      {isArray(labels.onboardingMessage) &&
-      labels.onboardingMessage.map(textValue => (
+}) => (
+  <Messages className="bf-message-list-container" ref={setRef}>
+    {debug && (
+      <Block
+        className="bf-debug-message"
+        value={{
+          text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
+          top: true,
+        }}
+      />
+    )}
+    {!theme.layout.noHelpMessage && (
+      <Block
+        className="bf-help-message"
+        value={{
+          text: labels.helpMessage,
+          top: true,
+        }}
+      />
+    )}
+    {isArray(labels.onboardingMessage) &&
+    labels.onboardingMessage.map(textValue => (
+      <Message
+        className="bf-onboarding-message"
+        payload={{ textValue }}
+        type="text"
+        sender="bot"
+        side="left"
+        key={`onboarding-${textValue}`}
+        parseHTML={parseHTML}
+        sanitizeDOM={sanitizeDOM}
+      />
+    ))}
+    {!!labels.onboardingMessage &&
+    typeof labels.onboardingMessage === 'string' && (
+      <Message
+        className="bf-onboarding-message"
+        payload={{ textValue: labels.onboardingMessage }}
+        type="text"
+        sender="bot"
+        side="left"
+        key={0}
+        parseHTML={parseHTML}
+        sanitizeDOM={sanitizeDOM}
+      />
+    )}
+    <div className="bf-message-list">
+      {messages.map(message => (
         <Message
-          className="bf-onboarding-message"
-          payload={{ textValue }}
-          type="text"
-          sender="bot"
-          side="left"
-          key={`onboarding-${textValue}`}
+          {...message}
+          side={message.sender === 'user' ? 'right' : 'left'}
+          width={width}
+          sendAction={sendAction}
+          markAsClicked={markAsClicked(message)}
+          key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
           parseHTML={parseHTML}
           sanitizeDOM={sanitizeDOM}
         />
       ))}
-      {!!labels.onboardingMessage &&
-      typeof labels.onboardingMessage === 'string' && (
-        <Message
-          className="bf-onboarding-message"
-          payload={{ textValue: labels.onboardingMessage }}
-          type="text"
-          sender="bot"
-          side="left"
-          key={0}
-          parseHTML={parseHTML}
-          sanitizeDOM={sanitizeDOM}
-        />
-      )}
-      <div className="bf-message-list">
-        {fMessages.map(message => (
-          <Message
-            {...message}
-            side={message.sender === 'user' ? 'right' : 'left'}
-            width={width}
-            sendAction={sendAction}
-            markAsClicked={markAsClicked(message)}
-            key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
-            parseHTML={parseHTML}
-            sanitizeDOM={sanitizeDOM}
-          />
-        ))}
-      </div>
+    </div>
+    {quickreplies.length > 0 && (
       <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
-    </Messages>
-  );
-};
+    )}
+    {isThinking && (
+      <BotAction payload={{ botActionValue: { action: 'THINKING_ON' } }} />
+    )}
+  </Messages>
+);
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   setRef: PropTypes.func.isRequired,
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  isThinking: PropTypes.bool.isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
   labels: PropTypes.shape({

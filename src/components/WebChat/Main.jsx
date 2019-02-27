@@ -66,6 +66,7 @@ const SpeakingIndicator = styled.div`
 const Main = ({
   messages,
   quickreplies,
+  isThinking,
   width,
   height,
   isVisible,
@@ -75,9 +76,6 @@ const Main = ({
   sendAction,
   markAsClicked,
   sendMessage,
-  handleKeyPress,
-  handleInputChange,
-  input,
   disableFullScreenButton,
   menuActions,
   debug,
@@ -111,6 +109,7 @@ const Main = ({
       markAsClicked={markAsClicked}
       messages={messages}
       quickreplies={quickreplies}
+      isThinking={isThinking}
       theme={theme}
       width={width}
       debug={debug}
@@ -125,12 +124,9 @@ const Main = ({
       </div>
     )}
     <Bottom
-      sendMessage={sendMessage}
+      onSubmit={sendMessage}
       sendAction={sendAction}
       menuActions={menuActions}
-      onKeyPress={handleKeyPress}
-      onInputChange={handleInputChange}
-      input={input}
       setTranscript={setTranscript}
       setIsRecording={setIsRecording}
       isRecording={isRecording}
@@ -156,13 +152,11 @@ Main.propTypes = {
       type: PropTypes.string,
     }),
   ),
-  quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
+  quickreplies: PropTypes.arrayOf(PropTypes.string),
+  isThinking: PropTypes.bool,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  handleKeyPress: PropTypes.func.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
-  input: PropTypes.string,
   disableFullScreenButton: PropTypes.bool.isRequired,
   menuActions: PropTypes.arrayOf(
     PropTypes.shape({
@@ -185,7 +179,9 @@ Main.propTypes = {
 
 Main.defaultProps = {
   messages: [],
+  quickreplies: [],
   input: '',
+  isThinking: false,
 };
 
 export default Main;

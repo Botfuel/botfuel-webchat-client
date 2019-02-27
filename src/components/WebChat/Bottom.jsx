@@ -102,43 +102,83 @@ const VoiceWrapper = styled.div`
   margin-right: 10px;
 `;
 
-function Bottom(props) {
-  return (
-    <BottomWrapper className="bf-input-wrapper">
-      <InputWrapper className="bf-input-container">
-        {!!props.menuActions.length && (
-          <Menu sendAction={props.sendAction} menuActions={props.menuActions} />
-        )}
-        <WideTextarea
-          className="bf-input-textarea"
-          tabIndex={-1}
-          maxRows={4}
-          maxLength={400}
-          value={props.input}
-          placeholder={props.labels.messageInputPlaceholder}
-          onChange={props.onInputChange}
-          onKeyPress={props.onKeyPress}
-        />
-        {!!props.voiceEnabled && (
-          <VoiceWrapper className="bf-input-voice-wrapper">
-            <Voice
-              setTranscript={props.setTranscript}
-              setIsRecording={props.setIsRecording}
-              isRecording={props.isRecording}
-            />
-          </VoiceWrapper>
-        )}
-        <SendButton className="bf-input-send-button" onClick={() => props.sendMessage()}>{props.labels.sendButtonLabel}</SendButton>
-      </InputWrapper>
-    </BottomWrapper>
-  );
+class Bottom extends React.Component {
+  state = {
+    input: '',
+  };
+
+  handleInputChange = (e) => {
+    if (!e.target.value || (e.target.value && e.target.value.length < 500)) {
+      this.setState({
+        input: e.target.value,
+      });
+    }
+  };
+
+  resetInput = () => {
+    this.setState({
+      input: '',
+    });
+  };
+
+  handleKeyPress = (e) => {
+    if (e && e.nativeEvent.keyCode === 13) {
+      this.handleSubmit(e);
+    }
+  };
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    if (this.state.input.length) {
+      this.props.onSubmit(this.state.input);
+      this.resetInput();
+    }
+  };
+
+  render() {
+    const {
+      menuActions,
+      sendAction,
+      labels,
+      voiceEnabled,
+      setTranscript,
+      isRecording,
+      setIsRecording,
+    } = this.props;
+    return (
+      <BottomWrapper className="bf-input-wrapper">
+        <InputWrapper className="bf-input-container">
+          {!!menuActions.length && (
+            <Menu sendAction={sendAction} menuActions={menuActions} />
+          )}
+          <WideTextarea
+            className="bf-input-textarea"
+            tabIndex={-1}
+            maxRows={4}
+            maxLength={400}
+            value={this.state.input}
+            placeholder={labels.messageInputPlaceholder}
+            onChange={this.handleInputChange}
+            onKeyPress={this.handleKeyPress}
+          />
+          {!!voiceEnabled && (
+            <VoiceWrapper className="bf-input-voice-wrapper">
+              <Voice
+                setTranscript={setTranscript}
+                setIsRecording={setIsRecording}
+                isRecording={isRecording}
+              />
+            </VoiceWrapper>
+          )}
+          <SendButton className="bf-input-send-button" onClick={this.handleSubmit}>{labels.sendButtonLabel}</SendButton>
+        </InputWrapper>
+      </BottomWrapper>
+    );
+  }
 }
 
 Bottom.propTypes = {
-  sendMessage: PropTypes.func.isRequired,
-  onKeyPress: PropTypes.func.isRequired,
-  onInputChange: PropTypes.func.isRequired,
-  input: PropTypes.string.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   labels: PropTypes.shape({
     messageInputPlaceholder: PropTypes.string,
     sendButtonLabel: PropTypes.string,

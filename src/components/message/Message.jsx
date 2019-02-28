@@ -58,8 +58,8 @@ const Avatar = styled.div`
 `;
 
 export default class MessageContainer extends React.Component {
-  shouldComponentUpdate(nextProps) {
-    return this.props.type === 'actions' && this.props.payload.actionValue !== nextProps.payload.actionValue;
+  shouldComponentUpdate() {
+    return this.props.type === 'actions';
   }
 
   render() {

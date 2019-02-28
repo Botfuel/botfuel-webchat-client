@@ -85,7 +85,6 @@ const Actions = ({ payload, sendAction, markAsClicked, width }) => {
     },
   }));
 
-  console.log('Actions.render', JSON.stringify(payload));
   return (
     <Container className="bf-actions-container" actions={actions} width={width}>
       {actions &&

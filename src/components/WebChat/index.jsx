@@ -261,7 +261,6 @@ class WebChat extends React.Component {
   }
 
   render() {
-    console.log(`Webchat.render ${this.props.messages.length} messages`);
     return (
       <Main
         {...this.props}

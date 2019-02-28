@@ -97,6 +97,7 @@ class MessageList extends React.Component {
       sanitizeDOM,
     } = this.props;
     console.log('MessageList.render', this.state);
+    console.log(`MessageList.render: ${this.state.messages.length} messages to display`);
     return (
       <Messages className="bf-message-list-container" ref={setRef}>
         {debug && (

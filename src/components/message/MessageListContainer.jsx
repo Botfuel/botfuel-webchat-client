@@ -51,7 +51,6 @@ export default class MessageListContainer extends React.Component {
   };
 
   render() {
-    console.log('MessageListContainer.render');
     return (
       <MessageList
         {...this.props}

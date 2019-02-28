@@ -18,16 +18,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import TextWithLinks from 'components/ui/TextWithLinks';
 
-export default function TextMessage({ payload, sender, parseHTML, sanitizeDOM }) {
-  console.log('TextMessage.render', payload.textValue || payload.text);
-  return (
-    <TextWithLinks
-      text={payload.textValue || payload.text}
-      parseHTML={parseHTML && sender === 'bot'}
-      sanitizeDOM={sanitizeDOM}
-    />
-  );
-}
+const TextMessage = ({ payload, sender, parseHTML, sanitizeDOM }) => (
+  <TextWithLinks
+    text={payload.textValue || payload.text}
+    parseHTML={parseHTML && sender === 'bot'}
+    sanitizeDOM={sanitizeDOM}
+  />
+);
 
 TextMessage.propTypes = {
   payload: PropTypes.oneOfType([PropTypes.string, PropTypes.array, PropTypes.object]).isRequired,
@@ -40,3 +37,5 @@ TextMessage.defaultProps = {
   parseHTML: false,
   sanitizeDOM: true,
 };
+
+export default TextMessage;

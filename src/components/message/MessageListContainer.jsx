@@ -26,14 +26,14 @@ export default class MessageListContainer extends React.Component {
     };
   }
 
+  /**
   shouldComponentUpdate(nextProps, nextState) {
-    return (
+    const shouldUpdate = (
       this.props.messages.length !== nextProps.messages.length
-      || this.props.quickreplies !== nextProps.quickreplies
-      || this.props.isThinking !== nextProps.isThinking
       || this.state.justClicked !== nextState.justClicked
     );
   }
+   */
 
   componentDidUpdate() {
     this.scrollToBottom();
@@ -51,6 +51,7 @@ export default class MessageListContainer extends React.Component {
   };
 
   render() {
+    console.log('MessageListContainer.render');
     return (
       <MessageList
         {...this.props}
@@ -65,7 +66,5 @@ export default class MessageListContainer extends React.Component {
 
 MessageListContainer.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
-  quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
-  isThinking: PropTypes.bool.isRequired,
   markAsClicked: PropTypes.func.isRequired,
 };

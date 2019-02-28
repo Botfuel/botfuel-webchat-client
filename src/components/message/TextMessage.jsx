@@ -19,6 +19,7 @@ import PropTypes from 'prop-types';
 import TextWithLinks from 'components/ui/TextWithLinks';
 
 export default function TextMessage({ payload, sender, parseHTML, sanitizeDOM }) {
+  console.log('TextMessage.render', payload.textValue || payload.text);
   return (
     <TextWithLinks
       text={payload.textValue || payload.text}

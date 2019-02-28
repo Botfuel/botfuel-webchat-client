@@ -19,7 +19,6 @@ import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 import uuidv4 from 'uuid/v4';
-import last from 'lodash/last';
 import Main from './Main';
 
 // Remote messages
@@ -166,8 +165,6 @@ class WebChat extends React.Component {
     this.state = {
       isRecording: false,
       transcript: '',
-      isThinking: false,
-      quickreplies: [],
     };
 
     this.sendMessage = this.sendMessage.bind(this);
@@ -190,35 +187,6 @@ class WebChat extends React.Component {
       console.log('Error while fetching messages. Assuming message format has changed.');
       /* eslint-enable no-console */
       localStorage.setItem('BOTFUEL_WEBCHAT_USER_ID', uuidv4());
-    }
-    // Handle quickreplies and isThinking
-    if (this.props.messages !== nextProps.messages && nextProps.messages.length > 0) {
-      // extract last message
-      const lastMessage = last(nextProps.messages);
-      if (lastMessage.type === 'botAction') {
-        // handle if bot is thinking
-        const isThinking = lastMessage.payload.botActionValue.action === 'THINKING_ON';
-        if (this.state.isThinking !== isThinking) {
-          // handle bot is thinking actions
-          this.setState({ isThinking });
-        }
-      } else if (lastMessage.type === 'quickreplies') {
-        // handle quickreplies message
-        const { payload: { quickrepliesValue } } = lastMessage;
-        if (quickrepliesValue && quickrepliesValue !== this.state.quickreplies) {
-          this.setState({ quickreplies: quickrepliesValue });
-        }
-      } else {
-        // reset quickreplies if necessary
-        if (this.state.quickreplies.length > 0) {
-          this.setState({ quickreplies: [] });
-        }
-
-        // reset is thinking if necessary
-        if (this.state.isThinking) {
-          this.setState({ isThinking: false });
-        }
-      }
     }
   }
 
@@ -293,12 +261,11 @@ class WebChat extends React.Component {
   }
 
   render() {
-    const filteredMessages = this.props.messages.filter(m => !['botAction', 'quickreplies', 'postback'].includes(m.type));
+    console.log(`Webchat.render ${this.props.messages.length} messages`);
     return (
       <Main
         {...this.props}
         {...this.state}
-        messages={filteredMessages}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}
         sendMessage={this.sendMessage}
@@ -376,6 +343,7 @@ export default compose(
                 return store;
               }
 
+              console.log('Add message to list', newMessage);
               // Return updated store
               return {
                 messages: [...store.messages, newMessage],

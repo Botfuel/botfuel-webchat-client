@@ -65,8 +65,6 @@ const SpeakingIndicator = styled.div`
 
 const Main = ({
   messages,
-  quickreplies,
-  isThinking,
   width,
   height,
   isVisible,
@@ -108,8 +106,6 @@ const Main = ({
       sendAction={sendAction}
       markAsClicked={markAsClicked}
       messages={messages}
-      quickreplies={quickreplies}
-      isThinking={isThinking}
       theme={theme}
       width={width}
       debug={debug}
@@ -152,8 +148,6 @@ Main.propTypes = {
       type: PropTypes.string,
     }),
   ),
-  quickreplies: PropTypes.arrayOf(PropTypes.string),
-  isThinking: PropTypes.bool,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
@@ -179,9 +173,6 @@ Main.propTypes = {
 
 Main.defaultProps = {
   messages: [],
-  quickreplies: [],
-  input: '',
-  isThinking: false,
 };
 
 export default Main;

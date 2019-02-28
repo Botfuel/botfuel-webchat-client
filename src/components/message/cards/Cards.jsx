@@ -54,6 +54,7 @@ const CardSubTitle = styled.p`
 `;
 
 const Cards = ({ payload, sendAction, size, cardSize }) => {
+  console.log('Cards.render', JSON.stringify(payload));
   // if (size - total padding) < cardSize then use the max available size
   // else use cardSize
   const itemSize = (size - 40) < 300 ? (10 * Math.floor((size - 40) / 10)) : cardSize;

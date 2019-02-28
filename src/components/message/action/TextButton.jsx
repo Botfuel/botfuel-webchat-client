@@ -103,12 +103,4 @@ const Button = styled.div`
   }
 `;
 
-function ButtonMessage({ text, ...props }) {
-  return <Button {...props}>{text}</Button>;
-}
-
-ButtonMessage.propTypes = {
-  text: PropTypes.string.isRequired,
-};
-
 export default TextButton;

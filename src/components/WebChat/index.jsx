@@ -17,161 +17,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
-import gql from 'graphql-tag';
-import last from 'lodash/last';
 import uuidv4 from 'uuid/v4';
+import {
+  MESSAGES_QUERY_SKIP,
+  MESSAGES_QUERY,
+  MESSAGES_SUBSCRIPTION,
+  TEXT_MESSAGE_MUTATION,
+  POSTBACK_MESSAGE_MUTATION,
+  MARK_ACTION_AS_CLICKED_MUTATION,
+} from '../../utils/graphql';
 import Main from './Main';
-
-// Remote messages
-const MessageFragment = gql`
-  fragment FullMessage on Message { 
-    id
-    type
-    user
-    bot
-    sender
-    createdAt
-    payload {
-      ... on Text {
-        textValue: value
-      }
-      ... on Table {
-        tableValue: value {
-          schema {
-            key
-            label
-          }
-          rows
-        }
-      }
-      ... on Actions {
-        actionValue: value {
-          ... on LinkAction {
-            type
-            text
-            clicked
-            linkActionValue: value
-          }
-          ... on PostbackAction {
-            type
-            text
-            clicked
-            postbackActionValue: value
-          }
-        }
-        text
-      }
-      ... on Postback {
-        postbackValue: value
-        text
-      }
-      ... on Quickreplies {
-        quickrepliesValue: value
-      }
-      ... on BotAction {
-        botActionValue: value {
-          action
-        }
-      }
-      ... on Image {
-        imageUrl: value
-      }
-      ... on Cards {
-        cardsValues: value {
-          title
-          image_url
-          actionValue: buttons {
-            ... on LinkAction {
-              type
-              text
-              linkActionValue: value
-            }
-            ... on PostbackAction {
-              type
-              text
-              postbackActionValue: value
-            }
-          }
-          subtitle
-        }
-      }
-    }
-  }
-`;
-
-const MESSAGES_QUERY = gql`
-  query messages($user: ID!, $bot: ID!) {
-    messages(user: $user, bot: $bot) {
-      ...FullMessage
-    }
-  }
-  ${MessageFragment}
-`;
-
-const MESSAGES_QUERY_SKIP = gql`
-  query messages($user: ID!, $bot: ID!, $skip: Boolean!) {
-    messages(user: $user, bot: $bot) @skip(if: $skip) {
-      ...FullMessage
-    }
-  }
-  ${MessageFragment}
-`;
-
-const MESSAGES_SUBSCRIPTION = gql`
-  subscription onMessageAdded($user: ID!, $bot: ID!) {
-    messageAdded(user: $user, bot: $bot) {
-      ...FullMessage
-    }
-  }
-  ${MessageFragment}
-`;
-
-const TEXT_MESSAGE_MUTATION = gql`
-  mutation createTextMessage($user: ID!, $bot: ID!, $value: String!, $sender: String!, $referrer: String) {
-    createTextMessage(user: $user, bot: $bot, value: $value, sender: $sender, referrer: $referrer) {
-      ...FullMessage
-    }
-  }
-  ${MessageFragment}
-`;
-
-const POSTBACK_MESSAGE_MUTATION = gql`
-  mutation createPostbackMessage(
-    $user: ID!
-    $bot: ID!
-    $value: JSON!
-    $text: String!
-    $sender: String!
-    $referrer: String
-  ) {
-    createPostbackMessage(user: $user, bot: $bot, value: $value, text: $text, sender: $sender, referrer: $referrer) {
-      ...FullMessage
-    }
-  }
-  ${MessageFragment}
-`;
-
-const MARK_ACTION_AS_CLICKED_MUTATION = gql`
-  mutation markActionAsClicked($message: ID!, $actionIndex: Int!) {
-    markActionAsClicked(message: $message, actionIndex: $actionIndex) {
-      ...FullMessage
-    }
-  }
-  ${MessageFragment}
-`;
 
 class WebChat extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      input: '',
       isRecording: false,
       transcript: '',
     };
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.resetInput = this.resetInput.bind(this);
-    this.handleKeyPress = this.handleKeyPress.bind(this);
     this.sendMessage = this.sendMessage.bind(this);
     this.sendAction = this.sendAction.bind(this);
     this.markAsClicked = this.markAsClicked.bind(this);
@@ -186,6 +50,7 @@ class WebChat extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // handle graphql errors
     if (nextProps.error && nextProps.error.graphQLErrors) {
       /* eslint-disable no-console */
       console.log('Error while fetching messages. Assuming message format has changed.');
@@ -209,46 +74,21 @@ class WebChat extends React.Component {
     }
   }
 
-  handleInputChange(e) {
-    if (!e.target.value || (e.target.value && e.target.value.length < 500)) {
-      this.setState({
-        input: e.target.value,
-      });
-    }
-  }
-
-  resetInput() {
-    this.setState({
-      input: undefined,
-    });
-  }
-
-  handleKeyPress(e) {
-    if (e && e.nativeEvent.keyCode === 13) {
-      this.sendMessage();
-      e.preventDefault();
-    }
-  }
-
   async sendMessage(input) {
-    const text = input || this.state.input;
-    if (text) {
-      this.resetInput();
-      // New text message variables
-      const variables = {
-        user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
-        bot: this.props.botId,
-        value: text,
-        sender: 'user',
-        referrer: window.location.href || null,
-      };
-      // Add remote message with optimistic response
-      await this.props.createTextMessageMutation({ variables });
-      // If subscriptions are not used, we need to refetch manually the message that was just
-      // sent by the user so he gets immediate success feedback on his own message
-      if (!this.props.websocketsSupported) {
-        this.props.refetch();
-      }
+    // New text message variables
+    const variables = {
+      user: localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID'),
+      bot: this.props.botId,
+      value: input,
+      sender: 'user',
+      referrer: window.location.href || null,
+    };
+    // Add remote message with optimistic response
+    await this.props.createTextMessageMutation({ variables });
+    // If subscriptions are not used, we need to refetch manually the message that was just
+    // sent by the user so he gets immediate success feedback on his own message
+    if (!this.props.websocketsSupported) {
+      this.props.refetch();
     }
   }
 
@@ -290,24 +130,14 @@ class WebChat extends React.Component {
   }
 
   render() {
-    // Quickreplies are only displayed if they are the last message
-    const lastMessage = last(this.props.messages);
-    const quickreplies =
-      (!!lastMessage &&
-        lastMessage.type === 'quickreplies' &&
-        lastMessage.payload.quickrepliesValue) ||
-      [];
+    // console.log('WebChat.render', this.props.messages.length);
     return (
       <Main
         {...this.props}
         {...this.state}
-        messages={this.props.messages}
-        quickreplies={quickreplies}
         sendAction={this.sendAction}
         markAsClicked={this.markAsClicked}
         sendMessage={this.sendMessage}
-        handleKeyPress={this.handleKeyPress}
-        handleInputChange={this.handleInputChange}
         setTranscript={this.setTranscript}
         setIsRecording={this.setIsRecording}
       />
@@ -365,35 +195,28 @@ export default compose(
       error: props.data.error,
       messages: props.data.messages,
       refetch: props.data.refetch,
-      subscribeToNewMessages: params =>
-        (props.ownProps.websocketsSupported
-          ? props.data.subscribeToMore({
-            document: MESSAGES_SUBSCRIPTION,
-            variables: params,
-            updateQuery: (prev, { subscriptionData }) => {
-              console.log('updateQuery: new message', subscriptionData);
-              if (!subscriptionData.data) {
-                console.log('updateQuery: new message is not valid (no data)');
-                return prev;
-              }
+      subscribeToNewMessages: params => (props.ownProps.websocketsSupported
+        ? props.data.subscribeToMore({
+          document: MESSAGES_SUBSCRIPTION,
+          variables: params,
+          updateQuery: (store, { subscriptionData }) => {
+            if (!subscriptionData.data) {
+              return store;
+            }
+            const newMessage = subscriptionData.data.messageAdded;
+            // If the new message is not valid then return previous messages list
+            if (!newMessage) {
+              return store;
+            }
 
-              const newMessage = subscriptionData.data.messageAdded;
-              console.log('updateQuery: new message', newMessage);
-
-              // If the new message is not valid then return previous messages list
-              if (!newMessage) {
-                console.log('updateQuery: new message is not valid (no message added)');
-                return prev;
-              }
-
-              // Update the store
-              console.log('updateQuery: new message valid, update the store');
-              return {
-                messages: [...prev.messages, newMessage],
-              };
-            },
-          })
-          : null),
+            // console.log('New message added to store', newMessage);
+            // Return updated store
+            return {
+              messages: [...store.messages, newMessage],
+            };
+          },
+        })
+        : null),
     }),
   }),
   graphql(TEXT_MESSAGE_MUTATION, { name: 'createTextMessageMutation' }),

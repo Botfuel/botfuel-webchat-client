@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-module.exports = class EmbeddedContainerError extends Error {
+export default class EmbeddedContainerError extends Error {
 /**
  * @constructor
  */
   constructor() {
     super('The embeddedContainerId you provided does not exist in the DOM.');
   }
-};
+}

@@ -64,13 +64,13 @@ const Cards = ({ payload, sendAction, size, cardSize }) => {
           <CardImage className="bf-card-image" url={card.image_url} />
           <CardTitle className="bf-card-title">{card.title}</CardTitle>
           <CardSubTitle className="bf-card-sub-title">{card.subtitle || ''}</CardSubTitle>
-          {!!card.actionValue.length &&
-          <CardActions
-            payload={card}
-            sendAction={sendAction}
-            width={100}
-          />
-          }
+          {!!card.actionValue.length && (
+            <CardActions
+              payload={card}
+              sendAction={sendAction}
+              width={100}
+            />
+          )}
         </Card>
       ))}
     </Carousel>

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import 'babel-polyfill';
+import '@babel/polyfill';
 import 'whatwg-fetch';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { ApolloProvider } from 'react-apollo';
-import websocketsCheck from 'utils/websockets-check';
-import ContainerWithData from 'components/WebChat/Container';
+import websocketsCheck from '../../utils/websockets-check';
+import ContainerWithData from './Container';
 import createApolloClient from '../../apollo-client';
 
 export default class Root extends React.Component {
@@ -34,7 +34,13 @@ export default class Root extends React.Component {
   };
 
   static childContextTypes = {
-    customLabels: PropTypes.object,
+    customLabels: PropTypes.shape({
+      onboardingMessage: PropTypes.string,
+      sendButtonLabel: PropTypes.string,
+      messageInputPlaceholder: PropTypes.string,
+      webchatHeaderTitle: PropTypes.string,
+      helpMessage: PropTypes.string,
+    }),
   };
 
   static defaultProps = {

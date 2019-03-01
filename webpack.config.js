@@ -36,26 +36,26 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: [
-              'transform-object-rest-spread',
-              'transform-react-jsx',
-              'react-hot-loader/babel',
-              'transform-runtime',
-              'transform-class-properties',
-              'babel-root-import',
-              'transform-async-to-generator',
-              'syntax-async-functions',
-            ],
             presets: [
               [
-                'env',
+                '@babel/preset-env',
                 {
                   targets: {
                     ie: 9,
                   },
-                  useBuiltIns: true,
+                  useBuiltIns: 'entry',
                 },
               ],
+            ],
+            plugins: [
+              'module:babel-root-import',
+              'react-hot-loader/babel',
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-transform-async-to-generator',
+              '@babel/plugin-proposal-optional-chaining',
+              '@babel/plugin-proposal-object-rest-spread',
+              '@babel/plugin-transform-react-jsx',
+              '@babel/plugin-transform-runtime',
             ],
             comments: false,
           },

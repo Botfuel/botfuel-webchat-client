@@ -32,17 +32,15 @@ const Container = styled.div`
   }
 `;
 
-function Quickreplies({ quickreplies, sendAction }) {
-  return (
-    <div>
-      <Container className="bf-quickreplies" size={quickreplies.length}>
-        {quickreplies.map(q => (
-          <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
-        ))}
-      </Container>
-    </div>
-  );
-}
+const Quickreplies = ({ quickreplies, sendAction }) => (
+  <div>
+    <Container className="bf-quickreplies" size={quickreplies.length}>
+      {quickreplies.map(q => (
+        <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
+      ))}
+    </Container>
+  </div>
+);
 
 Quickreplies.propTypes = {
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,

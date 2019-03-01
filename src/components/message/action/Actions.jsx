@@ -75,64 +75,72 @@ const Container = styled.div`
   ${props => getContainerStyle(props)}
 `;
 
-const Actions = ({ payload, sendAction, markAsClicked, width }) => {
-  const hasAClickedAction = payload.actionValue.some(a => !!a.clicked);
-  const actions = payload.actionValue.map(a => ({
-    ...a,
-    ...{
-      disabled: !a.clicked && hasAClickedAction,
-      clicked: !!a.clicked,
-    },
-  }));
+class Actions extends React.Component {
+  shouldComponentUpdate(nextProps) {
+    // update actions only if payload has changed
+    const { payload } = this.props;
+    return payload.actionValue !== nextProps.payload.actionValue;
+  }
 
-  return (
-    <Container className="bf-actions-container" actions={actions} width={width}>
-      {actions &&
-      actions.map((action, index) => {
-        switch (action.type) {
-          case 'link':
-            return (
-              <LinkButton
-                index={index}
-                key={`${action.text}${action.linkActionValue}`}
-                link={action.linkActionValue}
-                label={action.text || action.linkActionValue}
-                handleClick={() => markAsClicked(index)}
-                disabled={action.disabled}
-                clicked={action.clicked}
-                side="left"
-              />
-            );
-          case 'postback':
-            return (
-              <TextButton
-                index={index}
-                key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
-                handleClick={() => {
-                  sendAction({
-                    type: 'postback',
-                    value: action.postbackActionValue,
-                    text: action.text,
-                  })();
-                  markAsClicked(index);
-                }}
-                label={action.text || action.postbackActionValue}
-                disabled={action.disabled}
-                clicked={action.clicked}
-                side="left"
-              />
-            );
-          default:
-            return null;
-        }
-      })}
-    </Container>
-  );
-};
+  render() {
+    const { payload, sendAction, markAsClicked, width } = this.props;
+    const hasAClickedAction = payload.actionValue.some(a => !!a.clicked);
+    const actions = payload.actionValue.map(a => ({
+      ...a,
+      ...{
+        disabled: !a.clicked && hasAClickedAction,
+        clicked: !!a.clicked,
+      },
+    }));
+
+    return (
+      <Container className="bf-actions-container" actions={actions} width={width}>
+        {actions && actions.map((action, index) => {
+          switch (action.type) {
+            case 'link':
+              return (
+                <LinkButton
+                  index={index}
+                  key={`${action.text}${action.linkActionValue}`}
+                  link={action.linkActionValue}
+                  label={action.text || action.linkActionValue}
+                  handleClick={() => markAsClicked(index)}
+                  disabled={action.disabled}
+                  clicked={action.clicked}
+                  side="left"
+                />
+              );
+            case 'postback':
+              return (
+                <TextButton
+                  index={index}
+                  key={`${action.text}${JSON.stringify(action.postbackActionValue)}`}
+                  handleClick={() => {
+                    sendAction({
+                      type: 'postback',
+                      value: action.postbackActionValue,
+                      text: action.text,
+                    })();
+                    markAsClicked(index);
+                  }}
+                  label={action.text || action.postbackActionValue}
+                  disabled={action.disabled}
+                  clicked={action.clicked}
+                  side="left"
+                />
+              );
+            default:
+              return null;
+          }
+        })}
+      </Container>
+    );
+  }
+}
 
 Actions.propTypes = {
   payload: PropTypes.shape({
-    value: PropTypes.arrayOf(
+    actionValue: PropTypes.arrayOf(
       PropTypes.shape({
         type: PropTypes.oneOf(['text', 'postback', 'link']).isRequired,
         text: PropTypes.string,

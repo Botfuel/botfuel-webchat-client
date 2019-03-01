@@ -82,10 +82,7 @@ const Link = styled.a`
   text-decoration: none;
 
   &:hover {
-    ${props =>
-    !props.disabled &&
-    !props.clicked &&
-    `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
+    ${props => !props.disabled && !props.clicked && `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
   }
 
   &:focus {

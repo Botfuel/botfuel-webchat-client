@@ -26,10 +26,7 @@ export default styled.div`
   display: inline-block;
   padding: ${props => (props.isImage ? '0' : (props.theme.layout.compact ? '8px 10px' : '10px 25px'))};
   border-radius: ${props => props.theme.layout.rounded};
-  box-shadow: ${props =>
-    (props.theme.layout.shadowed
-      ? `0px 5px 25px 2px ${darken(0.1, props.theme.colors.background)}`
-      : null)};
+  box-shadow: ${props => (props.theme.layout.shadowed ? `0px 5px 25px 2px ${darken(0.1, props.theme.colors.background)}` : null)};
   position: relative;
   max-width: calc(100% - 75px);
   color: ${props => (props.side === 'left' ? props.theme.colors.secondaryText : props.theme.colors.primaryText)};

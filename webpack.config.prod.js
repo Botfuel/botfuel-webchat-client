@@ -1,6 +1,5 @@
 const path = require('path');
 const webpack = require('webpack');
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
@@ -28,25 +27,25 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            plugins: [
-              'transform-object-rest-spread',
-              'transform-react-jsx',
-              'transform-runtime',
-              'transform-class-properties',
-              'babel-root-import',
-              'transform-async-to-generator',
-              'syntax-async-functions',
-            ],
             presets: [
               [
-                'env',
+                '@babel/preset-env',
                 {
                   targets: {
                     ie: 9,
                   },
-                  useBuiltIns: true,
+                  useBuiltIns: 'entry',
                 },
               ],
+            ],
+            plugins: [
+              'module:babel-root-import',
+              '@babel/plugin-proposal-class-properties',
+              '@babel/plugin-transform-async-to-generator',
+              '@babel/plugin-proposal-optional-chaining',
+              '@babel/plugin-proposal-object-rest-spread',
+              '@babel/plugin-transform-react-jsx',
+              '@babel/plugin-transform-runtime',
             ],
             comments: false,
           },

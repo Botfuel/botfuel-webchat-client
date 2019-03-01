@@ -16,7 +16,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import DEFAULT_LABELS from 'labels';
+import DEFAULT_LABELS from '../../labels';
 
 export default function WithLabels(Component) {
   const ComponentWithLabels = ({ ...props }, context) => {
@@ -29,7 +29,13 @@ export default function WithLabels(Component) {
   };
 
   ComponentWithLabels.contextTypes = {
-    customLabels: PropTypes.object,
+    customLabels: PropTypes.shape({
+      onboardingMessage: PropTypes.string,
+      sendButtonLabel: PropTypes.string,
+      messageInputPlaceholder: PropTypes.string,
+      webchatHeaderTitle: PropTypes.string,
+      helpMessage: PropTypes.string,
+    }),
   };
 
   return ComponentWithLabels;

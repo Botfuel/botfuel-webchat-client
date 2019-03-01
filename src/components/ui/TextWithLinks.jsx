@@ -55,8 +55,8 @@ DOMPurify.addHook('afterSanitizeAttributes', (node) => {
   }
   // set non-HTML/MathML links to xlink:show=new
   if (
-    !node.hasAttribute('target') &&
-    (node.hasAttribute('xlink:href') || node.hasAttribute('href'))
+    !node.hasAttribute('target')
+    && (node.hasAttribute('xlink:href') || node.hasAttribute('href'))
   ) {
     node.setAttribute('xlink:show', 'new');
   }

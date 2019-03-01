@@ -18,10 +18,12 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import isArray from 'lodash/isArray';
-import WithLabels from 'components/utils/WithLabels';
+import last from 'lodash/last';
+import WithLabels from '../utils/WithLabels';
 import Message from './Message';
 import Block from './Block';
 import Quickreplies from './Quickreplies';
+import BotThinkingAction from './BotThinkingAction';
 
 const Messages = styled.div`
   list-style: none;
@@ -32,94 +34,134 @@ const Messages = styled.div`
   overflow-y: auto;
 `;
 
-const MessageList = ({
-  messages,
-  setRef,
-  sendAction,
-  labels,
-  quickreplies,
-  markAsClicked,
-  theme,
-  width,
-  debug,
-  parseHTML,
-  sanitizeDOM,
-}) => {
-  const fMessages = messages
-    .filter((m, idx) => m.type !== 'botAction' || idx === messages.length - 1);
+class MessageList extends React.Component {
+  state = {
+    messages: [],
+    quickreplies: [],
+    isThinking: false,
+  };
 
-  // Components order is reversed so that the auto scroll to bottom on new message
-  // Can be handled using css instead of JS
-  // By doing this we avoid reference to another component and programmatic scroll
-  return (
-    <Messages className="bf-message-list-container" ref={setRef}>
-      {debug && (
-        <Block
-          className="bf-debug-message"
-          value={{
-            text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
-            top: true,
-          }}
-        />
-      )}
-      {!theme.layout.noHelpMessage && (
-        <Block
-          className="bf-help-message"
-          value={{
-            text: labels.helpMessage,
-            top: true,
-          }}
-        />
-      )}
-      {isArray(labels.onboardingMessage) &&
-      labels.onboardingMessage.map(textValue => (
-        <Message
-          className="bf-onboarding-message"
-          payload={{ textValue }}
-          type="text"
-          sender="bot"
-          side="left"
-          key={`onboarding-${textValue}`}
-          parseHTML={parseHTML}
-          sanitizeDOM={sanitizeDOM}
-        />
-      ))}
-      {!!labels.onboardingMessage &&
-      typeof labels.onboardingMessage === 'string' && (
-        <Message
-          className="bf-onboarding-message"
-          payload={{ textValue: labels.onboardingMessage }}
-          type="text"
-          sender="bot"
-          side="left"
-          key={0}
-          parseHTML={parseHTML}
-          sanitizeDOM={sanitizeDOM}
-        />
-      )}
-      <div className="bf-message-list">
-        {fMessages.map(message => (
+  componentWillReceiveProps(nextProps) {
+    // Handle quickreplies and isThinking
+    if (this.props.messages !== nextProps.messages && nextProps.messages.length > 0) {
+      // handle new messages state
+      const messages = nextProps.messages.filter(m => !['botAction', 'quickreplies'].includes(m.type));
+      // console.log('MessageList.componentWillReceiveProps: update messages state with', messages);
+      this.setState({ messages });
+      // extract last message
+      const lastMessage = last(nextProps.messages);
+      if (lastMessage.type === 'botAction') {
+        // handle if bot is thinking
+        const isThinking = lastMessage.payload.botActionValue.action === 'THINKING_ON';
+        if (this.state.isThinking !== isThinking) {
+          // handle bot is thinking actions
+          this.setState({ isThinking });
+        }
+      } else if (lastMessage.type === 'quickreplies') {
+        // handle quickreplies message
+        const { payload: { quickrepliesValue } } = lastMessage;
+        if (quickrepliesValue && quickrepliesValue !== this.state.quickreplies) {
+          this.setState({ quickreplies: quickrepliesValue });
+        }
+      } else {
+        // reset quickreplies if necessary
+        if (this.state.quickreplies.length > 0) {
+          this.setState({ quickreplies: [] });
+        }
+
+        // reset is thinking if necessary
+        if (this.state.isThinking) {
+          this.setState({ isThinking: false });
+        }
+      }
+    }
+  }
+
+  render() {
+    const {
+      setRef,
+      sendAction,
+      labels,
+      markAsClicked,
+      theme,
+      width,
+      debug,
+      parseHTML,
+      sanitizeDOM,
+    } = this.props;
+    // console.log(`MessageList.render: ${this.state.messages.length} messages to display`);
+    return (
+      <Messages className="bf-message-list-container" ref={setRef}>
+        {debug && (
+          <Block
+            className="bf-debug-message"
+            value={{
+              text: `userId=${localStorage.getItem('BOTFUEL_WEBCHAT_USER_ID')}`,
+              top: true,
+            }}
+          />
+        )}
+        {!theme.layout.noHelpMessage && (
+          <Block
+            className="bf-help-message"
+            value={{
+              text: labels.helpMessage,
+              top: true,
+            }}
+          />
+        )}
+        {isArray(labels.onboardingMessage) && labels.onboardingMessage.map(textValue => (
           <Message
-            {...message}
-            side={message.sender === 'user' ? 'right' : 'left'}
-            width={width}
-            sendAction={sendAction}
-            markAsClicked={markAsClicked(message)}
-            key={message.type === 'botAction' ? message.payload.botActionValue.action : message.id}
+            className="bf-onboarding-message"
+            payload={{ textValue }}
+            type="text"
+            sender="bot"
+            side="left"
+            key={`onboarding-${textValue}`}
             parseHTML={parseHTML}
             sanitizeDOM={sanitizeDOM}
           />
         ))}
-      </div>
-      <Quickreplies sendAction={sendAction} quickreplies={quickreplies} />
-    </Messages>
-  );
-};
+        {!!labels.onboardingMessage && typeof labels.onboardingMessage === 'string' && (
+          <Message
+            className="bf-onboarding-message"
+            payload={{ textValue: labels.onboardingMessage }}
+            type="text"
+            sender="bot"
+            side="left"
+            key={0}
+            parseHTML={parseHTML}
+            sanitizeDOM={sanitizeDOM}
+          />
+        )}
+        <div className="bf-message-list">
+          {this.state.messages.map(message => (
+            <Message
+              {...message}
+              side={message.sender === 'user' ? 'right' : 'left'}
+              width={width}
+              sendAction={sendAction}
+              markAsClicked={markAsClicked(message)}
+              key={`${message.id}-${message.type}`}
+              parseHTML={parseHTML}
+              sanitizeDOM={sanitizeDOM}
+            />
+          ))}
+        </div>
+        {this.state.quickreplies.length > 0 && (
+          <Quickreplies key="QUICK_REPLIES" sendAction={sendAction} quickreplies={this.state.quickreplies} />
+        )}
+        {this.state.isThinking && (
+          <BotThinkingAction key="BOT_THINKING_ON" />
+        )}
+      </Messages>
+    );
+  }
+}
 
 MessageList.propTypes = {
   messages: PropTypes.arrayOf(PropTypes.object).isRequired,
   setRef: PropTypes.func.isRequired,
-  quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
   labels: PropTypes.shape({

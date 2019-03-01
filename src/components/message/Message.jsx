@@ -17,7 +17,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import BotAction from './BotAction';
 import Table from './Table';
 import TextMessage from './TextMessage';
 import Actions from './action/Actions';
@@ -30,7 +29,6 @@ const componentsDict = {
   table: Table,
   actions: Actions,
   postback: TextMessage,
-  botAction: BotAction,
   image: Image,
   cards: Cards,
 };
@@ -52,8 +50,7 @@ const Avatar = styled.div`
   display: inline-block;
   margin-right: 9px;
   float: left;
-  background-image: url("${props =>
-    (props.sender === 'bot' ? props.theme.images.botAvatar : props.theme.images.userAvatar)}");
+  background-image: url("${props => (props.sender === 'bot' ? props.theme.images.botAvatar : props.theme.images.userAvatar)}");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -67,8 +64,7 @@ export default class MessageContainer extends React.Component {
   render() {
     const { side, type, sender, className, ...props } = this.props;
     const Component = componentsDict[type];
-    const disableBubble = ['actions', 'botAction', 'cards'].includes(type);
-
+    const disableBubble = ['actions', 'cards'].includes(type);
     return disableBubble ? (
       <Component type={type} size={props.width} {...props} />
     ) : (

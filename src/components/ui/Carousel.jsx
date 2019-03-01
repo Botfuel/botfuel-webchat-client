@@ -191,31 +191,31 @@ class Carousel extends Component {
     const isScrollable = scrollWidth > containerWidth;
     return (
       <Wrapper className="bf-carousel">
-        {scrollPosition > 0 &&
-        isScrollable &&
-        <ArrowButton
-          className="bf-carousel-arrow left"
-          onClick={this.handlePrevious}
-          isPrevious
-        >
-          <img src={prevArrowIcon} alt="previous" />
-        </ArrowButton>
-        }
+        {scrollPosition > 0 && isScrollable && (
+          <ArrowButton
+            className="bf-carousel-arrow left"
+            onClick={this.handlePrevious}
+            isPrevious
+          >
+            <img src={prevArrowIcon} alt="previous" />
+          </ArrowButton>
+        )}
         <Container className="bf-carousel-item-list" ref={this.setContainerRef}>
           {this.props.children.map(item => (
             <Item className="bf-carousel-item" key={`carousel-${this.id}-${Math.random()}`} {...this.props}>{item}</Item>
           ))}
         </Container>
-        {isScrollable &&
-        !(scrollPosition >= (scrollWidth - ((itemSize + (2 * itemMargin)) * itemToScroll))) &&
-        <ArrowButton
-          className="bf-carousel-arrow left"
-          onClick={this.handleNext}
-          isNext
-        >
-          <img src={nextArrowIcon} alt="next" />
-        </ArrowButton>
-        }
+        {isScrollable
+        && !(scrollPosition >= (scrollWidth - ((itemSize + (2 * itemMargin)) * itemToScroll)))
+        && (
+          <ArrowButton
+            className="bf-carousel-arrow left"
+            onClick={this.handleNext}
+            isNext
+          >
+            <img src={nextArrowIcon} alt="next" />
+          </ArrowButton>
+        )}
       </Wrapper>
     );
   }

@@ -17,8 +17,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import MessageListContainer from 'components/message/MessageListContainer';
-import Bubble from 'components/message/Bubble';
+import MessageListContainer from '../message/MessageListContainer';
+import Bubble from '../message/Bubble';
 import Top from './Top';
 import Bottom from './Bottom';
 
@@ -65,7 +65,6 @@ const SpeakingIndicator = styled.div`
 
 const Main = ({
   messages,
-  quickreplies,
   width,
   height,
   isVisible,
@@ -75,9 +74,6 @@ const Main = ({
   sendAction,
   markAsClicked,
   sendMessage,
-  handleKeyPress,
-  handleInputChange,
-  input,
   disableFullScreenButton,
   menuActions,
   debug,
@@ -110,7 +106,6 @@ const Main = ({
       sendAction={sendAction}
       markAsClicked={markAsClicked}
       messages={messages}
-      quickreplies={quickreplies}
       theme={theme}
       width={width}
       debug={debug}
@@ -125,12 +120,9 @@ const Main = ({
       </div>
     )}
     <Bottom
-      sendMessage={sendMessage}
+      onSubmit={sendMessage}
       sendAction={sendAction}
       menuActions={menuActions}
-      onKeyPress={handleKeyPress}
-      onInputChange={handleInputChange}
-      input={input}
       setTranscript={setTranscript}
       setIsRecording={setIsRecording}
       isRecording={isRecording}
@@ -156,13 +148,9 @@ Main.propTypes = {
       type: PropTypes.string,
     }),
   ),
-  quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   sendAction: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
-  handleKeyPress: PropTypes.func.isRequired,
-  handleInputChange: PropTypes.func.isRequired,
-  input: PropTypes.string,
   disableFullScreenButton: PropTypes.bool.isRequired,
   menuActions: PropTypes.arrayOf(
     PropTypes.shape({
@@ -185,7 +173,6 @@ Main.propTypes = {
 
 Main.defaultProps = {
   messages: [],
-  input: '',
 };
 
 export default Main;

@@ -35,7 +35,10 @@ export default class Root extends React.Component {
 
   static childContextTypes = {
     customLabels: PropTypes.shape({
-      onboardingMessage: PropTypes.string,
+      onboardingMessage: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+      ]),
       sendButtonLabel: PropTypes.string,
       messageInputPlaceholder: PropTypes.string,
       webchatHeaderTitle: PropTypes.string,

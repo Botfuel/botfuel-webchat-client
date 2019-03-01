@@ -30,7 +30,10 @@ export default function WithLabels(Component) {
 
   ComponentWithLabels.contextTypes = {
     customLabels: PropTypes.shape({
-      onboardingMessage: PropTypes.string,
+      onboardingMessage: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.arrayOf(PropTypes.string),
+      ]),
       sendButtonLabel: PropTypes.string,
       messageInputPlaceholder: PropTypes.string,
       webchatHeaderTitle: PropTypes.string,

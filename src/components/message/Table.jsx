@@ -18,7 +18,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import uuidv4 from 'uuid/v4';
-import TextWithLinks from 'components/ui/TextWithLinks';
+import TextWithLinks from '../ui/TextWithLinks';
 
 const Thead = styled.thead`
   tr {

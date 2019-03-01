@@ -50,8 +50,7 @@ const Avatar = styled.div`
   display: inline-block;
   margin-right: 9px;
   float: left;
-  background-image: url("${props =>
-    (props.sender === 'bot' ? props.theme.images.botAvatar : props.theme.images.userAvatar)}");
+  background-image: url("${props => (props.sender === 'bot' ? props.theme.images.botAvatar : props.theme.images.userAvatar)}");
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;

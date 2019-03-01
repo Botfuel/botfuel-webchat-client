@@ -16,7 +16,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import TextWithLinks from 'components/ui/TextWithLinks';
+import TextWithLinks from '../ui/TextWithLinks';
 
 const TextMessage = ({ payload, sender, parseHTML, sanitizeDOM }) => (
   <TextWithLinks

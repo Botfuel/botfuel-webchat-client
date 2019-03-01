@@ -24,11 +24,7 @@ const Button = styled.div`
   background: #f32;
   box-shadow: 0 0 0 ${props => (props.active ? '1px' : '4px')} rgb(255, 187, 180);
   cursor: pointer;
-  ${props =>
-    props.active &&
-    `
-animation: ${pulse} 0.8s infinite ease;
-  `};
+  ${props => props.active && `animation: ${pulse} 0.8s infinite ease;`};
 `;
 
 export default class Voice extends React.Component {

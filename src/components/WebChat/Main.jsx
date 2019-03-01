@@ -17,8 +17,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import MessageListContainer from 'components/message/MessageListContainer';
-import Bubble from 'components/message/Bubble';
+import MessageListContainer from '../message/MessageListContainer';
+import Bubble from '../message/Bubble';
 import Top from './Top';
 import Bottom from './Bottom';
 

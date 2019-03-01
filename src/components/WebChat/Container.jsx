@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import 'babel-polyfill';
+import '@babel/polyfill';
 import 'whatwg-fetch';
 import React from 'react';
 import styled, { createGlobalStyle, ThemeProvider } from 'styled-components';
 import PropTypes from 'prop-types';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import StartButton from 'components/StartButton';
-import WebChat from 'components/WebChat';
+import StartButton from '../StartButton';
+import WebChat from './index';
 
 /* eslint-disable */
 const GlobalStyle = createGlobalStyle`

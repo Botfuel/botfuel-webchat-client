@@ -1,17 +1,15 @@
 {
-  "presets": ["es2015", "stage-0", "react"],
+  "presets": [
+    "@babel/preset-env",
+    "@babel/preset-react"
+  ],
   "plugins": [
-    "babel-root-import",
+    "module:babel-root-import",
     "react-hot-loader/babel",
-    "transform-class-properties",
-    "transform-async-to-generator",
-    "syntax-async-functions",
-    [
-      "module-resolver",
-      {
-        "root": ["./src"],
-        "extensions": [".js", ".jsx"]
-      }
-    ]
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-transform-async-to-generator",
+    "@babel/plugin-syntax-dynamic-import",
+    "@babel/plugin-proposal-optional-chaining",
+    "@babel/plugin-proposal-object-rest-spread"
   ]
 }

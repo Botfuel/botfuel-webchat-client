@@ -18,9 +18,9 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Textarea from 'react-textarea-autosize';
-import WithLabels from 'components/utils/WithLabels';
-import Menu from 'components/ui/Menu';
-import Voice from 'components/message/Voice';
+import WithLabels from '../utils/WithLabels';
+import Menu from '../ui/Menu';
+import Voice from '../message/Voice';
 
 const SendButton = styled.div`
   width: 70px;

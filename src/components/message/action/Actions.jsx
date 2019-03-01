@@ -78,7 +78,8 @@ const Container = styled.div`
 class Actions extends React.Component {
   shouldComponentUpdate(nextProps) {
     // update actions only if payload has changed
-    return this.props.payload.actionValue !== nextProps.payload.actionValue;
+    const { payload } = this.props;
+    return payload.actionValue !== nextProps.payload.actionValue;
   }
 
   render() {
@@ -94,8 +95,7 @@ class Actions extends React.Component {
 
     return (
       <Container className="bf-actions-container" actions={actions} width={width}>
-        {actions &&
-        actions.map((action, index) => {
+        {actions && actions.map((action, index) => {
           switch (action.type) {
             case 'link':
               return (

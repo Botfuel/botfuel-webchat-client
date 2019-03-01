@@ -81,10 +81,7 @@ const Button = styled.div`
   color: ${props => getStatusColor(props)};
   border: 1px solid ${props => (props.disabled ? 'lightgrey' : props.theme.colors.primary)};
   cursor: ${props => (props.disabled || props.clicked ? 'default' : 'pointer')};
-  box-shadow: ${props =>
-    (props.theme.layout.shadowed && !props.disabled && !props.clicked
-      ? `3px 3px 5px 0px ${darken(0.1, props.theme.colors.background)}`
-      : null)};
+  box-shadow: ${props => (props.theme.layout.shadowed && !props.disabled && !props.clicked ? `3px 3px 5px 0px ${darken(0.1, props.theme.colors.background)}` : null)};
   width: 30%;
   display: flex;
   align-items: center;
@@ -92,10 +89,7 @@ const Button = styled.div`
   transition: all 400ms ease;
 
   &:hover {
-    ${props =>
-    !props.disabled &&
-      !props.clicked &&
-      `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
+    ${props => !props.disabled && !props.clicked && `background-color: ${darken(0.03, props.theme.colors.secondary)}`};
   }
 
   &:focus {

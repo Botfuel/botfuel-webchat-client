@@ -19,11 +19,11 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import isArray from 'lodash/isArray';
 import last from 'lodash/last';
-import WithLabels from 'components/utils/WithLabels';
+import WithLabels from '../utils/WithLabels';
 import Message from './Message';
 import Block from './Block';
 import Quickreplies from './Quickreplies';
-import BotAction from './BotAction';
+import BotThinkingAction from './BotThinkingAction';
 
 const Messages = styled.div`
   list-style: none;
@@ -42,14 +42,12 @@ class MessageList extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log('MessageList.componentWillReceiveProps', nextProps.messages.length, 'last message', nextProps.messages[nextProps.messages.length - 1]);
-    console.log('MessageList: condition for update matched', this.props.messages !== nextProps.messages && nextProps.messages.length > 0);
     // Handle quickreplies and isThinking
     if (this.props.messages !== nextProps.messages && nextProps.messages.length > 0) {
       // handle new messages state
-      this.setState({
-        messages: nextProps.messages.filter(m => !['botAction', 'quickreplies'].includes(m.type)),
-      });
+      const filteredMessages = nextProps.messages.filter(m => !['botAction', 'quickreplies'].includes(m.type));
+      console.log('MessageList.componentWillReceiveProps: update messages state with', filteredMessages);
+      this.setState({ messages: filteredMessages });
       // extract last message
       const lastMessage = last(nextProps.messages);
       if (lastMessage.type === 'botAction') {
@@ -57,26 +55,22 @@ class MessageList extends React.Component {
         const isThinking = lastMessage.payload.botActionValue.action === 'THINKING_ON';
         if (this.state.isThinking !== isThinking) {
           // handle bot is thinking actions
-          console.log('SET is thinking', isThinking);
           this.setState({ isThinking });
         }
       } else if (lastMessage.type === 'quickreplies') {
         // handle quickreplies message
         const { payload: { quickrepliesValue } } = lastMessage;
         if (quickrepliesValue && quickrepliesValue !== this.state.quickreplies) {
-          console.log('SET quickreplies', quickrepliesValue);
           this.setState({ quickreplies: quickrepliesValue });
         }
       } else {
         // reset quickreplies if necessary
         if (this.state.quickreplies.length > 0) {
-          console.log('Reset quickreplies state');
           this.setState({ quickreplies: [] });
         }
 
         // reset is thinking if necessary
         if (this.state.isThinking) {
-          console.log('Reset is thinking state');
           this.setState({ isThinking: false });
         }
       }
@@ -95,7 +89,6 @@ class MessageList extends React.Component {
       parseHTML,
       sanitizeDOM,
     } = this.props;
-    console.log('MessageList.render', this.state);
     console.log(`MessageList.render: ${this.state.messages.length} messages to display`);
     return (
       <Messages className="bf-message-list-container" ref={setRef}>
@@ -117,8 +110,7 @@ class MessageList extends React.Component {
             }}
           />
         )}
-        {isArray(labels.onboardingMessage) &&
-        labels.onboardingMessage.map(textValue => (
+        {isArray(labels.onboardingMessage) && labels.onboardingMessage.map(textValue => (
           <Message
             className="bf-onboarding-message"
             payload={{ textValue }}
@@ -130,8 +122,7 @@ class MessageList extends React.Component {
             sanitizeDOM={sanitizeDOM}
           />
         ))}
-        {!!labels.onboardingMessage &&
-        typeof labels.onboardingMessage === 'string' && (
+        {!!labels.onboardingMessage && typeof labels.onboardingMessage === 'string' && (
           <Message
             className="bf-onboarding-message"
             payload={{ textValue: labels.onboardingMessage }}
@@ -158,10 +149,10 @@ class MessageList extends React.Component {
           ))}
         </div>
         {this.state.quickreplies.length > 0 && (
-          <Quickreplies key={'quickreplies'} sendAction={sendAction} quickreplies={this.state.quickreplies} />
+          <Quickreplies key="QUICK_REPLIES" sendAction={sendAction} quickreplies={this.state.quickreplies} />
         )}
         {this.state.isThinking && (
-          <BotAction key={'THINKING_ON'} payload={{ botActionValue: { action: 'THINKING_ON' } }} />
+          <BotThinkingAction key="BOT_THINKING_ON" />
         )}
       </Messages>
     );

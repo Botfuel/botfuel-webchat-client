@@ -77,8 +77,7 @@ const Container = styled.div`
 // CardActions component
 const CardActions = ({ payload, sendAction }) => (
   <Container className="bf-card-actions">
-    {payload.actionValue &&
-    payload.actionValue.map((action) => {
+    {payload.actionValue && payload.actionValue.map((action) => {
       switch (action.type) {
         case 'link':
           return (

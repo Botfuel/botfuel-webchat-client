@@ -45,9 +45,9 @@ class MessageList extends React.Component {
     // Handle quickreplies and isThinking
     if (this.props.messages !== nextProps.messages && nextProps.messages.length > 0) {
       // handle new messages state
-      const filteredMessages = nextProps.messages.filter(m => !['botAction', 'quickreplies'].includes(m.type));
-      console.log('MessageList.componentWillReceiveProps: update messages state with', filteredMessages);
-      this.setState({ messages: filteredMessages });
+      const messages = nextProps.messages.filter(m => !['botAction', 'quickreplies'].includes(m.type));
+      // console.log('MessageList.componentWillReceiveProps: update messages state with', messages);
+      this.setState({ messages });
       // extract last message
       const lastMessage = last(nextProps.messages);
       if (lastMessage.type === 'botAction') {
@@ -89,7 +89,7 @@ class MessageList extends React.Component {
       parseHTML,
       sanitizeDOM,
     } = this.props;
-    console.log(`MessageList.render: ${this.state.messages.length} messages to display`);
+    // console.log(`MessageList.render: ${this.state.messages.length} messages to display`);
     return (
       <Messages className="bf-message-list-container" ref={setRef}>
         {debug && (

@@ -130,7 +130,7 @@ class WebChat extends React.Component {
   }
 
   render() {
-    console.log('WebChat.render', this.props.messages.length);
+    // console.log('WebChat.render', this.props.messages.length);
     return (
       <Main
         {...this.props}
@@ -209,7 +209,7 @@ export default compose(
               return store;
             }
 
-            console.log('New message added to store', newMessage);
+            // console.log('New message added to store', newMessage);
             // Return updated store
             return {
               messages: [...store.messages, newMessage],

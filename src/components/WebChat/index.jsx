@@ -251,6 +251,7 @@ class WebChat extends React.Component {
 
   markAsClicked(message) {
     return async (actionIndex) => {
+      console.log('WebChat.markAsClicked', message, actionIndex);
       await this.props.markAsClicked({
         message,
         actionIndex,
@@ -261,6 +262,7 @@ class WebChat extends React.Component {
   }
 
   render() {
+    console.log('WebChat.render', this.props.messages.length);
     return (
       <Main
         {...this.props}

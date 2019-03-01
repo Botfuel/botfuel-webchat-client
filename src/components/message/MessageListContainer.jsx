@@ -26,15 +26,6 @@ export default class MessageListContainer extends React.Component {
     };
   }
 
-  /**
-  shouldComponentUpdate(nextProps, nextState) {
-    const shouldUpdate = (
-      this.props.messages.length !== nextProps.messages.length
-      || this.state.justClicked !== nextState.justClicked
-    );
-  }
-   */
-
   componentDidUpdate() {
     this.scrollToBottom();
   }

@@ -42,6 +42,8 @@ class MessageList extends React.Component {
   };
 
   componentWillReceiveProps(nextProps) {
+    console.log('MessageList.componentWillReceiveProps', nextProps.messages.length, 'last message', nextProps.messages[nextProps.messages.length - 1]);
+    console.log('MessageList: condition for update matched', this.props.messages !== nextProps.messages && nextProps.messages.length > 0);
     // Handle quickreplies and isThinking
     if (this.props.messages !== nextProps.messages && nextProps.messages.length > 0) {
       // handle new messages state

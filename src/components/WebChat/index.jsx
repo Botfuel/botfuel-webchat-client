@@ -216,10 +216,12 @@ export default compose(
             if (newMessage.type === 'hook') {
               const { ownProps } = props;
               const { hookValue } = newMessage.payload;
+              // verify if hook name is defined in hooks param
               if (Object.prototype.hasOwnProperty.call(ownProps.hooks, hookValue.name)) {
-                console.log('Trigger hook', hookValue);
+                // if yes then call the function with the optional parameters
                 ownProps.hooks[hookValue.name](hookValue.args);
               }
+              // finally return the previous messages list
               return store;
             }
 

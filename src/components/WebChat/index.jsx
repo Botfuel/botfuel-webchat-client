@@ -166,11 +166,13 @@ WebChat.propTypes = {
   refetch: PropTypes.func.isRequired,
   markAsClicked: PropTypes.func.isRequired,
   websocketsSupported: PropTypes.bool.isRequired,
+  hooks: PropTypes.shape({}),
 };
 
 WebChat.defaultProps = {
   messages: [],
   error: {},
+  hooks: {},
 };
 
 export default compose(
@@ -204,8 +206,20 @@ export default compose(
               return store;
             }
             const newMessage = subscriptionData.data.messageAdded;
+
             // If the new message is not valid then return previous messages list
             if (!newMessage) {
+              return store;
+            }
+
+            // Handle hook message
+            if (newMessage.type === 'hook') {
+              const { ownProps } = props;
+              const { hookValue } = newMessage.payload;
+              if (Object.prototype.hasOwnProperty.call(ownProps.hooks, hookValue.name)) {
+                console.log('Trigger hook', hookValue);
+                ownProps.hooks[hookValue.name](hookValue.args);
+              }
               return store;
             }
 

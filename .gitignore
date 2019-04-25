@@ -59,6 +59,7 @@ typings/
 
 yarn.lock
 build
+dist
 
 # Mac specific
 .DS_Store

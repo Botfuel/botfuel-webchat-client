@@ -89,6 +89,7 @@ const Container = ({
   voiceEnabled,
   parseHTML,
   sanitizeDOM,
+  hooks,
   data: { bot = {}, loading },
 }) => {
   if (loading) {
@@ -149,6 +150,7 @@ const Container = ({
             voiceEnabled={voiceEnabled}
             parseHTML={parseHTML}
             sanitizeDOM={sanitizeDOM}
+            hooks={hooks}
           />
         </StyledContainer>
         {theme.fixed && (
@@ -204,6 +206,7 @@ Container.propTypes = {
   voiceEnabled: PropTypes.bool.isRequired,
   parseHTML: PropTypes.bool.isRequired,
   sanitizeDOM: PropTypes.bool.isRequired,
+  hooks: PropTypes.shape({}),
 };
 
 Container.defaultProps = {
@@ -211,6 +214,7 @@ Container.defaultProps = {
   chatStarted: false,
   websocketsSupported: false,
   extraAllowedOrigins: [],
+  hooks: {},
 };
 
 export default graphql(BOT_QUERY)(Container);

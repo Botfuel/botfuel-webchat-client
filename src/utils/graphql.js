@@ -73,6 +73,12 @@ const MessageFragment = gql`
           subtitle
         }
       }
+      ... on Hook {
+        hookValue: value {
+          name
+          args
+        }
+      }
     }
   }
 `;

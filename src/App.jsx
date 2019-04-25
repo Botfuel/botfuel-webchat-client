@@ -89,6 +89,7 @@ class BotfuelWebChat {
           debug={param.debug || false}
           parseHTML={param.parseHTML || false}
           sanitizeDOM={param.sanitizeDOM !== false}
+          hooks={param.hooks || {}}
         />,
         container,
       );

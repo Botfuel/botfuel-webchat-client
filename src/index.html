@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
@@ -8,7 +7,6 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
   <title>Botfuel WebChat Demo</title>
 </head>
-
 <body style="background: #e6eaf3;">
   <div style="float: right;" id="botfuel"></div>
 </body>
@@ -59,6 +57,9 @@
     serverUrl: 'http://localhost:7001',
     extraAllowedOrigins: ['http://localhost:7000'],
     debug: true,
+    hooks: {
+      hello: ({ name }) => console.log('Hello ' + name),
+    },
     menuActions: [
       {
         label: 'Recommencer',
@@ -93,5 +94,4 @@
     voiceEnabled: true,
   });
 </script>
-
 </html>

@@ -19,9 +19,9 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-const TextButton = ({ handleClick, label, disabled, clicked }) => (
+const TextButton = ({ handleClick, label, disabled, clicked, className }) => (
   <Button
-    className="bf-action-button"
+    className={`bf-action-button ${className}`}
     onClick={disabled || clicked ? () => null : handleClick}
     disabled={disabled}
     clicked={clicked}
@@ -35,11 +35,13 @@ TextButton.propTypes = {
   label: PropTypes.string.isRequired,
   disabled: PropTypes.bool,
   clicked: PropTypes.bool,
+  className: PropTypes.string,
 };
 
 TextButton.defaultProps = {
   disabled: false,
   clicked: false,
+  className: '',
 };
 
 function getStatusBackgroundColor(props) {

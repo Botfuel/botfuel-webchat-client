@@ -32,19 +32,22 @@ const Container = styled.div`
   }
 `;
 
-const Quickreplies = ({ quickreplies, sendAction }) => (
-  <div>
-    <Container className="bf-quickreplies" size={quickreplies.length}>
-      {quickreplies.map(q => (
-        <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
-      ))}
-    </Container>
-  </div>
+const Quickreplies = ({ quickreplies, sendAction, className }) => (
+  <Container className={`bf-quickreplies ${className}`} size={quickreplies.length}>
+    {quickreplies.map(q => (
+      <TextButton key={q} handleClick={sendAction({ type: 'text', value: q })} label={q} />
+    ))}
+  </Container>
 );
 
 Quickreplies.propTypes = {
   quickreplies: PropTypes.arrayOf(PropTypes.string).isRequired,
   sendAction: PropTypes.func.isRequired,
+  className: PropTypes.string,
+};
+
+Quickreplies.defaultProps = {
+  className: '',
 };
 
 export default Quickreplies;

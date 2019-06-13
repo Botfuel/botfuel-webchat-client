@@ -187,10 +187,10 @@ class Carousel extends Component {
 
   render() {
     const { scrollPosition, scrollWidth, containerWidth, itemToScroll } = this.state;
-    const { itemSize, itemMargin } = this.props;
+    const { itemSize, itemMargin, className } = this.props;
     const isScrollable = scrollWidth > containerWidth;
     return (
-      <Wrapper className="bf-carousel">
+      <Wrapper className={`bf-carousel ${className}`}>
         {scrollPosition > 0 && isScrollable && (
           <ArrowButton
             className="bf-carousel-arrow left"
@@ -202,7 +202,7 @@ class Carousel extends Component {
         )}
         <Container className="bf-carousel-item-list" ref={this.setContainerRef}>
           {this.props.children.map(item => (
-            <Item className="bf-carousel-item" key={`carousel-${this.id}-${Math.random()}`} {...this.props}>{item}</Item>
+            <Item className="bf-carousel-item" key={`carousel-${this.id}-${Math.random()}`} itemSize={itemSize} itemMargin={itemMargin}>{item}</Item>
           ))}
         </Container>
         {isScrollable
@@ -225,11 +225,13 @@ Carousel.propTypes = {
   children: PropTypes.arrayOf(PropTypes.node).isRequired,
   itemSize: PropTypes.number,
   itemMargin: PropTypes.number,
+  className: PropTypes.string,
 };
 
 Carousel.defaultProps = {
   itemSize: 300,
   itemMargin: 5,
+  className: '',
 };
 
 export default Carousel;

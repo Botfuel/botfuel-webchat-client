@@ -12,6 +12,7 @@ const MessageFragment = gql`
     payload {
       ... on Text {
         textValue: value
+        options
       }
       ... on Table {
         tableValue: value {
@@ -21,6 +22,7 @@ const MessageFragment = gql`
           }
           rows
         }
+        options
       }
       ... on Actions {
         actionValue: value {
@@ -29,22 +31,27 @@ const MessageFragment = gql`
             text
             clicked
             linkActionValue: value
+            options
           }
           ... on PostbackAction {
             type
             text
             clicked
             postbackActionValue: value
+            options
           }
         }
         text
+        options
       }
       ... on Postback {
         postbackValue: value
         text
+        options
       }
       ... on Quickreplies {
         quickrepliesValue: value
+        options
       }
       ... on BotAction {
         botActionValue: value {
@@ -53,6 +60,7 @@ const MessageFragment = gql`
       }
       ... on Image {
         imageUrl: value
+        options
       }
       ... on Cards {
         cardsValues: value {
@@ -63,15 +71,19 @@ const MessageFragment = gql`
               type
               text
               linkActionValue: value
+              options
             }
             ... on PostbackAction {
               type
               text
               postbackActionValue: value
+              options
             }
           }
           subtitle
+          options
         }
+        options
       }
       ... on Hook {
         hookValue: value {

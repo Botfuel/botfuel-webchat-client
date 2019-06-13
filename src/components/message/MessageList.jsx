@@ -37,7 +37,10 @@ const Messages = styled.div`
 class MessageList extends React.Component {
   state = {
     messages: [],
-    quickreplies: [],
+    quickreplies: {
+      value: [],
+      options: null,
+    },
     isThinking: false,
   };
 
@@ -59,14 +62,14 @@ class MessageList extends React.Component {
         }
       } else if (lastMessage.type === 'quickreplies') {
         // handle quickreplies message
-        const { payload: { quickrepliesValue } } = lastMessage;
-        if (quickrepliesValue && quickrepliesValue !== this.state.quickreplies) {
-          this.setState({ quickreplies: quickrepliesValue });
+        const { payload: { quickrepliesValue, options } } = lastMessage;
+        if (quickrepliesValue && quickrepliesValue !== this.state.quickreplies.value) {
+          this.setState({ quickreplies: { value: quickrepliesValue, options } });
         }
       } else {
         // reset quickreplies if necessary
-        if (this.state.quickreplies.length > 0) {
-          this.setState({ quickreplies: [] });
+        if (this.state.quickreplies.value.length > 0) {
+          this.setState({ quickreplies: { value: [], options: null } });
         }
 
         // reset is thinking if necessary
@@ -89,7 +92,7 @@ class MessageList extends React.Component {
       parseHTML,
       sanitizeDOM,
     } = this.props;
-    // console.log(`MessageList.render: ${this.state.messages.length} messages to display`);
+    const { messages, quickreplies, isThinking } = this.state;
     return (
       <Messages className="bf-message-list-container" ref={setRef}>
         {debug && (
@@ -135,7 +138,7 @@ class MessageList extends React.Component {
           />
         )}
         <div className="bf-message-list">
-          {this.state.messages.map(message => (
+          {messages.map(message => (
             <Message
               {...message}
               side={message.sender === 'user' ? 'right' : 'left'}
@@ -148,10 +151,15 @@ class MessageList extends React.Component {
             />
           ))}
         </div>
-        {this.state.quickreplies.length > 0 && (
-          <Quickreplies key="QUICK_REPLIES" sendAction={sendAction} quickreplies={this.state.quickreplies} />
+        {quickreplies.value.length > 0 && (
+          <Quickreplies
+            key="QUICK_REPLIES"
+            sendAction={sendAction}
+            quickreplies={quickreplies.value}
+            className={quickreplies.options && quickreplies.options.className ? quickreplies.options.className : ''}
+          />
         )}
-        {this.state.isThinking && (
+        {isThinking && (
           <BotThinkingAction key="BOT_THINKING_ON" />
         )}
       </Messages>

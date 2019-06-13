@@ -10,8 +10,8 @@ const Image = styled.img`
   border-radius: ${props => props.theme.layout.rounded};
 `;
 
-export default function ImageMessage({ payload }) {
-  return <Image src={payload.imageUrl} />;
+export default function ImageMessage({ payload: { imageUrl } }) {
+  return <Image src={imageUrl} />;
 }
 
 ImageMessage.propTypes = {

@@ -57,22 +57,26 @@ const Cards = ({ payload, sendAction, size, cardSize }) => {
   // if (size - total padding) < cardSize then use the max available size
   // else use cardSize
   const itemSize = (size - 40) < 300 ? (10 * Math.floor((size - 40) / 10)) : cardSize;
+  const cardsClassName = payload.options && payload.options.className ? payload.options.className : '';
   return (
-    <Carousel itemSize={itemSize}>
-      {payload.cardsValues.map(card => (
-        <Card className="bf-card" key={`card-${card.title}`} size={itemSize}>
-          <CardImage className="bf-card-image" url={card.image_url} />
-          <CardTitle className="bf-card-title">{card.title}</CardTitle>
-          <CardSubTitle className="bf-card-sub-title">{card.subtitle || ''}</CardSubTitle>
-          {!!card.actionValue.length && (
-            <CardActions
-              payload={card}
-              sendAction={sendAction}
-              width={100}
-            />
-          )}
-        </Card>
-      ))}
+    <Carousel className={cardsClassName} itemSize={itemSize}>
+      {payload.cardsValues.map((card) => {
+        const cardClassName = card.options && card.options.className ? card.options.className : '';
+        return (
+          <Card className={`bf-card ${cardClassName}`} key={`card-${card.title}`} size={itemSize}>
+            <CardImage className="bf-card-image" url={card.image_url} />
+            <CardTitle className="bf-card-title">{card.title}</CardTitle>
+            <CardSubTitle className="bf-card-sub-title">{card.subtitle || ''}</CardSubTitle>
+            {!!card.actionValue.length && (
+              <CardActions
+                payload={card}
+                sendAction={sendAction}
+                width={100}
+              />
+            )}
+          </Card>
+        );
+      })}
     </Carousel>
   );
 };

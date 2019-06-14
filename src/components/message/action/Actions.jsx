@@ -92,10 +92,12 @@ class Actions extends React.Component {
         clicked: !!a.clicked,
       },
     }));
+    const msgClassName = payload.options && payload.options.className ? payload.options.className : '';
 
     return (
-      <Container className="bf-actions-container" actions={actions} width={width}>
+      <Container className={`bf-actions-container ${msgClassName}`} actions={actions} width={width}>
         {actions && actions.map((action, index) => {
+          const actionClassName = action.options && action.options.className ? action.options.className : '';
           switch (action.type) {
             case 'link':
               return (
@@ -107,6 +109,7 @@ class Actions extends React.Component {
                   handleClick={() => markAsClicked(index)}
                   disabled={action.disabled}
                   clicked={action.clicked}
+                  className={actionClassName}
                   side="left"
                 />
               );
@@ -126,6 +129,7 @@ class Actions extends React.Component {
                   label={action.text || action.postbackActionValue}
                   disabled={action.disabled}
                   clicked={action.clicked}
+                  className={actionClassName}
                   side="left"
                 />
               );

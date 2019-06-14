@@ -19,8 +19,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { darken } from 'polished';
 
-const LinkButton = ({ label, link, handleClick, disabled, clicked }) => (
-  <Link className="bf-action-link" href={link} onClick={handleClick} target="_blank" disabled={disabled} clicked={clicked}>
+const LinkButton = ({ label, link, handleClick, disabled, clicked, className }) => (
+  <Link className={`bf-action-link ${className}`} href={link} onClick={handleClick} target="_blank" disabled={disabled} clicked={clicked}>
     {label}
   </Link>
 );
@@ -31,6 +31,11 @@ LinkButton.propTypes = {
   handleClick: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
   clicked: PropTypes.bool.isRequired,
+  className: PropTypes.string,
+};
+
+LinkButton.defaultProps = {
+  className: '',
 };
 
 function getStatusBackgroundColor(props) {

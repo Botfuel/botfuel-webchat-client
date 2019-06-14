@@ -64,13 +64,17 @@ export default class MessageContainer extends React.Component {
   render() {
     const { side, type, sender, className, ...props } = this.props;
     const Component = componentsDict[type];
-    const disableBubble = ['actions', 'cards'].includes(type);
-    return disableBubble ? (
-      <Component type={type} size={props.width} {...props} />
-    ) : (
+
+    // remove bubble for actions and cards
+    if (['actions', 'cards'].includes(type)) {
+      return (<Component type={type} size={props.width} {...props} />);
+    }
+
+    const msgClassName = props.payload.options && props.payload.options.className ? props.payload.options.className : '';
+    return (
       <ClearDiv className={`bf-message-container bf-${sender} ${className}`} component={Component}>
         {side === 'left' && <Avatar className="bf-user-avatar" sender={sender} />}
-        <Bubble className={`bf-${type}-message`} side={side} isImage={type === 'image'}>
+        <Bubble className={`bf-${type}-message ${msgClassName}`} side={side} isImage={type === 'image'}>
           <Component {...this.props} />
         </Bubble>
       </ClearDiv>

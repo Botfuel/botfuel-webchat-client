@@ -68,7 +68,7 @@ const Bars = styled(Icon)`
 
 const MenuButtonContainer = styled.div`
   width: 45px;
-  height: 45px;
+  height: 40px;
   display: table;
 `;
 

@@ -102,6 +102,20 @@ const VoiceWrapper = styled.div`
   margin-right: 10px;
 `;
 
+const BrandContainer = styled.div`
+  border-top: 1px solid ${props => props.theme.colors.menuIcon};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2em 0;
+`;
+
+const BrandImage = styled.img.attrs({
+  alt: 'brand',
+})`
+  height: 12px;
+`;
+
 class Bottom extends React.Component {
   state = {
     input: '',
@@ -172,6 +186,11 @@ class Bottom extends React.Component {
           )}
           <SendButton className="bf-input-send-button" onClick={this.handleSubmit}>{labels.sendButtonLabel}</SendButton>
         </InputWrapper>
+        <BrandContainer>
+          <a href="https://answers.botfuel.io" target="_blank" rel="noopener noreferrer">
+            <BrandImage src="https://s3-eu-west-1.amazonaws.com/botfuel-assets/webchat_by_botfuel_en.png" />
+          </a>
+        </BrandContainer>
       </BottomWrapper>
     );
   }

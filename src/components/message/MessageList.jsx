@@ -29,7 +29,7 @@ const Messages = styled.div`
   list-style: none;
   padding: 10px 10px 20px 10px;
   margin: 0;
-  height: calc(100% - 45px - ${props => (props.theme.layout.noHeader ? '0px' : '40px')});
+  height: calc(100% - 65px - ${props => (props.theme.layout.noHeader ? '0px' : '40px')});
   overflow-x: hidden;
   overflow-y: auto;
 `;

@@ -63,3 +63,6 @@ dist
 
 # Mac specific
 .DS_Store
+
+# IDE specific
+.idea

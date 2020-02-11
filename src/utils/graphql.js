@@ -2,7 +2,7 @@
 import gql from 'graphql-tag';
 
 const MessageFragment = gql`
-  fragment FullMessage on Message { 
+  fragment FullMessage on Message {
     id
     type
     user

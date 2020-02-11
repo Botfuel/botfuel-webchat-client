@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { ApolloClient } from 'apollo-boost';
+import { ApolloClient } from 'apollo-client';
 import { split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { createHttpLink } from 'apollo-link-http';
@@ -22,19 +22,25 @@ import { getMainDefinition } from 'apollo-utilities';
 import { InMemoryCache, IntrospectionFragmentMatcher } from 'apollo-cache-inmemory';
 import { SubscriptionClient } from 'subscriptions-transport-ws';
 
+const introspectionQueryResultData = {
+  __schema: {
+    types: [
+      {
+        kind: 'UNION',
+        name: 'MessagePayload',
+        possibleTypes: [{ name: 'Text' }, { name: 'Table' }, { name: 'Actions' }, { name: 'Postback' }, { name: 'Quickreplies' }, { name: 'Image' }, { name: 'Cards' }],
+      },
+      { kind: 'UNION',
+        name: 'ActionValue',
+        possibleTypes: [{ name: 'LinkAction' }, { name: 'PostbackAction' }],
+      },
+    ],
+  },
+};
+
 // Fragment matcher so we can use inline fragments on type Value in GraphQL queries
 const fragmentMatcher = new IntrospectionFragmentMatcher({
-  introspectionQueryResultData: {
-    __schema: {
-      types: [
-        {
-          kind: 'UNION',
-          name: 'Value',
-          possibleTypes: [{ name: 'Text' }, { name: 'Table' }, { name: 'Choices' }],
-        },
-      ],
-    },
-  },
+  introspectionQueryResultData,
 });
 
 function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.botfuel.io') {
@@ -54,6 +60,7 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
     const subscriptionClient = new SubscriptionClient(SERVER_ENDPOINT_WEBSOCKET, {
       reconnect: true,
     });
+
     subscriptionClient.maxConnectTimeGenerator
       .duration = () => subscriptionClient.maxConnectTimeGenerator.max;
 
@@ -72,15 +79,15 @@ function createApolloClient(websocketsSupported, serverUrl = 'https://webchat.bo
 
     // Create apollo client from previous setup
     return new ApolloClient({
-      cache,
       link: splitLink,
+      cache,
     });
   }
 
   // Fallback to HTTP only network interface if web sockets are not supported
   return new ApolloClient({
-    cache,
     link: httpLink,
+    cache,
   });
 }
 

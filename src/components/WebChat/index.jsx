@@ -125,7 +125,9 @@ class WebChat extends React.Component {
         actionIndex,
       });
 
-      this.props.refetch();
+      if (!this.props.websocketsSupported) {
+        this.props.refetch();
+      }
     };
   }
 
@@ -224,11 +226,11 @@ export default compose(
               return store;
             }
 
-            // console.log('New message added to store', newMessage);
+            // console.log('New message added to store', newMessage, store);
             // Return updated store
-            return {
+            return Object.assign({}, store, {
               messages: [...store.messages, newMessage],
-            };
+            });
           },
         })
         : null),

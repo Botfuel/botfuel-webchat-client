@@ -83,7 +83,7 @@ const Link = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 400ms ease;
+  transition: all 300ms ease;
   text-decoration: none;
 
   &:hover {

@@ -40,7 +40,7 @@ const DialogStyles = {
 const Container = styled.div`
   opacity: ${props => (props.isVisible ? 1 : 0)};
   visibility: ${props => (props.isVisible ? 'visible' : 'hidden')};
-  transition: opacity 0.3s ease-in-out;
+  transition: opacity 300ms ease;
   color: #000;
   width: ${props => (props.theme.fluid ? '100%' : `${props.width}px`)};
   height: ${props => (props.theme.fluid ? '100%' : `${props.height}px`)};

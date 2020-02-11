@@ -13,7 +13,7 @@
 <script type="text/javascript">
   BotfuelWebChat.init({
     // embeddedContainerId: 'botfuel',
-    appToken: '1409617695610',
+    appToken: '1409617695610', // la poste dev
     parseHTML: true,
     theme: {
       layout: {
@@ -52,7 +52,7 @@
       helpMessage: 'Commandes de test : _test_table, _test_text, _test_choices.',
       messageInputPlaceholder: 'Écrivez un message...',
       webchatHeaderTitle: 'Comment puis-je vous aider ?',
-      onboardingMessage: ['Bonjour!', 'e'],
+      onboardingMessage: ['How can I help ?'],
     },
     serverUrl: 'http://localhost:7001',
     extraAllowedOrigins: ['http://localhost:7000'],
@@ -60,7 +60,9 @@
     hooks: {
       hello: ({ name }) => console.log('Hello ' + name),
     },
+    /**
     menuActions: [
+
       {
         label: 'Recommencer',
         message: {
@@ -92,6 +94,7 @@
       },
     ],
     voiceEnabled: true,
+     */
   });
 </script>
 </html>

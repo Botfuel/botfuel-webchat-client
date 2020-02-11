@@ -32,7 +32,7 @@ const Button = styled.div`
   height: ${props => props.size}px;
   width: ${props => props.size}px;
   border-radius: 100%;
-  transition: visibility .3s ease-in-out;
+  transition: visibility 300ms ease;
   cursor: pointer;
   background-image: url("${props => props.theme.images.startButton}");
   background-position: center;

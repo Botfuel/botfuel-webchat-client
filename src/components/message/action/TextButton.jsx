@@ -88,7 +88,7 @@ const Button = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 400ms ease;
+  transition: all 300ms ease;
 
   &:hover {
     ${props => !props.disabled && !props.clicked && `background-color: ${darken(0.03, props.theme.colors.secondary)}`};

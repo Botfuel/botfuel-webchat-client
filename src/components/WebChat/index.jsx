@@ -50,6 +50,7 @@ class WebChat extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('WebChat.componentWillReceiveProps: messages', nextProps.messages);
     // handle graphql errors
     if (nextProps.error && nextProps.error.graphQLErrors) {
       /* eslint-disable no-console */
@@ -125,11 +126,14 @@ class WebChat extends React.Component {
         actionIndex,
       });
 
-      this.props.refetch();
+      if (!this.props.websocketsSupported) {
+        this.props.refetch();
+      }
     };
   }
 
   render() {
+    console.log(`WebChat.render: ${this.props.messages.length} messages`);
     return (
       <Main
         {...this.props}
@@ -224,11 +228,11 @@ export default compose(
               return store;
             }
 
-            // console.log('New message added to store', newMessage);
+            console.log('New message added to store', newMessage, store);
             // Return updated store
-            return {
+            return Object.assign({}, store, {
               messages: [...store.messages, newMessage],
-            };
+            });
           },
         })
         : null),

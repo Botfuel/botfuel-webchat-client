@@ -27,7 +27,7 @@ const CardLink = styled.a`
   color: ${props => props.theme.colors.primary};
   text-align: center;
   cursor: pointer;
-  transition: all 400ms ease;
+  transition: all 300ms ease;
   text-decoration: none;
 
   &:hover {
@@ -47,7 +47,7 @@ const CardButton = styled.button`
   background-color: transparent;
   color: ${props => props.theme.colors.primary};
   cursor: pointer;
-  transition: all 400ms ease;
+  transition: all 300ms ease;
   border: none;
 
   &:hover {

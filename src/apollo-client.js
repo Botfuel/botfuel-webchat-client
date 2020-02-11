@@ -28,7 +28,7 @@ const introspectionQueryResultData = {
       {
         kind: 'UNION',
         name: 'MessagePayload',
-        possibleTypes: [{ name: 'Text' }, { name: 'Table' }, { name: 'Actions' }, { name: 'Postback' }, { name: 'Quickreplies' }, { name: 'Image' }, { name: 'Cards' }]
+        possibleTypes: [{ name: 'Text' }, { name: 'Table' }, { name: 'Actions' }, { name: 'Postback' }, { name: 'Quickreplies' }, { name: 'Image' }, { name: 'Cards' }],
       },
       { kind: 'UNION',
         name: 'ActionValue',
